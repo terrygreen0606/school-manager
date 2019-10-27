@@ -25,7 +25,6 @@ import NotificationSystem from "react-notification-system";
 import Sidebar from "components/Sidebar/Sidebar.jsx";
 import AdminNavbar from "components/Navbars/AdminNavbar.jsx";
 import Footer from "components/Footer/Footer.jsx";
-import FixedPlugin from "components/FixedPlugin/FixedPlugin.jsx";
 
 import image from "assets/img/full-screen-image-3.jpg";
 
@@ -191,18 +190,6 @@ class Dashboard extends Component {
           />
           <Switch>{this.getRoutes(routes)}</Switch>
           <Footer fluid />
-          <FixedPlugin
-            handleImageClick={this.handleImageClick}
-            handleColorClick={this.handleColorClick}
-            handleHasImage={this.handleHasImage}
-            handleNavbarClick={this.handleNavbarClick}
-            handleMiniClick={this.handleMiniClick}
-            bgColor={this.state["color"]}
-            bgImage={this.state["image"]}
-            mini={this.state["mini"]}
-            handleFixedClick={this.handleFixedClick}
-            fixedClasses={this.state.fixedClasses}
-          />
         </div>
       </div>
     );

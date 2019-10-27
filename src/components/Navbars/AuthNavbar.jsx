@@ -17,13 +17,15 @@
 import React, { Component } from "react";
 import { Navbar } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
+import logo from "assets/img/logo.png";
 
 class PagesHeader extends Component {
   constructor(props) {
     super(props);
     this.mobileSidebarToggle = this.mobileSidebarToggle.bind(this);
     this.state = {
-      width: window.innerWidth
+      width: window.innerWidth,
+      logo: "../assets/img/flags/BR.png"
     };
   }
   // function that sets the class to active of the active page
@@ -50,9 +52,10 @@ class PagesHeader extends Component {
         <Navbar.Header>
           <Navbar.Brand>
             <NavLink to={"/dashboard"} className="nav-link">
-              {this.state.width > 429
-                ? "Light Bootstrap Dashboard Pro React"
-                : "LBD PRO React"}
+            <img src={logo} width="200px"/>
+              {/* this.state.width > 429
+                ? "<img src=this.state.logo>"
+              : "<img src=this.state.logo>" */}
             </NavLink>
           </Navbar.Brand>
           <Navbar.Toggle onClick={this.mobileSidebarToggle} />
@@ -62,27 +65,27 @@ class PagesHeader extends Component {
             <li>
               <NavLink to={"/dashboard"} className="nav-link">
                 <i className="fa fa-th-list" />
-                <p>Dashboard</p>
+                <p>Home</p>
               </NavLink>
             </li>
-            <li className={this.activeRoute("login-page")}>
-              <NavLink to={"/auth/login-page"} className="nav-link">
+            <li className={this.activeRoute("login")}>
+              <NavLink to={"/auth/login"} className="nav-link">
                 <i className="fa fa-drivers-license-o" />
                 <p>Login</p>
               </NavLink>
             </li>
-            <li className={this.activeRoute("register-page")}>
-              <NavLink to={"/auth/register-page"} className="nav-link">
+            <li className={this.activeRoute("register")}>
+              <NavLink to={"/auth/register"} className="nav-link">
                 <i className="fa fa-user-circle-o" />
                 <p>Register</p>
               </NavLink>
             </li>
-            <li className={this.activeRoute("lock-screen-page")}>
+            {/* <li className={this.activeRoute("lock-screen-page")}>
               <NavLink to={"/auth/lock-screen-page"} className="nav-link">
                 <i className="fa fa-lock" />
                 <p>Lock Screen</p>
               </NavLink>
-            </li>
+            </li> */}
           </ul>
         </Navbar.Collapse>
       </Navbar>

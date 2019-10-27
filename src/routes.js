@@ -231,14 +231,14 @@ var routes = [
         component: UserPage
       },
       {
-        path: "/login-page",
+        path: "/login",
         layout: "/auth",
         name: "Login Page",
         mini: "LP",
         component: LoginPage
       },
       {
-        path: "/register-page",
+        path: "/register",
         layout: "/auth",
         name: "Register",
         mini: "RP",
