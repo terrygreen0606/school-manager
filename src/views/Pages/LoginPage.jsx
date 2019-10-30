@@ -16,7 +16,7 @@
 */
 import React, { Component } from "react";
 import {
-  Grid,
+  Alert, Grid,
   Row,
   Col,
   FormGroup,
@@ -27,7 +27,10 @@ import {
 import Card from "components/Card/Card.jsx";
 
 import Button from "components/CustomButton/CustomButton.jsx";
-import Checkbox from "components/CustomCheckbox/CustomCheckbox.jsx";
+import { Login } from "services/admin/Login.jsx";
+import { Profile } from "services/admin/Profile.jsx";
+import { Redirect } from "react-router-dom";
+/* import Checkbox from "components/CustomCheckbox/CustomCheckbox.jsx"; */
 
 class LoginPage extends Component {
   constructor(props) {
@@ -39,6 +42,8 @@ class LoginPage extends Component {
       emailErrorLogin: null,
       passwordLogin: "",
       passwordErrorLogin: null,
+      loginErrorMsg: "",
+      redirect: false,
       // Type
       type_text: "",
       type_textError: null,
@@ -95,7 +100,7 @@ class LoginPage extends Component {
             <small className="text-danger">
               Email is required and format should be <i>john@doe.com</i>.
             </small>
-          )
+          ), loginErrorMsg: null
         })
       : this.setState({ emailErrorLogin: null });
   }
@@ -109,30 +114,77 @@ class LoginPage extends Component {
             <small className="text-danger">
               You must enter a password of at least 6 characters.
             </small>
-          )
+          ), loginErrorMsg: null
         })
       : this.setState({ passwordErrorLogin: null });
   }
   handleLoginSubmit() {
     var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    re.test(this.state.emailLogin) === false
-      ? this.setState({
-          emailErrorLogin: (
-            <small className="text-danger">
-              Email is required and format should be <i>john@doe.com</i>.
-            </small>
-          )
-        })
-      : this.setState({ emailErrorLogin: null });
-    this.state.passwordLogin < 6
-      ? this.setState({
-          passwordErrorLogin: (
-            <small className="text-danger">
-              You must enter a password of at least 6 characters.
-            </small>
-          )
-        })
-      : this.setState({ passwordErrorLogin: null });
+    if(re.test(this.state.emailLogin) === false)
+    {
+      this.setState({
+        emailErrorLogin: (
+          <small className="text-danger">
+            Email is required and format should be <i>john@doe.com</i>.
+          </small>
+        ),
+        loginErrorMsg: null
+      });
+    }
+    else if(this.state.passwordLogin.length < 6)
+    {
+      this.setState({
+        passwordErrorLogin: (
+          <small className="text-danger">
+            You must enter a password of at least 6 characters.
+          </small>
+        ),
+        emailErrorLogin: null, loginErrorMsg: null
+      });
+    }
+    else
+    {
+      Login({email: this.state.emailLogin, password: this.state.passwordLogin}).then((result) => {
+        let responseJSON = result;
+        if(responseJSON.success)
+        {
+          this.setState({
+            loginErrorMsg: (<Alert bsStyle="success">
+              <span>
+               {responseJSON.msg}
+              </span>
+            </Alert>),
+            passwordErrorLogin: null
+          });
+          if(responseJSON.response.token)
+          {
+            sessionStorage.setItem('login_token', responseJSON.response);
+            this.setState({
+              redirect: true
+            });
+            Profile().then((profiledata) => {
+              let ProfileJSON = profiledata;
+              console.log(ProfileJSON);
+              if(ProfileJSON.success)
+              {
+                sessionStorage.setItem('user_data', ProfileJSON);
+              }
+            });
+          }
+        }
+        else{
+          this.setState({
+            loginErrorMsg: (<Alert bsStyle="danger">
+              <span>
+                {responseJSON.msg}
+              </span>
+            </Alert>),
+            passwordErrorLogin: null
+          });
+        }
+      })
+       
+      }
   }
   handleTypeValidation() {
     var emailRex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -194,6 +246,19 @@ class LoginPage extends Component {
     );
   }
   render() {
+    if(this.state.redirect)
+    {
+      return (
+        <Redirect to={'/'} />
+      );
+    }
+
+    if(sessionStorage.getItem('login_token'))
+    {
+      return (
+        <Redirect to={'/'} />
+      );
+    }
     return (
       <Grid>
         <Row>
@@ -205,6 +270,7 @@ class LoginPage extends Component {
                 title="Login"
                 content={
                   <div>
+                      {this.state.loginErrorMsg}
                     <FormGroup>
                       <ControlLabel>Email address</ControlLabel>
                       <FormControl placeholder="Enter email" type="email"  onChange={event => this.handleLoginEmail(event)}/>

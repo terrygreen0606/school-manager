@@ -25,9 +25,36 @@ import {
   FormControl,
   InputGroup
 } from "react-bootstrap";
+import { Redirect } from 'react-router-dom';
 
 class HeaderLinks extends Component {
+  constructor(props)
+  {
+    super(props);
+    this.state = {
+      redirect: false
+    }
+  }
+  componentDidMount()
+  {
+    if(!sessionStorage.getItem('login_token'))
+    {
+      this.setState({'redirect': true});
+    }
+  }
+  logout()
+  {
+    sessionStorage.setItem('login_token', '');
+    sessionStorage.clear();
+    this.setState({'redirect': true});
+  }
   render() {
+    if(this.state.redirect)
+    {
+      return (
+        <Redirect to={'/auth/login'}/>
+      );
+    }
     return (
       <div>
         <Navbar.Form pullLeft className="navbar-search-form">
@@ -116,7 +143,7 @@ class HeaderLinks extends Component {
               <i className="pe-7s-lock" /> Lock Screen
             </MenuItem>
             <MenuItem eventKey={4.5}>
-              <div className="text-danger">
+              <div className="text-danger" onClick={this.logout.bind(this)}>
                 <i className="pe-7s-close-circle" /> Log out
               </div>
             </MenuItem>
