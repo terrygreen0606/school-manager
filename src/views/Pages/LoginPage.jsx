@@ -158,7 +158,7 @@ class LoginPage extends Component {
           });
           if(responseJSON.response.token)
           {
-            sessionStorage.setItem('login_token', responseJSON.response);
+            sessionStorage.setItem('login_token', responseJSON.response.token);
             this.setState({
               redirect: true
             });

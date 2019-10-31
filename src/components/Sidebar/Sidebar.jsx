@@ -27,7 +27,7 @@ import AdminNavbarLinks from "components/Navbars/AdminNavbarLinks.jsx";
 // image for avatar in Sidebar
 import avatar from "assets/img/default-avatar.png";
 // logo for sidebar
-import logo from "logo.svg";
+import logo from "logo.png";
 
 import routes from "routes.js";
 

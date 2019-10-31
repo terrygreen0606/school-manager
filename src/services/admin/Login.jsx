@@ -1,7 +1,8 @@
+var globalVariables = require('../globalVariables');
 export function Login(userData)
 {
     return new Promise((resolve, reject) => {
-        fetch("http://partner-mlm.ti/api/admin/login", {
+        fetch(globalVariables.admin_api_path+"login", {
             method: "POST",
             headers: {
                 'Accept': 'application/json',
