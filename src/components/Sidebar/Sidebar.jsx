@@ -30,6 +30,7 @@ import avatar from "assets/img/default-avatar.png";
 import logo from "logo.png";
 
 import routes from "routes.js";
+import UserProfile from "../../variables/UserProfile";
 
 var ps;
 
@@ -183,21 +184,23 @@ class Sidebar extends Component {
           ""
         )}
         <div className="logo">
+          {/*
           <a
             href="https://www.creative-tim.com?ref=lbdpr-sidebar"
             className="simple-text logo-mini"
             target="_blank"
           >
             <div className="logo-img">
-              <img src={logo} alt="react-logo" />
+               <img src={logo} alt="react-logo" /> 
             </div>
           </a>
+          */}
           <a
             href="https://www.creative-tim.com?ref=lbdpr-sidebar"
             className="simple-text logo-normal"
             target="_blank"
           >
-            Creative Tim
+            <img src={logo} alt="react-logo" style={{height:'65px'}}/>
           </a>
         </div>
         <div className="sidebar-wrapper" ref="sidebarWrapper">
@@ -214,7 +217,8 @@ class Sidebar extends Component {
                 }}
               >
                 <span>
-                  Tania Andrew
+                    {UserProfile.getName()}
+                    {console.log(UserProfile.getName())}
                   <b
                     className={
                       this.state.openAvatar ? "caret rotate-180" : "caret"

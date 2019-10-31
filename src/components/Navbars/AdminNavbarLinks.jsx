@@ -58,6 +58,7 @@ class HeaderLinks extends Component {
     return (
       <div>
         <Navbar.Form pullLeft className="navbar-search-form">
+          {/*
           <FormGroup>
             <InputGroup>
               <InputGroup.Addon>
@@ -66,6 +67,7 @@ class HeaderLinks extends Component {
               <FormControl type="text" placeholder="Search..." />
             </InputGroup>
           </FormGroup>
+          */}
         </Navbar.Form>
         <Nav pullRight>
           <NavItem eventKey={3} href="#">
