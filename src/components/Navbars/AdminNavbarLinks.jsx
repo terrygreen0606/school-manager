@@ -32,7 +32,8 @@ class HeaderLinks extends Component {
   {
     super(props);
     this.state = {
-      redirect: false
+      redirect: false,
+      notification_count:0,
     }
   }
   componentDidMount()
@@ -70,11 +71,11 @@ class HeaderLinks extends Component {
           */}
         </Navbar.Form>
         <Nav pullRight>
-          <NavItem eventKey={3} href="#">
+          {/* <NavItem eventKey={3} href="#">
             <i className="fa fa-line-chart" />
             <p>Stats</p>
-          </NavItem>
-          <NavDropdown
+          </NavItem> */}
+         {/* <NavDropdown
             eventKey={2}
             title={
               <div>
@@ -94,13 +95,13 @@ class HeaderLinks extends Component {
             <MenuItem eventKey={2.4}>Submit to live</MenuItem>
             <MenuItem divider />
             <MenuItem eventKey={2.5}>Another action</MenuItem>
-          </NavDropdown>
+          </NavDropdown> */}
           <NavDropdown
             eventKey={3}
             title={
               <div>
                 <i className="fa fa-bell-o" />
-                <span className="notification">5</span>
+                <span className="notification">{this.state.notification_count}</span>
                 <p className="hidden-md hidden-lg">
                   Notifications
                   <b className="caret" />
@@ -110,11 +111,11 @@ class HeaderLinks extends Component {
             noCaret
             id="basic-nav-dropdown-2"
           >
-            <MenuItem eventKey={3.1}>Notification 1</MenuItem>
-            <MenuItem eventKey={3.2}>Notification 2</MenuItem>
+            <MenuItem eventKey={3.1}>No New Notification</MenuItem>
+            {/* <MenuItem eventKey={3.2}>Notification 2</MenuItem>
             <MenuItem eventKey={3.3}>Notification 3</MenuItem>
             <MenuItem eventKey={3.4}>Notification 4</MenuItem>
-            <MenuItem eventKey={3.5}>Another notifications</MenuItem>
+          <MenuItem eventKey={3.5}>Another notifications</MenuItem> */}
           </NavDropdown>
           <NavDropdown
             eventKey={4}
@@ -134,16 +135,20 @@ class HeaderLinks extends Component {
             <MenuItem eventKey={4.1}>
               <i className="pe-7s-mail" /> Messages
             </MenuItem>
+            {/*
             <MenuItem eventKey={4.2}>
               <i className="pe-7s-help1" /> Help Center
             </MenuItem>
+            */}
             <MenuItem eventKey={4.3}>
               <i className="pe-7s-tools" /> Settings
             </MenuItem>
+            {/*
             <MenuItem divider />
             <MenuItem eventKey={4.4}>
               <i className="pe-7s-lock" /> Lock Screen
             </MenuItem>
+            */}
             <MenuItem eventKey={4.5}>
               <div className="text-danger" onClick={this.logout.bind(this)}>
                 <i className="pe-7s-close-circle" /> Log out

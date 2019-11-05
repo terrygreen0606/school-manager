@@ -30,7 +30,6 @@ import avatar from "assets/img/default-avatar.png";
 import logo from "logo.png";
 
 import routes from "routes.js";
-import UserProfile from "../../variables/UserProfile";
 
 var ps;
 
@@ -217,8 +216,7 @@ class Sidebar extends Component {
                 }}
               >
                 <span>
-                    {UserProfile.getName()}
-                    {console.log(UserProfile.getName())}
+                    {sessionStorage.getItem('first_name')} {sessionStorage.getItem('last_name')}
                   <b
                     className={
                       this.state.openAvatar ? "caret rotate-180" : "caret"

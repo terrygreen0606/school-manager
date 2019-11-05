@@ -49,6 +49,43 @@ var routes = [
   },
   {
     collapse: true,
+    path: "/setup",
+    name: "Settings",
+    state: "opensetup",
+    icon: "fa fa-cog",
+    views: [
+      {
+        path: "/basic-settings",
+        layout: "/admin",
+        name: "Basic Settings",
+        mini: "BS",
+        component: RegularForms
+      },
+      {
+        path: "/extended-forms",
+        layout: "/admin",
+        name: "Extended Forms",
+        mini: "EF",
+        component: ExtendedForms
+      },
+      {
+        path: "/validation-forms",
+        layout: "/admin",
+        name: "Validation Forms",
+        mini: "VF",
+        component: ValidationForms
+      },
+      {
+        path: "/wizard",
+        layout: "/admin",
+        name: "Wizard",
+        mini: "W",
+        component: Wizard
+      }
+    ]
+  },
+  /* {
+    collapse: true,
     path: "/components",
     name: "Components",
     state: "openComponents",
@@ -253,5 +290,6 @@ var routes = [
       }
     ]
   }
+  */
 ];
 export default routes;
