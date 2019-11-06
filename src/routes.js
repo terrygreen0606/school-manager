@@ -50,9 +50,9 @@ var routes = [
   {
     collapse: true,
     path: "/setup",
-    name: "Settings",
+    name: "Setup",
     state: "opensetup",
-    icon: "fa fa-cog",
+    icon: "pe-7s-settings",
     views: [
       {
         path: "/basic-settings",
@@ -62,87 +62,628 @@ var routes = [
         component: RegularForms
       },
       {
-        path: "/extended-forms",
+        path: "/level-commission-limit",
         layout: "/admin",
-        name: "Extended Forms",
-        mini: "EF",
+        name: "Commission Limit",
+        mini: "CL",
         component: ExtendedForms
       },
       {
-        path: "/validation-forms",
+        path: "/level-commission-settings",
         layout: "/admin",
-        name: "Validation Forms",
-        mini: "VF",
+        name: "Level Commission Setup",
+        mini: "LC",
         component: ValidationForms
       },
       {
-        path: "/wizard",
+        path: "/repurchase-commission-settings",
         layout: "/admin",
-        name: "Wizard",
-        mini: "W",
+        name: "Repurchase Commission",
+        mini: "RC",
+        component: Wizard
+      },
+      {
+        path: "/sms-settings",
+        layout: "/admin",
+        name: "SMS Setup",
+        mini: "SM",
+        component: ValidationForms
+      },
+      {
+        path: "/email-settings",
+        layout: "/admin",
+        name: "Email Setup",
+        mini: "@",
+        component: Wizard
+      },
+      {
+        path: "/referral-commission-settings",
+        layout: "/admin",
+        name: "Referral Commission",
+        mini: "RC",
+        component: ValidationForms
+      },
+      {
+        path: "/user-reward-settings",
+        layout: "/admin",
+        name: "User Reward Setup",
+        mini: "UR",
+        component: Wizard
+      },
+      {
+        path: "/paypal-settings",
+        layout: "/admin",
+        name: "Paypal Setup",
+        mini: "PS",
+        component: ValidationForms
+      },
+      {
+        path: "/language-settings",
+        layout: "/admin",
+        name: "Language Setup",
+        mini: "Lan",
+        component: Wizard
+      },
+      {
+        path: "/currency-settings",
+        layout: "/admin",
+        name: "Currency Setup",
+        mini: "$",
+        component: ValidationForms
+      },
+      {
+        path: "/withdrawal-settings",
+        layout: "/admin",
+        name: "Withdrawal Setup",
+        mini: "WW",
+        component: Wizard
+      },
+      {
+        path: "/registration-settings",
+        layout: "/admin",
+        name: "Registration MOde",
+        mini: "RM",
+        component: ValidationForms
+      },
+      {
+        path: "/support-system-settings",
+        layout: "/admin",
+        name: "Support System Setup",
+        mini: "SS",
         component: Wizard
       }
+
     ]
   },
-  /* {
-    collapse: true,
-    path: "/components",
-    name: "Components",
-    state: "openComponents",
-    icon: "pe-7s-plugin",
+  {
+    collapse:true,
+    path: "/cms-settings",
+    name: "CMS Settings",
+    state: "opencmssettings",
+    icon: "pe-7s-print",
     views: [
       {
-        path: "/buttons",
+        path: "/about-us",
+        name: "About Us Page",
         layout: "/admin",
-        name: "Buttons",
-        mini: "B",
+        mini: "AU",
         component: Buttons
       },
       {
-        path: "/grid-system",
+        path: "/contact-us",
+        name: "Contact Us Page",
         layout: "/admin",
-        name: "Grid System",
-        mini: "GS",
+        mini: "CU",
+        component: Buttons
+      },
+      {
+        path: "/faq",
+        name: "Freq. Ask Que",
+        layout: "/admin",
+        mini: "FAQ",
+        component: Buttons
+      },
+      {
+        path: "/mission",
+        name: "Our Mission",
+        layout: "/admin",
+        mini: "OM",
+        component: Buttons
+      },
+      {
+        path: "/vission",
+        name: "Our Vission",
+        layout: "/admin",
+        mini: "OV",
+        component: Buttons
+      }
+    ]
+  },
+  {
+    collapse: true,
+    path:"/downlines",
+    name: "Downlines",
+    state: "opendownlines",
+    icon: "pe-7s-network",
+    views: [
+      {
+        path: "genealogy",
+        name: "Genealogy",
+        mini: "GE",
+        layout: "/admin",
+        component: Buttons
+
+      },
+      {
+        path: "tabular",
+        name: "Tabular List",
+        mini: "TL",
+        layout: "/admin",
+        component: Buttons
+
+      }
+    ]
+  },
+  {
+    path: "/ecommerce-store",
+    layout: "/admin",
+    name: "eCommerce Store",
+    icon: "pe-7s-cart",
+    component: Charts
+  },
+  {
+    path: "/orders",
+    layout: "/admin",
+    name: "All Orders",
+    icon: "pe-7s-albums",
+    component: Charts
+  },
+  {
+    collapse: true,
+    path: "/ewallet",
+    name: "eWallet",
+    state: "openwallet",
+    icon: "pe-7s-wallet",
+    views: [
+      {
+        path: "/ewallet-summery",
+        layout: "/admin",
+        name: "eWallet Summery",
+        mini: "WS",
+        component: Buttons
+      },
+      {
+        path: "/transactions",
+        layout: "/admin",
+        name: "Transactions",
+        mini: "TR",
         component: GridSystem
       },
       {
-        path: "/panels",
+        path: "/withdrawal-and-onwards-funds",
         layout: "/admin",
         name: "Panels",
         mini: "P",
         component: Panels
       },
       {
-        path: "/sweet-alert",
+        path: "/withdrawal-status",
         layout: "/admin",
-        name: "Sweet Alert",
-        mini: "SA",
+        name: "Withdrawal Status",
+        mini: "WS",
         component: SweetAlert
       },
       {
-        path: "/notifications",
+        path: "/credit-debit",
         layout: "/admin",
-        name: "Notifications",
-        mini: "N",
+        name: "Credit/Debit",
+        mini: "CD",
         component: Notifications
       },
       {
-        path: "/icons",
+        path: "/fund-transfer",
         layout: "/admin",
-        name: "Icons",
-        mini: "I",
+        name: "Fund Transfer",
+        mini: "FT",
         component: Icons
       },
       {
-        path: "/typography",
+        path: "/transfer-history",
         layout: "/admin",
-        name: "Typography",
-        mini: "T",
+        name: "Transfer History",
+        mini: "TH",
+        component: Typography
+      },
+      {
+        path: "/user-earnings",
+        layout: "/admin",
+        name: "User Earnings",
+        mini: "UE",
         component: Typography
       }
     ]
   },
   {
+    path: "/g-notices",
+    name: "Global Notices",
+    icon: "pe-7s-volume",
+    layout: "/admin",
+    component: Buttons
+  },
+  {
+    path: "/notification-system",
+    name: "Notification System",
+    icon: "pe-7s-bell",
+    layout: "/admin",
+    component: Buttons
+  },
+  {
+    path: "/user-overview",
+    name: "User Overview",
+    icon: "pe-7s-user",
+    layout: "/admin",
+    component: Buttons
+  },
+  {
+    collapse: true,
+    path: "/business",
+    name: "Business",
+    state: "openbusiness",
+    icon: "pe-7s-diamond",
+    views: [
+      {
+        path: "/business-summery",
+        layout: "/admin",
+        name: "Buttons",
+        mini: "BS",
+        component: Buttons
+      },
+      {
+        path: "/business-transactions",
+        layout: "/admin",
+        name: "Business Transactions",
+        mini: "BT",
+        component: GridSystem
+      }
+    ]
+  },
+  {
+    collapse: true,
+    path: "/epin",
+    name: "ePIN",
+    state: "openepin",
+    icon: "pe-7s-pin",
+    views: [
+      {
+        path: "/generate-epin",
+        layout: "/admin",
+        name: "Generate Epin",
+        mini: "GE",
+        component: Buttons
+      },
+      {
+        path: "/epin-requests",
+        layout: "/admin",
+        name: "Epin Requests",
+        mini: "ER",
+        component: GridSystem
+      },
+      {
+        path: "/PIN Allocation",
+        layout: "/admin",
+        name: "PIN Allocation",
+        mini: "PA",
+        component: Panels
+      },
+      {
+        path: "/view-epin",
+        layout: "/admin",
+        name: "View Epin",
+        mini: "VE",
+        component: SweetAlert
+      },
+      {
+        path: "/epin-transfer",
+        layout: "/admin",
+        name: "E-PIN Transfer",
+        mini: "ET",
+        component: Notifications
+      }
+    ]
+  },
+  {
+    collapse: true,
+    path: "/member-management",
+    name: "Member Management",
+    state: "openmembers",
+    icon: "pe-7s-users",
+    views: [
+      {
+        path: "/profile-view",
+        layout: "/admin",
+        name: "Profile View",
+        mini: "PV",
+        component: Buttons
+      },
+      {
+        path: "/list-members",
+        layout: "/admin",
+        name: "List & Search Member",
+        mini: "SM",
+        component: GridSystem
+      },
+      {
+        path: "/change-user-password",
+        layout: "/admin",
+        name: "Change Password",
+        mini: "CP",
+        component: Panels
+      },
+      {
+        path: "/change-user-status",
+        layout: "/admin",
+        name: "Block/Unblock User",
+        mini: "BU",
+        component: SweetAlert
+      },
+      {
+        path: "/change-wallet-access",
+        layout: "/admin",
+        name: "Wallet Access",
+        mini: "WA",
+        component: Notifications
+      },
+      {
+        path: "/kyc-details",
+        layout: "/admin",
+        name: "KYC Details",
+        mini: "KYC",
+        component: Icons
+      }
+    ]
+  },
+  {
+    collapse: true,
+    path: "/payouts",
+    name: "Payout",
+    state: "openpayout",
+    icon: "pe-7s-anchor",
+    views: [
+      {
+        path: "/manually-release",
+        layout: "/admin",
+        name: "Manually Release",
+        mini: "MR",
+        component: Buttons
+      },
+      {
+        path: "/by-request",
+        layout: "/admin",
+        name: "By Request",
+        mini: "BR",
+        component: GridSystem
+      }
+    ]
+  },
+  {
+    path: "/messages",
+    name: "Messages",
+    icon: "pe-7s-mail",
+    layout: "/admin",
+    component: Buttons
+  },
+  {
+    path: "/bulk-sms",
+    name: "Bulk SMS",
+    icon: "pe-7s-mail-open",
+    layout: "/admin",
+    component: Buttons
+  },
+  {
+    path: "/bulk-email",
+    name: "Bulk Email",
+    icon: "pe-7s-mail-open-file",
+    layout: "/admin",
+    component: Buttons
+  },
+  {
+    collapse: true,
+    path: "/staff",
+    name: "Staff",
+    state: "openstaff",
+    icon: "pe-7s-user-female",
+    views: [
+      {
+        path: "/bands",
+        layout: "/admin",
+        name: "Bands",
+        mini: "B",
+        component: Buttons
+      },
+      {
+        path: "/teams",
+        layout: "/admin",
+        name: "Teams",
+        mini: "T",
+        component: GridSystem
+      },
+      {
+        path: "/staff-members",
+        layout: "/admin",
+        name: "Staff Members",
+        mini: "SM",
+        component: Panels
+      }
+    ]
+  },
+  {
+    collapse: true,
+    path: "/support-system",
+    name: "Support System",
+    state: "opensupportsystem",
+    icon: "pe-7s-headphones",
+    views: [
+      {
+        path: "/support-tickets",
+        layout: "/admin",
+        name: "Support Tickets",
+        mini: "ST",
+        component: Buttons
+      },
+      {
+        path: "/ticket-categories",
+        layout: "/admin",
+        name: "Ticket Categories",
+        mini: "TC",
+        component: GridSystem
+      },
+      {
+        path: "/open-tickets",
+        layout: "/admin",
+        name: "Open Tickets",
+        mini: "OT",
+        component: Panels
+      },
+      {
+        path: "/closed-tickets",
+        layout: "/admin",
+        name: "Closed/Resolved Tickets",
+        mini: "CT",
+        component: SweetAlert
+      }
+    ]
+  },
+  {
+    path: "/activity-history",
+    name: "Activity History",
+    icon: "pe-7s-albums",
+    layout: "/admin",
+    component: Buttons
+  },
+   {
+    path: "/transaction-password",
+    name: "Transaction Password",
+    icon: "pe-7s-lock",
+    layout: "/admin",
+    component: Buttons
+  },
+  {
+    collapse: true,
+    path: "/blogs",
+    name: "Blogs",
+    state: "openblog",
+    icon: "pe-7s-pen",
+    views: [
+      {
+        path: "/blog-list",
+        layout: "/admin",
+        name: "Blog List",
+        mini: "BL",
+        component: Buttons
+      },
+      {
+        path: "/pending-approval",
+        layout: "/admin",
+        name: "Pending for Approval",
+        mini: "PA",
+        component: GridSystem
+      }
+    ]
+  },
+  {
+    collapse: true,
+    path: "/report",
+    name: "Report",
+    state: "openreport",
+    icon: "pe-7s-copy-file",
+    views: [
+      {
+        path: "/joinings-report",
+        layout: "/admin",
+        name: "Joinings",
+        mini: "J",
+        component: Buttons
+      },
+      {
+        path: "/active-deactive-users-report",
+        layout: "/admin",
+        name: "Active/Deactive Users",
+        mini: "GS",
+        component: GridSystem
+      },
+      {
+        path: "/free-paid-users-report",
+        layout: "/admin",
+        name: "Free/Paid Users Report",
+        mini: "P",
+        component: Panels
+      },
+      {
+        path: "/monthwise-revanue",
+        layout: "/admin",
+        name: "Monthwise revanue",
+        mini: "MR",
+        component: SweetAlert
+      },
+      {
+        path: "/transactions",
+        layout: "/admin",
+        name: "transactions",
+        mini: "TR",
+        component: Notifications
+      },
+      {
+        path: "/failed-transactions",
+        layout: "/admin",
+        name: "Failed Transactions",
+        mini: "FT",
+        component: Icons
+      },
+      {
+        path: "/pin-history-report",
+        layout: "/admin",
+        name: "PIN History",
+        mini: "PH",
+        component: Typography
+      },
+      {
+        path: "/user-activity-report",
+        layout: "/admin",
+        name: "User Activity Report",
+        mini: "UA",
+        component: Typography
+      },
+      {
+        path: "/user-earning-report",
+        layout: "/admin",
+        name: "User Earning Report",
+        mini: "UE",
+        component: Typography
+      },
+      {
+        path: "/top-earner-report",
+        layout: "/admin",
+        name: "Top Earner Report",
+        mini: "TE",
+        component: Typography
+      },
+      {
+        path: "/payout-released-report",
+        layout: "/admin",
+        name: "Payout Released Report",
+        mini: "PR",
+        component: Typography
+      },
+      {
+        path: "/user-wise-sms-log-report",
+        layout: "/admin",
+        name: "Userwise SMS Log Report",
+        mini: "TE",
+        component: Typography
+      }
+    ]
+  },
+ /* {
     collapse: true,
     path: "/forms",
     name: "Forms",
@@ -291,5 +832,6 @@ var routes = [
     ]
   }
   */
+  
 ];
 export default routes;

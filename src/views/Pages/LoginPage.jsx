@@ -30,7 +30,6 @@ import Button from "components/CustomButton/CustomButton.jsx";
 import { Login } from "services/admin/Login.jsx";
 import { Profile } from "services/admin/Profile.jsx";
 import { Redirect } from "react-router-dom";
-import UserProfile from "../../variables/UserProfile";
 /* import Checkbox from "components/CustomCheckbox/CustomCheckbox.jsx"; */
 
 class LoginPage extends Component {
@@ -176,6 +175,7 @@ class LoginPage extends Component {
                 sessionStorage.setItem('user_id', ProfileJSON.response.id);
                 sessionStorage.setItem('user_username', ProfileJSON.response.username);
                 sessionStorage.setItem('user_email', ProfileJSON.response.email);
+                this.props.history.push('/');
               }
             });
           }
