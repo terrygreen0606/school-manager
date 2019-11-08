@@ -85,36 +85,39 @@ class Dashboard extends Component {
     }
   }
   // function that shows/hides notifications - it was put here, because the wrapper div has to be outside the main-panel class div
-  handleNotificationClick = position => {
-    var color = Math.floor(Math.random() * 4 + 1);
-    var level;
+  handleNotificationClick = (position, level= 1, message = "Hello World") => {
+    var color = level;
+    var icon = 'pe-7s-gift';
     switch (color) {
       case 1:
         level = "success";
+        icon = 'pe-7s-like2';
         break;
       case 2:
         level = "warning";
+        icon = "pe-7s-info";
         break;
       case 3:
         level = "error";
+        icon = 'pe-7s-attention';
         break;
       case 4:
         level = "info";
+        icon = "pe-7s-info";
         break;
       default:
         break;
     }
     this.state._notificationSystem.addNotification({
-      title: <span data-notify="icon" className="pe-7s-gift" />,
+      title: <span data-notify="icon" className={icon} />,
       message: (
         <div>
-          Welcome to <b>Light Bootstrap Dashboard</b> - a beautiful freebie for
-          every web developer.
+         {message}
         </div>
       ),
       level: level,
       position: position,
-      autoDismiss: 15
+      autoDismiss: 10
     });
   };
   handleImageClick = image => {

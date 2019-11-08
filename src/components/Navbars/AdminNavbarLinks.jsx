@@ -18,12 +18,12 @@ import React, { Component } from "react";
 import {
   Navbar,
   Nav,
-  NavItem,
+  // NavItem,
   NavDropdown,
   MenuItem,
-  FormGroup,
-  FormControl,
-  InputGroup
+ // FormGroup,
+ // FormControl,
+ // InputGroup
 } from "react-bootstrap";
 import { Redirect } from 'react-router-dom';
 
