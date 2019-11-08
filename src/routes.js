@@ -15,6 +15,7 @@
 
 */
 import Dashboard from "views/Dashboard.jsx";
+import BasicSettings from "views/Setup/BasicSettings.jsx";
 import Buttons from "views/Components/Buttons.jsx";
 import GridSystem from "views/Components/GridSystem.jsx";
 import Panels from "views/Components/Panels.jsx";
@@ -59,7 +60,7 @@ var routes = [
         layout: "/admin",
         name: "Basic Settings",
         mini: "BS",
-        component: RegularForms
+        component: BasicSettings
       },
       {
         path: "/level-commission-limit",
@@ -682,6 +683,11 @@ var routes = [
         component: Typography
       }
     ]
+  },
+  {
+    path: "/login",
+    layout: "/auth",
+    component: LoginPage
   },
  /* {
     collapse: true,
