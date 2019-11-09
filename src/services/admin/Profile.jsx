@@ -4,7 +4,7 @@ export function Profile(userData)
     return new Promise((resolve, reject) => {
         let login_token = sessionStorage.getItem('login_token');
        // console.log(login_token);
-        fetch(globalVariables.admin_api_path+"profile-api", {
+        fetch(globalVariables.admin_api_path+"/profile-api", {
             method: "GET",
             headers: {
                 'Accept': 'application/json',

@@ -2,7 +2,7 @@ var globalVariables = require('../globalVariables');
 export function Login(userData)
 {
     return new Promise((resolve, reject) => {
-        fetch(globalVariables.admin_api_path+"login", {
+        fetch(globalVariables.admin_api_path+"/login", {
             method: "POST",
             headers: {
                 'Accept': 'application/json',

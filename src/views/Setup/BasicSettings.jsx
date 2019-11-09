@@ -22,7 +22,7 @@ import axios from 'axios';
 import Card from "components/Card/Card.jsx";
 
 import Button from "components/CustomButton/CustomButton.jsx";
-
+var globalVariables = require('../../services/globalVariables.jsx');
 class BasicSettings extends Component {
     constructor(props) {
         super(props);
@@ -38,7 +38,7 @@ class BasicSettings extends Component {
       
         componentDidMount() {
           let login_token = sessionStorage.getItem('login_token');
-          axios.post(`http://partner-mlm.ti/api/admin/setup/basic-settings`, { setup_type:'basic' }, {
+          axios.post(globalVariables.admin_api_path+'/setup/basic-settings', { setup_type:'basic' }, {
             headers: { Authorization: "Bearer " + login_token }
           })
             .then(res => res.data).then((data) => {
@@ -66,7 +66,7 @@ class BasicSettings extends Component {
         event.preventDefault();
         let login_token = sessionStorage.getItem('login_token');
         let AllSetupItems = this.state.basicSetupItems;
-        axios.post(`http://partner-mlm.ti/api/admin/setup/update-setting`, {key: this.state.setup_key, value: this.state.setup_value},{
+        axios.post(globalVariables.admin_api_path+'/setup/update-setting', {key: this.state.setup_key, value: this.state.setup_value},{
           headers: { Authorization: "Bearer " + login_token }
         })
           .then(res => {
