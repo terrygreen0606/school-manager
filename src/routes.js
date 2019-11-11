@@ -16,6 +16,10 @@
 */
 import Dashboard from "views/Dashboard.jsx";
 import BasicSettings from "views/Setup/BasicSettings.jsx";
+import CommissionLimit from "views/Setup/CommissionLimit.jsx";
+import LevelCommissionSetup from "views/Setup/LevelCommissionSetup.jsx";
+import RepurchaseCommissionSetup from "views/Setup/RepurchaseCommission.jsx";
+import RewardSetup from "views/Setup/RewardSetup.jsx";
 import Buttons from "views/Components/Buttons.jsx";
 import GridSystem from "views/Components/GridSystem.jsx";
 import Panels from "views/Components/Panels.jsx";
@@ -67,21 +71,21 @@ var routes = [
         layout: "/admin",
         name: "Commission Limit",
         mini: "CL",
-        component: RegularForms
+        component: CommissionLimit
       },
       {
         path: "/level-commission-settings",
         layout: "/admin",
         name: "Level Commission Setup",
         mini: "LC",
-        component: ValidationForms
+        component: LevelCommissionSetup
       },
       {
         path: "/repurchase-commission-settings",
         layout: "/admin",
         name: "Repurchase Commission",
         mini: "RC",
-        component: Wizard
+        component: RepurchaseCommissionSetup
       },
       {
         path: "/sms-settings",
@@ -109,7 +113,7 @@ var routes = [
         layout: "/admin",
         name: "User Reward Setup",
         mini: "UR",
-        component: Wizard
+        component: RewardSetup
       },
       {
         path: "/paypal-settings",
