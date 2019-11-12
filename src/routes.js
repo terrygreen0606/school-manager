@@ -20,6 +20,11 @@ import CommissionLimit from "views/Setup/CommissionLimit.jsx";
 import LevelCommissionSetup from "views/Setup/LevelCommissionSetup.jsx";
 import RepurchaseCommissionSetup from "views/Setup/RepurchaseCommission.jsx";
 import RewardSetup from "views/Setup/RewardSetup.jsx";
+import SmsSetup from "views/Setup/SmsSetup.jsx";
+import EmailSetup from "views/Setup/EmailSetup.jsx";
+import ReferralCommissionSetup from "views/Setup/ReferralCommissionSetup.jsx";
+import PaypalSetup from "views/Setup/PaypalSetup.jsx";
+import LanguageSettings from "views/Setup/LanguageSetup.jsx";
 import Buttons from "views/Components/Buttons.jsx";
 import GridSystem from "views/Components/GridSystem.jsx";
 import Panels from "views/Components/Panels.jsx";
@@ -28,7 +33,7 @@ import Notifications from "views/Components/Notifications.jsx";
 import Icons from "views/Components/Icons.jsx";
 import Typography from "views/Components/Typography.jsx";
 import RegularForms from "views/Forms/RegularForms.jsx";
-// import ExtendedForms from "views/Forms/ExtendedForms.jsx";
+import ExtendedForms from "views/Forms/ExtendedForms.jsx";
 import ValidationForms from "views/Forms/ValidationForms.jsx";
 import Wizard from "views/Forms/Wizard/Wizard.jsx";
 // import RegularTables from "views/Tables/RegularTables.jsx";
@@ -92,21 +97,21 @@ var routes = [
         layout: "/admin",
         name: "SMS Setup",
         mini: "SM",
-        component: ValidationForms
+        component: SmsSetup
       },
       {
         path: "/email-settings",
         layout: "/admin",
         name: "Email Setup",
         mini: "@",
-        component: Wizard
+        component: EmailSetup
       },
       {
         path: "/referral-commission-settings",
         layout: "/admin",
         name: "Referral Commission",
         mini: "RC",
-        component: ValidationForms
+        component: ReferralCommissionSetup
       },
       {
         path: "/user-reward-settings",
@@ -120,22 +125,23 @@ var routes = [
         layout: "/admin",
         name: "Paypal Setup",
         mini: "PS",
-        component: ValidationForms
+        component: PaypalSetup
       },
       {
         path: "/language-settings",
         layout: "/admin",
         name: "Language Setup",
         mini: "Lan",
-        component: Wizard
+        component: LanguageSettings
       },
-      {
+   /*   {
         path: "/currency-settings",
         layout: "/admin",
         name: "Currency Setup",
         mini: "$",
         component: ValidationForms
       },
+      */
       {
         path: "/withdrawal-settings",
         layout: "/admin",
@@ -143,13 +149,14 @@ var routes = [
         mini: "WW",
         component: Wizard
       },
-      {
+   /*   {
         path: "/registration-settings",
         layout: "/admin",
-        name: "Registration MOde",
+        name: "Registration Mode",
         mini: "RM",
         component: ValidationForms
       },
+      */
       {
         path: "/support-system-settings",
         layout: "/admin",
@@ -670,21 +677,21 @@ var routes = [
         layout: "/admin",
         name: "Top Earner Report",
         mini: "TE",
-        component: Typography
+        component: ValidationForms
       },
       {
         path: "/payout-released-report",
         layout: "/admin",
         name: "Payout Released Report",
         mini: "PR",
-        component: Typography
+        component: RegularForms
       },
       {
         path: "/user-wise-sms-log-report",
         layout: "/admin",
         name: "Userwise SMS Log Report",
         mini: "TE",
-        component: Typography
+        component: ExtendedForms
       }
     ]
   },
