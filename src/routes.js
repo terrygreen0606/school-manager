@@ -25,6 +25,7 @@ import EmailSetup from "views/Setup/EmailSetup.jsx";
 import ReferralCommissionSetup from "views/Setup/ReferralCommissionSetup.jsx";
 import PaypalSetup from "views/Setup/PaypalSetup.jsx";
 import LanguageSettings from "views/Setup/LanguageSetup.jsx";
+import WithdrawalSetup from "views/Setup/WithdrawalSetup.jsx";
 import Buttons from "views/Components/Buttons.jsx";
 import GridSystem from "views/Components/GridSystem.jsx";
 import Panels from "views/Components/Panels.jsx";
@@ -147,7 +148,7 @@ var routes = [
         layout: "/admin",
         name: "Withdrawal Setup",
         mini: "WW",
-        component: Wizard
+        component: WithdrawalSetup
       },
    /*   {
         path: "/registration-settings",
@@ -156,7 +157,7 @@ var routes = [
         mini: "RM",
         component: ValidationForms
       },
-      */
+      
       {
         path: "/support-system-settings",
         layout: "/admin",
@@ -164,6 +165,7 @@ var routes = [
         mini: "SS",
         component: Wizard
       }
+      */
 
     ]
   },
