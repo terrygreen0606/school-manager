@@ -175,6 +175,7 @@ class LoginPage extends Component {
                 sessionStorage.setItem('user_id', ProfileJSON.response.id);
                 sessionStorage.setItem('user_username', ProfileJSON.response.username);
                 sessionStorage.setItem('user_email', ProfileJSON.response.email);
+                sessionStorage.setItem('profile_pic', ProfileJSON.response.profile_pic);
                 this.props.history.push('/');
               }
             });

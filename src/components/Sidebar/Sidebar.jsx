@@ -17,7 +17,7 @@
 /*eslint-disable*/
 import React, { Component } from "react";
 import { Collapse } from "react-bootstrap";
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 // this is used to create scrollbars on windows devices like the ones from apple devices
 import PerfectScrollbar from "perfect-scrollbar";
 import "perfect-scrollbar/css/perfect-scrollbar.css";
@@ -32,6 +32,7 @@ import logo from "logo.png";
 import routes from "routes.js";
 
 var ps;
+var globalVariables = require('../../services/globalVariables.jsx');
 
 class Sidebar extends Component {
   constructor(props) {
@@ -48,6 +49,7 @@ class Sidebar extends Component {
   getCollapseStates = routes => {
     let initialState = {};
     routes.map((prop, key) => {
+      if(prop.invisible) return null;
       if (prop.collapse) {
         initialState = {
           [prop.state]: this.getCollapseInitialState(prop.views),
@@ -75,6 +77,7 @@ class Sidebar extends Component {
   // this function creates the links and collapses that appear in the sidebar (left menu)
   createLinks = routes => {
     return routes.map((prop, key) => {
+      if(prop.invisible) return null;
       if (prop.redirect) {
         return null;
       }
@@ -194,18 +197,15 @@ class Sidebar extends Component {
             </div>
           </a>
           */}
-          <a
-            href="https://www.creative-tim.com?ref=lbdpr-sidebar"
-            className="simple-text logo-normal"
-            target="_blank"
-          >
+          <Link to={'/'}
+            className="simple-text logo-normal">
             <img src={logo} alt="react-logo" style={{height:'65px'}}/>
-          </a>
+          </Link>
         </div>
         <div className="sidebar-wrapper" ref="sidebarWrapper">
           <div className="user">
             <div className="photo">
-              <img src={avatar} alt="Avatar" />
+              <img src={(sessionStorage.getItem('profile_pic')) ? globalVariables.img_upload_path+sessionStorage.getItem('profile_pic') : avatar} alt="Avatar" />
             </div>
             <div className="info">
               <a
@@ -227,22 +227,24 @@ class Sidebar extends Component {
               <Collapse in={this.state.openAvatar}>
                 <ul className="nav">
                   <li>
-                    <a href="#pablo" onClick={e => e.preventDefault()}>
+                    <Link to={'profile'}>
                       <span className="sidebar-mini">MP</span>
                       <span className="sidebar-normal">My Profile</span>
-                    </a>
+                    </Link>
                   </li>
+                  { /*
                   <li>
                     <a href="#pablo" onClick={e => e.preventDefault()}>
                       <span className="sidebar-mini">EP</span>
                       <span className="sidebar-normal">Edit Profile</span>
                     </a>
                   </li>
+                  */ }
                   <li>
-                    <a href="#pablo" onClick={e => e.preventDefault()}>
-                      <span className="sidebar-mini">S</span>
-                      <span className="sidebar-normal">Settings</span>
-                    </a>
+                    <Link to={'dashboard'}>
+                      <span className="sidebar-mini">D</span>
+                      <span className="sidebar-normal">Dashboard</span>
+                    </Link>
                   </li>
                 </ul>
               </Collapse>

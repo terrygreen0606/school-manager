@@ -26,6 +26,8 @@ import ReferralCommissionSetup from "views/Setup/ReferralCommissionSetup.jsx";
 import PaypalSetup from "views/Setup/PaypalSetup.jsx";
 import LanguageSettings from "views/Setup/LanguageSetup.jsx";
 import WithdrawalSetup from "views/Setup/WithdrawalSetup.jsx";
+import Profile from "views/Profile/Profile.jsx";
+import Orders from "views/Orders/Orders.jsx";
 import Buttons from "views/Components/Buttons.jsx";
 import GridSystem from "views/Components/GridSystem.jsx";
 import Panels from "views/Components/Panels.jsx";
@@ -47,6 +49,9 @@ import Charts from "views/Charts.jsx";
 // import Calendar from "views/Calendar.jsx";
 // import UserPage from "views/Pages/UserPage.jsx";
 import LoginPage from "views/Pages/LoginPage.jsx";
+import Ewallet from "views/Ewallet/Ewallet";
+import Transaction from "views/Ewallet/Transaction";
+import WithdrawalOnWardTransaction from "views/Ewallet/WithdrawalOnwardTrans";
 // import RegisterPage from "views/Pages/RegisterPage.jsx";
 // import LockScreenPage from "views/Pages/LockScreenPage.jsx";
 
@@ -250,7 +255,7 @@ var routes = [
     layout: "/admin",
     name: "All Orders",
     icon: "pe-7s-albums",
-    component: Charts
+    component: Orders
   },
   {
     collapse: true,
@@ -264,21 +269,21 @@ var routes = [
         layout: "/admin",
         name: "eWallet Summery",
         mini: "WS",
-        component: Buttons
+        component: Ewallet
       },
       {
         path: "/transactions",
         layout: "/admin",
         name: "Transactions",
         mini: "TR",
-        component: GridSystem
+        component: Transaction
       },
       {
         path: "/withdrawal-and-onwards-funds",
         layout: "/admin",
-        name: "Panels",
-        mini: "P",
-        component: Panels
+        name: "Withdrawal & Onward Transactions",
+        mini: "WOT",
+        component: WithdrawalOnWardTransaction
       },
       {
         path: "/withdrawal-status",
@@ -701,6 +706,13 @@ var routes = [
     path: "/login",
     layout: "/auth",
     component: LoginPage
+  },
+  {
+    path: "/profile",
+    layout: "/admin",
+    name: "Profile",
+    component: Profile,
+    invisible: true
   },
  /* {
     collapse: true,
