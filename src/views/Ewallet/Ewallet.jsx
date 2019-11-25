@@ -37,7 +37,7 @@ class Ewallet extends Component {
       
         componentDidMount() {
           let login_token = sessionStorage.getItem('login_token');
-          axios.post(globalVariables.admin_api_path+'/member/search-member', {roles_key: 'MEMBER', model_call: 'User', search_f:'first_name, last_name'}, {
+          axios.post(globalVariables.admin_api_path+'/ewallet/summery', {}, {
             headers: { Authorization: "Bearer " + login_token }
           })
             .then(res => res.data).then((data) => {
@@ -45,7 +45,6 @@ class Ewallet extends Component {
               console.log(this.state.contentList);
             })
         }
-
         
 
      
@@ -63,41 +62,17 @@ class Ewallet extends Component {
                   <Table responsive>
                     <thead>
                       <tr>
-                        <th>Username</th>
-                        <th>Email ID</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>eWallet Status</th>
-                        <th>eWallet Amount</th>
-                        <th className="text-right">Actions</th>
+                        <th>Transaction Category</th>
+                        <th>Credited Amount</th>
+                        <th>Debited Amount</th>
                       </tr>
                     </thead>
                     <tbody>
                     { this.state.contentList.map((cotnentSingle, index_key) => (
                       <tr key={index_key}>
-                        <td>{cotnentSingle.username}</td>
-                        <td>{cotnentSingle.email} </td>
-                        <td>{cotnentSingle.first_name}</td>
-                        <td> {cotnentSingle.last_name}</td>
-                        <td>
-                            {(() => {
-                                switch(cotnentSingle.status)
-                                {
-                                    case 1:
-                                        return  <Button simple bsStyle="success" bsSize="xs"  fill> Active </Button>;
-                                    case 0:
-                                        return  <Button simple bsStyle="primary" bsSize="xs"  fill> Block </Button>;
-                                }
-                            })()}
-                        </td>
-                    <td>{(cotnentSingle.wallet_amount) ? cotnentSingle.wallet_amount : 0 }</td>
-                        <td className="td-actions text-right">
-                            <OverlayTrigger placement="top" overlay={edit}>
-                            <Button simple bsStyle="primary" bsSize="xs"  fill>
-                                <i className="fa fa-eye" />
-                            </Button>
-                            </OverlayTrigger>
-                        </td>
+                        <td>{cotnentSingle.transaction_type_text}</td>
+                        <td>{cotnentSingle.credit} </td>
+                        <td>{cotnentSingle.debit}</td>
                       </tr>
                     )) }
                     </tbody>

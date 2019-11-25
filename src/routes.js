@@ -52,6 +52,7 @@ import LoginPage from "views/Pages/LoginPage.jsx";
 import Ewallet from "views/Ewallet/Ewallet";
 import Transaction from "views/Ewallet/Transaction";
 import WithdrawalOnWardTransaction from "views/Ewallet/WithdrawalOnwardTrans";
+import CreditDebit from "views/Ewallet/CreditDebit";
 // import RegisterPage from "views/Pages/RegisterPage.jsx";
 // import LockScreenPage from "views/Pages/LockScreenPage.jsx";
 
@@ -297,7 +298,7 @@ var routes = [
         layout: "/admin",
         name: "Credit/Debit",
         mini: "CD",
-        component: Notifications
+        component: CreditDebit
       },
       {
         path: "/fund-transfer",
