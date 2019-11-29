@@ -53,6 +53,20 @@ import Ewallet from "views/Ewallet/Ewallet";
 import Transaction from "views/Ewallet/Transaction";
 import WithdrawalOnWardTransaction from "views/Ewallet/WithdrawalOnwardTrans";
 import CreditDebit from "views/Ewallet/CreditDebit";
+import FundTransfer from "views/Ewallet/FundTransfer";
+import TransferHistory from "views/Ewallet/TransferHistory";
+import UserEarnings from "views/Ewallet/UserEarnings";
+import WithdrawalStaus from "views/Ewallet/WithdrawalStatus";
+import GlobalNotices from "views/Notice/GlobalNotices";
+import NotificationSystem from "views/Notification/Notifications";
+import UserOverview from "views/User/UserOverview";
+import BusinessSummary from "views/Business/BusinessSummary";
+import BusinessTransactions from "views/Business/BusinessTransaction";
+import Epins from "views/Epin/Epins";
+import EpinRequests from "views/Epin/EpinRequests";
+import EpinAllocation from "views/Epin/EpinAllocation";
+import ViewEpin from "views/Epin/ViewEpin";
+import EpinTransfer from "views/Epin/EpinTransfer";
 // import RegisterPage from "views/Pages/RegisterPage.jsx";
 // import LockScreenPage from "views/Pages/LockScreenPage.jsx";
 
@@ -291,7 +305,7 @@ var routes = [
         layout: "/admin",
         name: "Withdrawal Status",
         mini: "WS",
-        component: SweetAlert
+        component: WithdrawalStaus
       },
       {
         path: "/credit-debit",
@@ -305,21 +319,21 @@ var routes = [
         layout: "/admin",
         name: "Fund Transfer",
         mini: "FT",
-        component: Icons
+        component: FundTransfer
       },
       {
         path: "/transfer-history",
         layout: "/admin",
         name: "Transfer History",
         mini: "TH",
-        component: Typography
+        component: TransferHistory
       },
       {
         path: "/user-earnings",
         layout: "/admin",
         name: "User Earnings",
         mini: "UE",
-        component: Typography
+        component: UserEarnings
       }
     ]
   },
@@ -328,21 +342,21 @@ var routes = [
     name: "Global Notices",
     icon: "pe-7s-volume",
     layout: "/admin",
-    component: Buttons
+    component: GlobalNotices
   },
   {
     path: "/notification-system",
     name: "Notification System",
     icon: "pe-7s-bell",
     layout: "/admin",
-    component: Buttons
+    component: NotificationSystem
   },
   {
     path: "/user-overview",
     name: "User Overview",
     icon: "pe-7s-user",
     layout: "/admin",
-    component: Buttons
+    component: UserOverview
   },
   {
     collapse: true,
@@ -354,16 +368,16 @@ var routes = [
       {
         path: "/business-summery",
         layout: "/admin",
-        name: "Buttons",
+        name: "Business Summary",
         mini: "BS",
-        component: Buttons
+        component: BusinessSummary
       },
       {
         path: "/business-transactions",
         layout: "/admin",
         name: "Business Transactions",
         mini: "BT",
-        component: GridSystem
+        component: BusinessTransactions
       }
     ]
   },
@@ -377,37 +391,37 @@ var routes = [
       {
         path: "/generate-epin",
         layout: "/admin",
-        name: "Generate Epin",
+        name: "Epins",
         mini: "GE",
-        component: Buttons
+        component: Epins
       },
       {
         path: "/epin-requests",
         layout: "/admin",
         name: "Epin Requests",
         mini: "ER",
-        component: GridSystem
+        component: EpinRequests
       },
       {
         path: "/PIN Allocation",
         layout: "/admin",
         name: "PIN Allocation",
         mini: "PA",
-        component: Panels
+        component: EpinAllocation
       },
       {
         path: "/view-epin",
         layout: "/admin",
         name: "View Epin",
         mini: "VE",
-        component: SweetAlert
+        component: ViewEpin
       },
       {
         path: "/epin-transfer",
         layout: "/admin",
         name: "E-PIN Transfer",
         mini: "ET",
-        component: Notifications
+        component: EpinTransfer
       }
     ]
   },
