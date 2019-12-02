@@ -67,6 +67,11 @@ import EpinRequests from "views/Epin/EpinRequests";
 import EpinAllocation from "views/Epin/EpinAllocation";
 import ViewEpin from "views/Epin/ViewEpin";
 import EpinTransfer from "views/Epin/EpinTransfer";
+import About from "views/CMS/About";
+import Contact from "views/CMS/Contact";
+import Mission from "views/CMS/Mission";
+import Vission from "views/CMS/Vision";
+import FAQ from "views/CMS/Faq";
 // import RegisterPage from "views/Pages/RegisterPage.jsx";
 // import LockScreenPage from "views/Pages/LockScreenPage.jsx";
 
@@ -201,35 +206,35 @@ var routes = [
         name: "About Us Page",
         layout: "/admin",
         mini: "AU",
-        component: Buttons
+        component: About
       },
       {
         path: "/contact-us",
         name: "Contact Us Page",
         layout: "/admin",
         mini: "CU",
-        component: Buttons
+        component: Contact
       },
       {
         path: "/faq",
         name: "Freq. Ask Que",
         layout: "/admin",
         mini: "FAQ",
-        component: Buttons
+        component: FAQ
       },
       {
         path: "/mission",
         name: "Our Mission",
         layout: "/admin",
         mini: "OM",
-        component: Buttons
+        component: Mission
       },
       {
         path: "/vission",
         name: "Our Vission",
         layout: "/admin",
         mini: "OV",
-        component: Buttons
+        component: Vission
       }
     ]
   },

@@ -52,7 +52,7 @@ class Profile extends Component {
           .then(res => {
             this.setState({ProfileData: res.data.response});
             this.setState({TempProfileData: res.data.response});
-            this.sessionStorage.setItem('user_profile',res.data.response.profile_pic);
+            sessionStorage.setItem('user_profile',res.data.response.profile_pic);
             sessionStorage.setItem('first_name', res.data.response.first_name);
             sessionStorage.setItem('last_name', res.data.response.last_name);
             sessionStorage.setItem('user_id', res.data.response.id);
