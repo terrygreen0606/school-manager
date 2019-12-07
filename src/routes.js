@@ -72,6 +72,9 @@ import Contact from "views/CMS/Contact";
 import Mission from "views/CMS/Mission";
 import Vission from "views/CMS/Vision";
 import FAQ from "views/CMS/Faq";
+import Genealogy from "views/Downlines/Genealogy";
+import Tabular from "views/Downlines/Tabular";
+import EpinPackages from "views/Epin/EpinPackages";
 // import RegisterPage from "views/Pages/RegisterPage.jsx";
 // import LockScreenPage from "views/Pages/LockScreenPage.jsx";
 
@@ -246,19 +249,19 @@ var routes = [
     icon: "pe-7s-network",
     views: [
       {
-        path: "genealogy",
+        path: "/genealogy",
         name: "Genealogy",
         mini: "GE",
         layout: "/admin",
-        component: Buttons
+        component: Genealogy
 
       },
       {
-        path: "tabular",
+        path: "/tabular",
         name: "Tabular List",
         mini: "TL",
         layout: "/admin",
-        component: Buttons
+        component: Tabular
 
       }
     ]
@@ -356,13 +359,13 @@ var routes = [
     layout: "/admin",
     component: NotificationSystem
   },
-  {
+ /* {
     path: "/user-overview",
     name: "User Overview",
     icon: "pe-7s-user",
     layout: "/admin",
     component: UserOverview
-  },
+  }, */
   {
     collapse: true,
     path: "/business",
@@ -393,6 +396,13 @@ var routes = [
     state: "openepin",
     icon: "pe-7s-pin",
     views: [
+      {
+        path: "/epin-packages",
+        layout: "/admin",
+        name: "Epin Packages",
+        mini: "EP",
+        component: EpinPackages
+      },
       {
         path: "/generate-epin",
         layout: "/admin",

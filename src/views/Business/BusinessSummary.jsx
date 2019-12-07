@@ -37,7 +37,7 @@ class BusinessSummary extends Component {
       
         componentDidMount() {
           let login_token = sessionStorage.getItem('login_token');
-          axios.post(globalVariables.admin_api_path+'/ewallet/summery', {}, {
+          axios.post(globalVariables.admin_api_path+'/ewallet/business-summery', {}, {
             headers: { Authorization: "Bearer " + login_token }
           })
             .then(res => res.data).then((data) => {

@@ -1,0 +1,128 @@
+#templates {
+    display: none;
+}
+
+.tooltipster-content {
+    box-sizing: border-box;
+    max-height: 100%;
+    width: 224px;
+    overflow: auto;
+}
+
+.tooltipster-sidetip.tooltipster-shadow.tooltipster-bottom .tooltipster-arrow-border {
+    border-bottom-color: #40b7e5;
+}
+
+.tooltipster-sidetip .tooltipster-content {
+    padding: 0px;
+}
+
+.tree_img_tree {
+    width: 100%;
+}
+
+.tree_img_tree p {
+    display: inline-block;
+    margin-top: 5px;
+    font-size: 14px;
+}
+
+.Demo_head_bg p {
+    color: white;
+    font-size: 15px;
+    font-weight: 600
+}
+
+.Demo_head_bg {
+    background-color: #40b7e5;
+    padding: 5px;
+    text-align: center
+}
+
+.tooltipster-sidetip .tooltipster-content {
+    padding: 0px;
+}
+
+.tree_img_tree {
+    width: 100%;
+}
+
+.Demo_head_bg {
+    padding: 10px 5px 3px 5px !important;
+}
+
+.tree_img_tree img {
+    width: 60px !important;
+    height: 60px !important;
+    border-radius: 50% !important;
+    border: 1px solid #0bb4f5;
+    background: #fff;
+    padding: 4px;
+}
+
+.Demo_head_bg p {
+    color: white;
+    font-size: 15px;
+    font-weight: 400 !important;
+    margin-top: 4px !important;
+    margin-bottom: 0px !important;
+    width: 100%;
+}
+
+.binary_bg {
+    background-color: #40b7e5;
+    text-align: center;
+    color: white;
+}
+
+.list-group {
+    padding-left: 0;
+    margin-bottom: 0px;
+}
+
+.list-group-item {
+    position: relative;
+    display: block;
+    padding: 3px 3px 23px;
+    margin-bottom: -1px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+}
+
+.list-group.no-radius .list-group-item {
+    border-radius: 0 !important;
+}
+
+.body_text_tree ul {
+    padding: 8px 10px;
+}
+
+.body_text_tree ul .list-group-item {
+    position: relative;
+    display: block;
+    padding: 4px 0px 4px 0px;
+    margin-bottom: 0px;
+    background-color: #fff;
+    border: 0px solid #ddd;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.body_text_tree ul .list-group-item .pull-right {
+    pull: none !important;
+    order: 2;
+}
+
+.body_text_tree ul .list-group-item .pull-left {
+    pull: none !important;
+}
+
+.tooltip_rank {
+    text-align: center;
+    background-color: #aaa !important;
+    padding: 2px;
+    width: 48%;
+    margin: 6px auto;
+    color: white;
+    border-radius: 2px;
+}

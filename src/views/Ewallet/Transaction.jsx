@@ -26,13 +26,14 @@ class Transaction extends Component {
             contentList: [],
             selectedItem: null,
             setup_value: '',
-            setup_key: ''
+            setup_key: '',
+            user_id: sessionStorage.getItem('user_id')
         };
         }
       
         componentDidMount() {
           let login_token = sessionStorage.getItem('login_token');
-          axios.post(globalVariables.admin_api_path+'/ewallet/transaction', {model_call: 'Transaction', search_f:'transaction_id'}, {
+          axios.post(globalVariables.admin_api_path+'/ewallet/transaction', {model_call: 'Transaction', search_f:'transaction_id', user_id: this.state.user_id}, {
             headers: { Authorization: "Bearer " + login_token }
           })
             .then(res => res.data).then((data) => {

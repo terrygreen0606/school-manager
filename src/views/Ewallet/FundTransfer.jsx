@@ -36,7 +36,10 @@ class FundTransfer extends Component {
             amount: null,
             transaction_note: '',
             transaction_type: null,
-            transaction: null
+            transaction: null,
+            transfer_to_usernameError: null,
+            valid_receiver_usename: false,
+            transfer_to_username:null
         };
         }
 
@@ -46,6 +49,16 @@ class FundTransfer extends Component {
         {
             this.setState({
                 usernameError: (
+                  <small className="text-danger">
+                    Please enter a valid username.
+                  </small>
+                )
+              });
+        }
+        else if(this.state.transfer_to_username === null || this.state.valid_receiver_usename === false)
+        {
+            this.setState({
+                transfer_to_usernameError: (
                   <small className="text-danger">
                     Please enter a valid username.
                   </small>
@@ -85,7 +98,7 @@ class FundTransfer extends Component {
         else
         {
             let login_token = sessionStorage.getItem('login_token');
-            axios.post(globalVariables.admin_api_path+'/ewallet/credit-debit', {username: this.state.username, amount: this.state.amount, transaction_note:this.state.transaction_note, transaction_type: this.state.transaction_type.value, transaction: this.state.transaction},{
+            axios.post(globalVariables.admin_api_path+'/ewallet/transfer-fund', {username: this.state.username,transfer_to_username: this.state.transfer_to_username, amount: this.state.amount, transaction_note:this.state.transaction_note, transaction_type: this.state.transaction_type.value, transaction: this.state.transaction},{
             headers: { Authorization: "Bearer " + login_token }
             }).then(res => {
                 this.props.handleClick("tr", 1, "Transaction Successfully Completed");
@@ -120,27 +133,49 @@ class FundTransfer extends Component {
 
       handleUsername = event => {
           const target = event.target;
+          console.log(target.name);
           let login_token = sessionStorage.getItem('login_token');
           axios.post(globalVariables.admin_api_path+'/check-user-validity', {'username' : target.value}, {
             headers: { Authorization: "Bearer " + login_token }
           })
             .then(res => res.data).then((data) => {
-              if(data.response === true)
-              {
-                this.setState({
-                    usernameError: (
-                      <small className="text-danger">
-                        Please enter a valid username.
-                      </small>
-                    )
-                  });
+              if(target.name == 'username'){
+                if(data.response === true)
+                {
+                  this.setState({
+                      usernameError: (
+                        <small className="text-danger">
+                          Please enter a valid username.
+                        </small>
+                      )
+                    });
+                }
+                else{
+                  this.setState({
+                      usernameError: null
+                    });
+                    this.setState({valid_usename: true});
+                    this.setState({username: target.value})
+                }
               }
               else{
-                this.setState({
-                    usernameError: null
-                  });
-                  this.setState({valid_usename: true});
-                  this.setState({username: target.value})
+                if(data.response === true)
+                {
+                  this.setState({
+                      transfer_to_usernameError: (
+                        <small className="text-danger">
+                          Please enter a valid username.
+                        </small>
+                      )
+                    });
+                }
+                else{
+                  this.setState({
+                    transfer_to_usernameError: null
+                    });
+                    this.setState({valid_receiver_usename: true});
+                    this.setState({transfer_to_username: target.value})
+                }
               }
             })
       }
@@ -164,8 +199,8 @@ class FundTransfer extends Component {
 
                     <FormGroup>
                       <ControlLabel>Transfer To (Username)</ControlLabel>
-                      <FormControl  onChange={this.handleUsername} name="username" type="text" />
-                      {this.state.usernameError}
+                      <FormControl  onChange={this.handleUsername} name="transfer_to_username" type="text" />
+                      {this.state.transfer_to_usernameError}
                     </FormGroup>
 
                     <FormGroup>

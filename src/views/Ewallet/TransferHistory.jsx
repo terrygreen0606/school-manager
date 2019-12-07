@@ -32,7 +32,7 @@ class TransferHistory extends Component {
       
         componentDidMount() {
           let login_token = sessionStorage.getItem('login_token');
-          axios.post(globalVariables.admin_api_path+'/ewallet/transaction', {model_call: 'Transaction', search_f:'transaction_id'}, {
+          axios.post(globalVariables.admin_api_path+'/ewallet/transfer-history', {model_call: 'Transfer_history', search_f:'transaction_id'}, {
             headers: { Authorization: "Bearer " + login_token }
           })
             .then(res => res.data).then((data) => {
@@ -58,13 +58,10 @@ class TransferHistory extends Component {
                   <Table responsive>
                     <thead>
                       <tr>
-                        <th>Transaction ID</th>
-                        <th>Username</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Debit</th>
-                        <th>Credit</th>
-                        <th>Total</th>
+                      <th>Date/Time</th>
+                        <th>From User</th>
+                        <th>To User</th>
+                        <th>Amount</th>
                         <th>Status</th>
                         <th>Remark</th>
                       </tr>
@@ -72,13 +69,10 @@ class TransferHistory extends Component {
                     <tbody>
                     { this.state.contentList.map((cotnentSingle, index_key) => (
                       <tr key={index_key}>
-                        <td>{cotnentSingle.transaction_id}</td>
-                        <td>{cotnentSingle.username} </td>
-                        <td>{cotnentSingle.first_name}</td>
-                        <td> {cotnentSingle.last_name}</td>
-                        <td>{cotnentSingle.debit}</td>
-                        <td>{cotnentSingle.credit}</td>
-                        <td>{cotnentSingle.total}</td>
+                        <td>{cotnentSingle.created_at}</td>
+                        <td>{cotnentSingle.from_user_first_name+' '+cotnentSingle.from_user_last_name} {'('+cotnentSingle.from_user_name+')'} </td>
+                        <td>{cotnentSingle.to_user_first_name+' '+cotnentSingle.to_user_last_name} {'('+cotnentSingle.to_user_name+')'} </td>
+                        <td>{cotnentSingle.amount}</td>
                         <td>
                             {(() => {
                                 switch(cotnentSingle.status)

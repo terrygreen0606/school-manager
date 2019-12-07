@@ -150,14 +150,16 @@ class FAQ extends Component {
         <Grid fluid>
           <Row>
             <Col md={12}>
-              <Card
+              <Card title={<span>All Frequently Asked Questions <Button simple bsStyle="primary" bsSize="xs"  fill
+                      onClick={() => this.onOpenModal(-1,-1)}>
+                                 <span className="btn-label">
+                          <i className="fa fa-plus" />
+                        </span>
+                        Add New Que
+                            </Button></span>}
                 tableFullWidth
                 content={
                     <div>
-                         <Button simple bsStyle="success" bsSize="xs"  fill
-                      onClick={() => this.onOpenModal(-1,-1)}>
-                                Add New
-                            </Button>
                   <Table responsive>
                     <thead>
                       <tr>
@@ -185,7 +187,7 @@ class FAQ extends Component {
                         <td>{SetupItem.answer}</td>
                         <td className="td-actions text-right">
                             <OverlayTrigger placement="top" overlay={edit}>
-                            <Button simple bsStyle="success" bsSize="xs"  fill
+                            <Button simple bsStyle="primary" bsSize="xs"  fill
                       onClick={() => this.onOpenModal(index_key, SetupItem.id)}>
                                 <i className="fa fa-edit" />
                             </Button>
