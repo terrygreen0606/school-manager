@@ -18,8 +18,9 @@ import {
 } from "react-bootstrap";
 // react component that creates a switch button that changes from on to off mode
 // import Switch from "react-bootstrap-switch";
+import Datetime from "react-datetime";
 import axios from 'axios';
-
+import Select from "react-select";
 import Card from "components/Card/Card.jsx";
 
 import Button from "components/CustomButton/CustomButton.jsx";
@@ -32,7 +33,11 @@ class Epins extends Component {
             contentList: [],
             selectedItem: null,
             setup_value: '',
-            setup_key: ''
+            setup_key: '',
+            no_of_epin: '',
+            amount: '',
+            expiry_date: '',
+            packageList: ''
         };
         }
       
@@ -44,7 +49,30 @@ class Epins extends Component {
             .then(res => res.data).then((data) => {
               this.setState({contentList: data.response});
               console.log(this.state.contentList);
+            });
+
+            axios.post(globalVariables.admin_api_path+'/epin/search-packages', {model_call: 'Epin_package', search_f:'package_name'}, {
+              headers: { Authorization: "Bearer " + login_token }
             })
+              .then(res => res.data).then((data) => {
+                let packageList = [];
+                let response = data.response;
+                for(let i=0; i< response.length; i++)
+                {
+                  packageList.push({'label' : response[i].package_name, 'value': response[i].id});
+                }
+                //const packageList = data.map(mappingFunction);
+                console.log(packageList);
+                this.setState({packageList: packageList});
+                console.log(this.state.packageList);
+              });
+
+        }
+
+        handleDateChange = date => {
+          this.setState({
+            expiry_date: date
+          });
         }
 
         renderModal = () => {
@@ -54,12 +82,24 @@ class Epins extends Component {
               <Row>
                 <Col md={12}>
                     <FormGroup>
-                      <ControlLabel>Question</ControlLabel>
-                      <FormControl name="question"  type="text" defaultValue={this.state.question} onChange={this.handleChange}/>
+                      <ControlLabel>No of E-Pin</ControlLabel>
+                      <FormControl name="no_of_epin"  type="text" defaultValue={this.state.no_of_epin} onChange={this.handleChange}/>
                     </FormGroup>
                     <FormGroup>
-                      <ControlLabel>Answer</ControlLabel>
-                      <FormControl name="answer"  type="textarea" defaultValue={this.state.answer} onChange={this.handleChange}/>
+                      <ControlLabel>Amount</ControlLabel>
+                      <Select
+                            name="amount"  onChange={value => this.setState({ amount: value, transactionTypeError: null })}
+                            options={this.state.packageList} 
+                        />
+                        {this.state.transactionTypeError}
+                    </FormGroup>
+                    <FormGroup>
+                      <ControlLabel>Expiry Date</ControlLabel>
+                      <Datetime name="expiry_date"
+                        timeFormat={false}
+                        inputProps={{ placeholder: "Expiry Date" }}
+                        defaultValue={this.state.expiry_date}  onChange={this.handleDateChange}
+                      />
                     </FormGroup>    
                 </Col>
               </Row>
@@ -70,16 +110,16 @@ class Epins extends Component {
           event.preventDefault();
           let login_token = sessionStorage.getItem('login_token');
           let AllSetupItems = this.state.SetupItems;
-          axios.post(globalVariables.admin_api_path+'/setup/add-update-faq', {id: this.state.setup_key, question: this.state.question, answer: this.state.answer, status: this.state.status},{
+          axios.post(globalVariables.admin_api_path+'/epin/generate', {no_of_epin: this.state.no_of_epin, amount: this.state.amount, expiry_date: this.state.expiry_date},{
             headers: { Authorization: "Bearer " + login_token }
           })
             .then(res => {
-              this.props.handleClick("tr", 1, "FAQ Updated Successfully");
-              axios.post(globalVariables.admin_api_path+'/setup/search-faq',  {search_f: 'question', model_call: 'Faq'},{
+              this.props.handleClick("tr", 1, "Epin Generated Successfully");
+              axios.post(globalVariables.admin_api_path+'/epin/search',  {model_call: 'Epin', search_f:'epin_id'},{
                   headers: { Authorization: "Bearer " + login_token }
                 })
                   .then(res => res.data).then((data) => {
-                    this.setState({SetupItems: data.response})
+                    this.setState({contentList: data.response})
                   })
               this.setState({ showModal: false });
              
@@ -89,6 +129,7 @@ class Epins extends Component {
         }
   
         handleChange = event => {
+          console.log(event.target);
           this.setState({ [event.target.name]: event.target.value });
           console.log(event.target.value);
         }

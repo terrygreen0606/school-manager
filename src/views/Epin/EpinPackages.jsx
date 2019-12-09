@@ -32,10 +32,10 @@ class EpinPackages extends Component {
             selectedItem: null,
             setup_value: '',
             setup_key: '',
-            language: '',
-            code: '',
-            full_url: '',
-            flag: ''
+            package_name: '',
+            amount: '',
+            package_id: '',
+            remark: ''
         };
         }
       
@@ -54,18 +54,17 @@ class EpinPackages extends Component {
         event.preventDefault();
         let login_token = sessionStorage.getItem('login_token');
         let AllSetupItems = this.state.SetupItems;
-        axios.post(globalVariables.admin_api_path+'/setup/add-new-language', {language: this.state.language, code: this.state.code, flag: this.state.flag},{
+        axios.post(globalVariables.admin_api_path+'/epin/add-new-package', {package_name: this.state.package_name, amount: this.state.amount, remark: this.state.remark},{
           headers: { Authorization: "Bearer " + login_token }
         })
           .then(res => {
             AllSetupItems.push(res.data.response);
             this.setState({SetupItems: AllSetupItems});
-            this.setState({language: ''});
-            this.setState({flag: ''});
-            this.setState({code: ''});
-            this.setState({full_url: ''});
-            document.getElementById('add_new_language_form').reset();
-            this.props.handleClick("tr", 1, "Settings Updated Successfully");
+            this.setState({package_name: ''});
+            this.setState({amount: ''});
+            this.setState({remark: ''});
+            document.getElementById('add_new_package_form').reset();
+            this.props.handleClick("tr", 1, "Package Updated Successfully");
           }).catch(error => {
             this.props.handleClick("tr", 3, error.response.data.msg);
           });
@@ -75,13 +74,13 @@ class EpinPackages extends Component {
         this.setState({ [event.target.name] : event.target.value });
       }
 
-      handleSwitch = code => () => {
+      handleSwitch = package_id => () => {
         let login_token = sessionStorage.getItem('login_token');
-        axios.post(globalVariables.admin_api_path+'/setup/update-language-status', {lang: code},{
+        axios.post(globalVariables.admin_api_path+'/epin/update-package-status', {package_id: package_id},{
           headers: { Authorization: "Bearer " + login_token }
         })
           .then(res => {
-            axios.get(globalVariables.admin_api_path+'/setup/language-list', {
+            axios.post(globalVariables.admin_api_path+'/epin/packages', {model_call: 'Epin_package', search_f:'package_name'}, {
               headers: { Authorization: "Bearer " + login_token }
             })
               .then(res => res.data).then((data) => {
@@ -93,7 +92,6 @@ class EpinPackages extends Component {
           });
        // this.setState({ [event.target.name] : event.target.value });
       // console.log(event.target.value);
-       console.log(code);
       }
 
       handleImageChange = event => {
@@ -145,7 +143,7 @@ class EpinPackages extends Component {
                         onText="✔"
                         offText="✘"
                         value={(SetupItem.status == 1) ? true : false}
-                       code={SetupItem.code} onChange={this.handleSwitch(SetupItem.code)}/>
+                       package_id={SetupItem.id} onChange={this.handleSwitch(SetupItem.id)}/>
                         </td>
                       </tr>
                     )) }
