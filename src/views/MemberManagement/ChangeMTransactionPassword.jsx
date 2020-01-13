@@ -21,7 +21,7 @@ import Button from "components/CustomButton/CustomButton.jsx";
 import Radio from "components/CustomRadio/CustomRadio.jsx";
 import {TransactionTypes} from "../../services/admin/TransactionType.jsx";
 var globalVariables = require('../../services/globalVariables.jsx');
-class ChangeMPassword extends Component {
+class ChangeMTrsansactionPassword extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -185,4 +185,4 @@ class ChangeMPassword extends Component {
   }
 }
 
-export default ChangeMPassword;
+export default ChangeMTrsansactionPassword;

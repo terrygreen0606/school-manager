@@ -13,7 +13,8 @@ import {
   Tooltip,
   FormGroup,
   ControlLabel,
-  FormControl
+  FormControl,
+  Pagination
   
 } from "react-bootstrap";
 // react component that creates a switch button that changes from on to off mode
@@ -37,8 +38,28 @@ class Epins extends Component {
             no_of_epin: '',
             amount: '',
             expiry_date: '',
-            packageList: ''
+            packageList: '',
+            TotalRecords: 0,
+            ActivePage: 1
         };
+        this.handleClick = this.handleClick.bind(this);
+        }
+
+        handleClick(event) {
+          this.setState({
+            ActivePage: Number(event.target.id)
+          });
+
+          let login_token = sessionStorage.getItem('login_token');
+          axios.post(globalVariables.admin_api_path+'/epin/search', {model_call: 'Epin', search_f:'epin_id', offset: this.state.ActivePage}, {
+            headers: { Authorization: "Bearer " + login_token }
+          })
+            .then(res => res.data).then((data) => {
+              console.log(data);
+              this.setState({TotalRecords: parseInt(data.total)});
+              this.setState({contentList: data.response});
+              console.log(this.state.contentList);
+            });
         }
       
         componentDidMount() {
@@ -47,6 +68,8 @@ class Epins extends Component {
             headers: { Authorization: "Bearer " + login_token }
           })
             .then(res => res.data).then((data) => {
+              console.log(data);
+              this.setState({TotalRecords: parseInt(data.total)});
               this.setState({contentList: data.response});
               console.log(this.state.contentList);
             });
@@ -119,7 +142,8 @@ class Epins extends Component {
                   headers: { Authorization: "Bearer " + login_token }
                 })
                   .then(res => res.data).then((data) => {
-                    this.setState({contentList: data.response})
+                    this.setState({contentList: data.response});
+                    this.setState({TotalRecords: parseInt(data.total)});
                   })
               this.setState({ showModal: false });
              
@@ -144,6 +168,52 @@ class Epins extends Component {
      
   render() {
     const edit = <Tooltip id="edit">View User Details</Tooltip>;
+    const pageNumbers = [];
+    console.log(this.state.TotalRecords);
+    let activePage = this.state.ActivePage;
+    let TotalPaginationNumber = 10;
+    let PaginationStartNumber = 1;
+    switch(activePage)
+    {
+      case 1:
+      case 2:
+      case 3:
+      case 4:
+      case 5:
+        TotalPaginationNumber = 10;
+        PaginationStartNumber = 1;
+        break;
+      default:
+        TotalPaginationNumber = activePage+5;
+        PaginationStartNumber = activePage-4;
+        if(TotalPaginationNumber > Math.ceil(this.state.TotalRecords / 10))
+        {
+          TotalPaginationNumber = Math.ceil(this.state.TotalRecords / 10);
+        }
+    }
+    for (let i = PaginationStartNumber; i <= TotalPaginationNumber; i++) {
+      pageNumbers.push(i);
+    }
+    console.log(this.state.TotalRecords);
+
+    const renderPageNumbers = pageNumbers.map(number => {
+      
+        if(number == this.state.ActivePage)
+        {
+          return (<Pagination.Item key={number} 
+          id={number}
+          onClick={this.handleClick} active>{number}</Pagination.Item>
+          );
+        }
+        else
+        {
+          return (<Pagination.Item key={number} 
+            id={number}
+            onClick={this.handleClick}>{number}</Pagination.Item>
+            );
+        }
+       
+    });
     
     return (
       <div className="main-content">
@@ -159,6 +229,7 @@ class Epins extends Component {
                             </Button></span>}
                 tableFullWidth
                 content={
+                  <div>
                   <Table responsive>
                     <thead>
                       <tr>
@@ -174,7 +245,7 @@ class Epins extends Component {
                     <tbody>
                     { this.state.contentList.map((cotnentSingle, index_key) => (
                       <tr key={index_key}>
-                        <td>{index_key+1}</td>
+                        <td>{(this.state.ActivePage-1)*10+index_key+1}</td>
                         <td>{cotnentSingle.epin_id} </td>
                         <td>
                             {(() => {
@@ -197,6 +268,12 @@ class Epins extends Component {
                     )) }
                     </tbody>
                   </Table>
+                  <div className="text-center">
+                    <Pagination>
+                      {renderPageNumbers}
+                    </Pagination>
+                  </div>
+                </div>
                 }
               />
             </Col>
@@ -206,7 +283,7 @@ class Epins extends Component {
                     >
                       <form onSubmit={this.handleSubmit}>
                       <Modal.Header closeButton>
-                        <Modal.Title>Update Frequently asked question</Modal.Title>
+                        <Modal.Title>Generate E-Pin</Modal.Title>
                       </Modal.Header>
                       <Modal.Body>
                       {this.renderModal()}
@@ -223,7 +300,7 @@ class Epins extends Component {
                           fill
                          /* onClick={() => this.setState({ showModal: false })} */
                         >
-                          Save changes
+                          Proceed
                         </Button>
                       </Modal.Footer>
                       </form>

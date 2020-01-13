@@ -26,7 +26,7 @@ import Card from "components/Card/Card.jsx";
 
 import Button from "components/CustomButton/CustomButton.jsx";
 var globalVariables = require('../../services/globalVariables.jsx');
-class MemberList extends Component {
+class StaffList extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -51,7 +51,7 @@ class MemberList extends Component {
           });
 
           let login_token = sessionStorage.getItem('login_token');
-          axios.post(globalVariables.admin_api_path+'/member/list', {offset: this.state.ActivePage}, {
+          axios.post(globalVariables.admin_api_path+'/staff/list', {offset: this.state.ActivePage,roles_key: 'STAFF'}, {
             headers: { Authorization: "Bearer " + login_token }
           })
             .then(res => res.data).then((data) => {
@@ -64,7 +64,7 @@ class MemberList extends Component {
       
         componentDidMount() {
           let login_token = sessionStorage.getItem('login_token');
-          axios.post(globalVariables.admin_api_path+'/member/list', {}, {
+          axios.post(globalVariables.admin_api_path+'/staff/list', {roles_key: 'STAFF'}, {
             headers: { Authorization: "Bearer " + login_token }
           })
             .then(res => res.data).then((data) => {
@@ -223,7 +223,7 @@ class MemberList extends Component {
         <Grid fluid>
           <Row>
             <Col md={12}>
-              <Card title={<span>List of Members </span>}
+              <Card title={<span>List of Staff Members </span>}
                 tableFullWidth
                 content={
                   <div>
@@ -234,7 +234,6 @@ class MemberList extends Component {
                         <th>Username</th>
                         <th>Name</th>
                         <th>Status</th>
-                        <th>Sponsor Username</th>
                         <th>Mobile Number</th>
                         <th>Email ID</th>
                         <th>Action</th>
@@ -260,7 +259,6 @@ class MemberList extends Component {
                             })()}
                         </td>
                           }
-                        <td>{cotnentSingle.sponsor_id}</td>
                         <td> {cotnentSingle.phone_number}</td>
                         <td>{cotnentSingle.email}</td>
                         <td>
@@ -283,15 +281,6 @@ class MemberList extends Component {
                               <Button simple bsStyle="warning" bsSize="xs"  fill
                         onClick={() => this.onOpenModal()}>
                                   {(cotnentSingle.status == 0) ? <i className="fa fa-check" /> : <i className="fa fa-ban" />}
-                              </Button>
-                              </OverlayTrigger>
-
-
-                              &nbsp;&nbsp;
-                              <OverlayTrigger placement="top" overlay={(cotnentSingle.wallet_access == 0) ? wallet_allow_access : wallet_not_allow_access}>
-                              <Button simple bsStyle={(cotnentSingle.status == 0) ? "danger" : "success"} bsSize="xs"  fill
-                        onClick={() => this.onOpenModal()}>
-                                  <i className="fa fa-wallet" />
                               </Button>
                               </OverlayTrigger>
 
@@ -357,4 +346,4 @@ class MemberList extends Component {
   }
 }
 
-export default MemberList;
+export default StaffList;

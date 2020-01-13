@@ -26,7 +26,7 @@ import Card from "components/Card/Card.jsx";
 
 import Button from "components/CustomButton/CustomButton.jsx";
 var globalVariables = require('../../services/globalVariables.jsx');
-class MemberList extends Component {
+class PayoutList extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -64,7 +64,7 @@ class MemberList extends Component {
       
         componentDidMount() {
           let login_token = sessionStorage.getItem('login_token');
-          axios.post(globalVariables.admin_api_path+'/member/list', {}, {
+          axios.post(globalVariables.admin_api_path+'/payout/list',  {model_call: 'Payout', search_f:'id'}, {
             headers: { Authorization: "Bearer " + login_token }
           })
             .then(res => res.data).then((data) => {
@@ -151,14 +151,7 @@ class MemberList extends Component {
 
      
   render() {
-    const edit = <Tooltip id="edit">Edit User Details</Tooltip>;
-    const view_profile = <Tooltip id="view_profile">View User Profile</Tooltip>;
-    const activate_user = <Tooltip id="active_inactive">Activate User</Tooltip>;
-    const inactivate_user = <Tooltip id="inactivate_user">Inactivate User</Tooltip>;
-    const wallet_allow_access = <Tooltip id="active_inactive">Allow Wallet Access</Tooltip>;
-    const wallet_not_allow_access = <Tooltip id="inactivate_user">Disable Wallet Access</Tooltip>;
-    const block_user = <Tooltip id="active_inactive">Block User</Tooltip>;
-    const unblock_user = <Tooltip id="inactivate_user">Unblock User</Tooltip>;
+    const view_payout = <Tooltip id="view">View Payout Date</Tooltip>;
     const pageNumbers = [];
     console.log(this.state.TotalRecords);
     let activePage = this.state.ActivePage;
@@ -223,7 +216,7 @@ class MemberList extends Component {
         <Grid fluid>
           <Row>
             <Col md={12}>
-              <Card title={<span>List of Members </span>}
+              <Card title={<span>List of All Payouts </span>}
                 tableFullWidth
                 content={
                   <div>
@@ -231,12 +224,10 @@ class MemberList extends Component {
                     <thead>
                       <tr>
                         <th>#</th>
-                        <th>Username</th>
-                        <th>Name</th>
+                        <th>Payout</th>
+                        <th>Generate Date/Time</th>
                         <th>Status</th>
-                        <th>Sponsor Username</th>
-                        <th>Mobile Number</th>
-                        <th>Email ID</th>
+                        <th>Payout Date</th>
                         <th>Action</th>
                       </tr>
                     </thead>
@@ -244,56 +235,29 @@ class MemberList extends Component {
                     { this.state.contentList.map((cotnentSingle, index_key) => (
                       <tr key={index_key}>
                         <td>{(this.state.ActivePage-1)*10+index_key+1}</td>
-                        <td>{cotnentSingle.username} </td>
-                        <td>{cotnentSingle.first_name} {cotnentSingle.last_name} </td>
+                        <td>{cotnentSingle.title} </td>
+                        <td>{cotnentSingle.created_at}</td>
                        { <td>
                             {(() => {
                                 switch(cotnentSingle.status)
                                 {
                                     case 1:
-                                        return  <Button simple bsStyle="success" bsSize="xs"  fill> Active </Button>;
+                                        return  <Button simple bsStyle="success" bsSize="xs"  fill> Paid </Button>;
                                     case 0:
-                                        return  <Button simple bsStyle="danger" bsSize="xs"  fill> Expired </Button>;
-                                    case 2:
-                                        return  <Button simple bsStyle="primary" bsSize="xs"  fill> Used </Button>;
+                                        return  <Button simple bsStyle="warning" bsSize="xs"  fill> Pending </Button>;
                                 }
                             })()}
                         </td>
                           }
-                        <td>{cotnentSingle.sponsor_id}</td>
-                        <td> {cotnentSingle.phone_number}</td>
-                        <td>{cotnentSingle.email}</td>
+                        <td>{cotnentSingle.payout_date}</td>
                         <td>
-                        <td className="td-actions text-right">
-                            <OverlayTrigger placement="top" overlay={edit}>
+                        <td className="td-actions">
+                            <OverlayTrigger placement="top" overlay={view_payout}>
                             <Button simple bsStyle="primary" bsSize="xs"  fill
                       onClick={() => this.onOpenModal()}>
-                                <i className="fa fa-edit" />
+                                <i className="fa fa-eye" />
                             </Button>
                             </OverlayTrigger>
-                            &nbsp;&nbsp;
-                            <OverlayTrigger placement="top" overlay={view_profile}>
-                            <Button simple bsStyle="success" bsSize="xs"  fill
-                      onClick={() => this.onOpenModal()}>
-                                <i className="fa fa-user" />
-                            </Button>
-                            </OverlayTrigger>
-                            &nbsp;&nbsp;
-                              <OverlayTrigger placement="top" overlay={(cotnentSingle.status == 0) ? activate_user : inactivate_user}>
-                              <Button simple bsStyle="warning" bsSize="xs"  fill
-                        onClick={() => this.onOpenModal()}>
-                                  {(cotnentSingle.status == 0) ? <i className="fa fa-check" /> : <i className="fa fa-ban" />}
-                              </Button>
-                              </OverlayTrigger>
-
-
-                              &nbsp;&nbsp;
-                              <OverlayTrigger placement="top" overlay={(cotnentSingle.wallet_access == 0) ? wallet_allow_access : wallet_not_allow_access}>
-                              <Button simple bsStyle={(cotnentSingle.status == 0) ? "danger" : "success"} bsSize="xs"  fill
-                        onClick={() => this.onOpenModal()}>
-                                  <i className="fa fa-wallet" />
-                              </Button>
-                              </OverlayTrigger>
 
                           { /*
                               &nbsp;&nbsp;
@@ -357,4 +321,4 @@ class MemberList extends Component {
   }
 }
 
-export default MemberList;
+export default PayoutList;

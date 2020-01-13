@@ -25,7 +25,7 @@ import Card from "components/Card/Card.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
 import Radio from "components/CustomRadio/CustomRadio.jsx";
 var globalVariables = require('../../services/globalVariables.jsx');
-class GlobalNotices extends Component {
+class TeamList extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -33,7 +33,7 @@ class GlobalNotices extends Component {
             SetupItems: [],
             selectedItem: null,
             setup_key: '',
-            title: '',
+            team_name: '',
             description: '',
             status: '',
             from_date: '',
@@ -43,7 +43,7 @@ class GlobalNotices extends Component {
       
         componentDidMount() {
           let login_token = sessionStorage.getItem('login_token');
-          axios.post(globalVariables.admin_api_path+'/notice/list',  {search_f: 'title', model_call: 'Notice'},{
+          axios.post(globalVariables.admin_api_path+'/team/search',  {model_call: 'Team', search_f: 'team_name'},{
             headers: { Authorization: "Bearer " + login_token }
           })
             .then(res => res.data).then((data) => {
@@ -59,32 +59,8 @@ class GlobalNotices extends Component {
               <Row>
                 <Col md={12}>
                     <FormGroup>
-                      <ControlLabel>Title</ControlLabel>
-                      <FormControl name="title"  type="text" defaultValue={this.state.title} onChange={this.handleChange}/>
-                    </FormGroup>
-                    <FormGroup>
-                      <ControlLabel>Description</ControlLabel>
-                      <FormControl name="description"  type="textarea" defaultValue={this.state.description} onChange={this.handleChange}/>
-                    </FormGroup>
-                    <FormGroup>
-                    <FormGroup>
-                    <ControlLabel>Start Date</ControlLabel>
-                      <Datetime name="from_date"
-                        timeFormat={false}
-                        inputProps={{ placeholder: "Start Date" }}
-                        defaultValue={this.state.from_date}
-                      />
-                    </FormGroup>
-                    <FormGroup>
-                    <ControlLabel>End Date</ControlLabel>
-                      <Datetime name="to_date"
-                        timeFormat={false}
-                        inputProps={{ placeholder: "Start Date" }}
-                        defaultValue={this.state.to_date}
-                      />
-                    </FormGroup>
-                      <ControlLabel>Remark</ControlLabel>
-                      <FormControl name="remark"  type="textarea" defaultValue={this.state.remark} onChange={this.handleChange}/>
+                      <ControlLabel>Team Name</ControlLabel>
+                      <FormControl name="team_name"  type="text" defaultValue={this.state.team_name} onChange={this.handleChange}/>
                     </FormGroup>
                     <FormGroup>
                       <ControlLabel>Status</ControlLabel>
@@ -115,12 +91,12 @@ class GlobalNotices extends Component {
         event.preventDefault();
         let login_token = sessionStorage.getItem('login_token');
         let AllSetupItems = this.state.SetupItems;
-        axios.post(globalVariables.admin_api_path+'/notice/add-update-gnotice', {id: this.state.setup_key, question: this.state.question, answer: this.state.answer, status: this.state.status},{
+        axios.post(globalVariables.admin_api_path+'/team/add', {model_call: 'Team', fillable_value:'id', fieldset:'id,team_name,status', required_fields:'team_name,status', id: this.state.setup_key, team_name: this.state.team_name, status: this.state.status},{
           headers: { Authorization: "Bearer " + login_token }
         })
           .then(res => {
-            this.props.handleClick("tr", 1, "Notice Updated Successfully");
-            axios.post(globalVariables.admin_api_path+'/notice/list',  {search_f: 'title', model_call: 'Notice'},{
+            this.props.handleClick("tr", 1, "Team Updated Successfully");
+            axios.post(globalVariables.admin_api_path+'/team/search',  {model_call: 'Team', search_f: 'team_name'},{
                 headers: { Authorization: "Bearer " + login_token }
               })
                 .then(res => res.data).then((data) => {
@@ -146,11 +122,8 @@ class GlobalNotices extends Component {
               showModal: true,
               selectedItem: i,
               setup_key: key,
-              title: SetupItem.title,
-              description: SetupItem.description,
-              status: SetupItem.status,
-              from_date: SetupItem.from_date,
-              to_date: SetupItem.to_date
+              team_name: SetupItem.team_name,
+              status: SetupItem.status
             })
         }
         else
@@ -159,7 +132,7 @@ class GlobalNotices extends Component {
               showModal: true,
               selectedItem: '',
               setup_key: '',
-              title: '',
+              team_name: '',
               description: '',
               status: '',
               to_date: '',
@@ -177,12 +150,12 @@ class GlobalNotices extends Component {
         <Grid fluid>
           <Row>
             <Col md={12}>
-              <Card title={<span>Global Notice List <Button simple bsStyle='primary' bsSize='small'  fill
+              <Card title={<span>Team List <Button simple bsStyle='primary' bsSize='small'  fill
                       onClick={() => this.onOpenModal(-1,-1)}>
                         <span className="btn-label">
                           <i className="fa fa-plus" />
                         </span>
-                                Add New Notice
+                                Add New Team
                             </Button></span>}
                 tableFullWidth
                 content={
@@ -190,20 +163,16 @@ class GlobalNotices extends Component {
                   <Table responsive>
                     <thead>
                       <tr>
-                      <th>Title</th>
+                      <th>Team</th>
                         <th>Status</th>
-                        <th>Valid From Date</th>
-                        <th>Valid Till Date</th>
-                        <th>Description</th>
-                        <th>Remark</th>
-                        <th className="text-right">Actions</th>
+                        <th>Actions</th>
                       </tr>
                     </thead>
                     <tbody>
                     {this.state.SetupItems.map((SetupItem, index_key) => (
                       <tr key={index_key}>
-                    <td>{SetupItem.title}</td>
-                   <td> {(() => {
+                    <td>{SetupItem.team_name}</td>
+                   <td>{(() => {
                                 switch(SetupItem.status)
                                 {
                                     case '1':
@@ -212,11 +181,7 @@ class GlobalNotices extends Component {
                                         return  <Button simple bsStyle="danger" bsSize="xs"  fill> Not Active </Button>;
                                 }
                             })()} </td>
-                        <td>{SetupItem.from_date}</td>
-                        <td>{SetupItem.to_date}</td>
-                        <td>{SetupItem.description}</td>
-                          <td>{SetupItem.remark}</td>
-                        <td className="td-actions text-right">
+                        <td className="td-actions">
                             <OverlayTrigger placement="top" overlay={edit}>
                             <Button simple bsStyle="primary" bsSize="xs"  fill
                       onClick={() => this.onOpenModal(index_key, SetupItem.id)}>
@@ -238,7 +203,7 @@ class GlobalNotices extends Component {
                     >
                       <form onSubmit={this.handleSubmit}>
                       <Modal.Header closeButton>
-                        <Modal.Title>{(this.state.title) ? 'Update' : 'Add'} Global Notice</Modal.Title>
+                        <Modal.Title>{(this.state.team_name) ? 'Update' : 'Add'} Team</Modal.Title>
                       </Modal.Header>
                       <Modal.Body>
                       {this.renderModal()}
@@ -267,4 +232,4 @@ class GlobalNotices extends Component {
   }
 }
 
-export default GlobalNotices;
+export default TeamList;

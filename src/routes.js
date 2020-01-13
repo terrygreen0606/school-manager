@@ -75,6 +75,18 @@ import FAQ from "views/CMS/Faq";
 import Genealogy from "views/Downlines/Genealogy";
 import Tabular from "views/Downlines/Tabular";
 import EpinPackages from "views/Epin/EpinPackages";
+import MemberList from "views/MemberManagement/MemberList";
+import ChangeMPassword from "views/MemberManagement/ChangeMPassword";
+import ChangeMTrsansactionPassword from "views/MemberManagement/ChangeMTransactionPassword";
+import PayoutList from "views/Payout/Payoutlist";
+import StaffList from "views/Staff/StaffList";
+import BandList from "views/Staff/BandList";
+import TeamList from "views/Staff/TeamList";
+import TicketList from "views/SupportSystem/TicketList";
+import TicketCategories from "views/SupportSystem/TicketCategories";
+import OpenTickets from "views/SupportSystem/OpenTickets";
+import ClosedTickets from "views/SupportSystem/ClosedTickets";
+import Blogs from "views/Blogs/Blogs";
 // import RegisterPage from "views/Pages/RegisterPage.jsx";
 // import LockScreenPage from "views/Pages/LockScreenPage.jsx";
 
@@ -267,7 +279,7 @@ var routes = [
     ]
   },
   {
-    path: "/ecommerce-store",
+    path: "http://google.com",
     layout: "/admin",
     name: "eCommerce Store",
     icon: "pe-7s-cart",
@@ -418,7 +430,7 @@ var routes = [
         component: EpinRequests
       },
       {
-        path: "/PIN Allocation",
+        path: "/epin-allocation",
         layout: "/admin",
         name: "PIN Allocation",
         mini: "PA",
@@ -447,28 +459,28 @@ var routes = [
     state: "openmembers",
     icon: "pe-7s-users",
     views: [
-      {
+    /*  {
         path: "/profile-view",
         layout: "/admin",
         name: "Profile View",
         mini: "PV",
         component: Buttons
-      },
+      }, */
       {
         path: "/list-members",
         layout: "/admin",
-        name: "List & Search Member",
+        name: "Member List",
         mini: "SM",
-        component: GridSystem
+        component: MemberList
       },
       {
         path: "/change-user-password",
         layout: "/admin",
-        name: "Change Password",
+        name: "Change Login Password",
         mini: "CP",
-        component: Panels
+        component: ChangeMPassword
       },
-      {
+   /*   {
         path: "/change-user-status",
         layout: "/admin",
         name: "Block/Unblock User",
@@ -482,6 +494,14 @@ var routes = [
         mini: "WA",
         component: Notifications
       },
+      */
+      {
+        path: "/change-transaction-password",
+        name: "Change Transaction Password",
+        layout: "/admin",
+        mini: "TP",
+        component: ChangeMTrsansactionPassword
+      },
       {
         path: "/kyc-details",
         layout: "/admin",
@@ -491,7 +511,7 @@ var routes = [
       }
     ]
   },
-  {
+ /* {
     collapse: true,
     path: "/payouts",
     name: "Payout",
@@ -514,6 +534,14 @@ var routes = [
       }
     ]
   },
+  */
+ {
+  path: "/payout",
+  name: "Payout List",
+  icon: "pe-7s-anchor",
+  layout: "/admin",
+  component: PayoutList
+},
   {
     path: "/messages",
     name: "Messages",
@@ -547,21 +575,21 @@ var routes = [
         layout: "/admin",
         name: "Bands",
         mini: "B",
-        component: Buttons
+        component: BandList
       },
       {
         path: "/teams",
         layout: "/admin",
         name: "Teams",
         mini: "T",
-        component: GridSystem
+        component: TeamList
       },
       {
         path: "/staff-members",
         layout: "/admin",
         name: "Staff Members",
         mini: "SM",
-        component: Panels
+        component: StaffList
       }
     ]
   },
@@ -575,47 +603,40 @@ var routes = [
       {
         path: "/support-tickets",
         layout: "/admin",
-        name: "Support Tickets",
+        name: "All Tickets",
         mini: "ST",
-        component: Buttons
+        component: TicketList
       },
       {
         path: "/ticket-categories",
         layout: "/admin",
         name: "Ticket Categories",
         mini: "TC",
-        component: GridSystem
+        component: TicketCategories
       },
       {
         path: "/open-tickets",
         layout: "/admin",
         name: "Open Tickets",
         mini: "OT",
-        component: Panels
+        component: OpenTickets
       },
       {
         path: "/closed-tickets",
         layout: "/admin",
         name: "Closed/Resolved Tickets",
         mini: "CT",
-        component: SweetAlert
+        component: ClosedTickets
       }
     ]
   },
-  {
+ /* {
     path: "/activity-history",
     name: "Activity History",
     icon: "pe-7s-albums",
     layout: "/admin",
     component: Buttons
-  },
-   {
-    path: "/transaction-password",
-    name: "Transaction Password",
-    icon: "pe-7s-lock",
-    layout: "/admin",
-    component: Buttons
-  },
+  }, */
   {
     collapse: true,
     path: "/blogs",
@@ -628,7 +649,7 @@ var routes = [
         layout: "/admin",
         name: "Blog List",
         mini: "BL",
-        component: Buttons
+        component: Blogs
       },
       {
         path: "/pending-approval",

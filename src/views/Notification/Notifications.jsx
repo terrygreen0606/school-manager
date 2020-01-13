@@ -208,7 +208,7 @@ class NotificationSystem extends Component {
                     >
                       <form onSubmit={this.handleSubmit}>
                       <Modal.Header closeButton>
-                        <Modal.Title>Update Frequently asked question</Modal.Title>
+                        <Modal.Title>Update Notification Event</Modal.Title>
                       </Modal.Header>
                       <Modal.Body>
                       {this.renderModal()}

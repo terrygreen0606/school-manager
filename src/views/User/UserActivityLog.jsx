@@ -26,7 +26,7 @@ import Card from "components/Card/Card.jsx";
 
 import Button from "components/CustomButton/CustomButton.jsx";
 var globalVariables = require('../../services/globalVariables.jsx');
-class MemberList extends Component {
+class UserActivityLog extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -51,7 +51,7 @@ class MemberList extends Component {
           });
 
           let login_token = sessionStorage.getItem('login_token');
-          axios.post(globalVariables.admin_api_path+'/member/list', {offset: this.state.ActivePage}, {
+          axios.post(globalVariables.admin_api_path+'/epin/search', {model_call: 'Epin', search_f:'epin_id', offset: this.state.ActivePage}, {
             headers: { Authorization: "Bearer " + login_token }
           })
             .then(res => res.data).then((data) => {
@@ -64,7 +64,7 @@ class MemberList extends Component {
       
         componentDidMount() {
           let login_token = sessionStorage.getItem('login_token');
-          axios.post(globalVariables.admin_api_path+'/member/list', {}, {
+          axios.post(globalVariables.admin_api_path+'/epin/search', {model_call: 'Epin', search_f:'epin_id'}, {
             headers: { Authorization: "Bearer " + login_token }
           })
             .then(res => res.data).then((data) => {
@@ -73,6 +73,22 @@ class MemberList extends Component {
               this.setState({contentList: data.response});
               console.log(this.state.contentList);
             });
+
+            axios.post(globalVariables.admin_api_path+'/epin/search-packages', {model_call: 'Epin_package', search_f:'package_name'}, {
+              headers: { Authorization: "Bearer " + login_token }
+            })
+              .then(res => res.data).then((data) => {
+                let packageList = [];
+                let response = data.response;
+                for(let i=0; i< response.length; i++)
+                {
+                  packageList.push({'label' : response[i].package_name, 'value': response[i].id});
+                }
+                //const packageList = data.map(mappingFunction);
+                console.log(packageList);
+                this.setState({packageList: packageList});
+                console.log(this.state.packageList);
+              });
 
         }
 
@@ -122,7 +138,7 @@ class MemberList extends Component {
           })
             .then(res => {
               this.props.handleClick("tr", 1, "Epin Generated Successfully");
-              axios.post(globalVariables.admin_api_path+'/member/list',{
+              axios.post(globalVariables.admin_api_path+'/epin/search',  {model_call: 'Epin', search_f:'epin_id'},{
                   headers: { Authorization: "Bearer " + login_token }
                 })
                   .then(res => res.data).then((data) => {
@@ -151,20 +167,12 @@ class MemberList extends Component {
 
      
   render() {
-    const edit = <Tooltip id="edit">Edit User Details</Tooltip>;
-    const view_profile = <Tooltip id="view_profile">View User Profile</Tooltip>;
-    const activate_user = <Tooltip id="active_inactive">Activate User</Tooltip>;
-    const inactivate_user = <Tooltip id="inactivate_user">Inactivate User</Tooltip>;
-    const wallet_allow_access = <Tooltip id="active_inactive">Allow Wallet Access</Tooltip>;
-    const wallet_not_allow_access = <Tooltip id="inactivate_user">Disable Wallet Access</Tooltip>;
-    const block_user = <Tooltip id="active_inactive">Block User</Tooltip>;
-    const unblock_user = <Tooltip id="inactivate_user">Unblock User</Tooltip>;
+    const edit = <Tooltip id="edit">View User Details</Tooltip>;
     const pageNumbers = [];
     console.log(this.state.TotalRecords);
     let activePage = this.state.ActivePage;
     let TotalPaginationNumber = 10;
     let PaginationStartNumber = 1;
-    let TotalPagesAvailable = Math.ceil(this.state.TotalRecords / 10);
     switch(activePage)
     {
       case 1:
@@ -172,14 +180,7 @@ class MemberList extends Component {
       case 3:
       case 4:
       case 5:
-        if(TotalPagesAvailable < 10)
-        {
-          TotalPaginationNumber = TotalPagesAvailable;
-        }
-        else
-        {
-          TotalPaginationNumber = 10;
-        }
+        TotalPaginationNumber = 10;
         PaginationStartNumber = 1;
         break;
       default:
@@ -190,13 +191,9 @@ class MemberList extends Component {
           TotalPaginationNumber = Math.ceil(this.state.TotalRecords / 10);
         }
     }
-    if(TotalPagesAvailable > 1 )
-    {
-      for (let i = PaginationStartNumber; i <= TotalPaginationNumber; i++) {
-        pageNumbers.push(i);
-      }
+    for (let i = PaginationStartNumber; i <= TotalPaginationNumber; i++) {
+      pageNumbers.push(i);
     }
-    
     console.log(this.state.TotalRecords);
 
     const renderPageNumbers = pageNumbers.map(number => {
@@ -223,7 +220,13 @@ class MemberList extends Component {
         <Grid fluid>
           <Row>
             <Col md={12}>
-              <Card title={<span>List of Members </span>}
+              <Card title={<span>E-Pin List <Button simple bsStyle="primary" bsSize="xs"  fill
+                      onClick={() => this.onOpenModal(-1,-1)}>
+                                 <span className="btn-label">
+                          <i className="fa fa-plus" />
+                        </span>
+                        Generate New E-Pin
+                            </Button></span>}
                 tableFullWidth
                 content={
                   <div>
@@ -231,22 +234,20 @@ class MemberList extends Component {
                     <thead>
                       <tr>
                         <th>#</th>
-                        <th>Username</th>
-                        <th>Name</th>
+                        <th>E-Pin</th>
                         <th>Status</th>
-                        <th>Sponsor Username</th>
-                        <th>Mobile Number</th>
-                        <th>Email ID</th>
-                        <th>Action</th>
+                        <th>Amount</th>
+                        <th>Allocated User</th>
+                        <th>Updated Date</th>
+                        <th>Expiry Date</th>
                       </tr>
                     </thead>
                     <tbody>
                     { this.state.contentList.map((cotnentSingle, index_key) => (
                       <tr key={index_key}>
                         <td>{(this.state.ActivePage-1)*10+index_key+1}</td>
-                        <td>{cotnentSingle.username} </td>
-                        <td>{cotnentSingle.first_name} {cotnentSingle.last_name} </td>
-                       { <td>
+                        <td>{cotnentSingle.epin_id} </td>
+                        <td>
                             {(() => {
                                 switch(cotnentSingle.status)
                                 {
@@ -259,56 +260,10 @@ class MemberList extends Component {
                                 }
                             })()}
                         </td>
-                          }
-                        <td>{cotnentSingle.sponsor_id}</td>
-                        <td> {cotnentSingle.phone_number}</td>
-                        <td>{cotnentSingle.email}</td>
-                        <td>
-                        <td className="td-actions text-right">
-                            <OverlayTrigger placement="top" overlay={edit}>
-                            <Button simple bsStyle="primary" bsSize="xs"  fill
-                      onClick={() => this.onOpenModal()}>
-                                <i className="fa fa-edit" />
-                            </Button>
-                            </OverlayTrigger>
-                            &nbsp;&nbsp;
-                            <OverlayTrigger placement="top" overlay={view_profile}>
-                            <Button simple bsStyle="success" bsSize="xs"  fill
-                      onClick={() => this.onOpenModal()}>
-                                <i className="fa fa-user" />
-                            </Button>
-                            </OverlayTrigger>
-                            &nbsp;&nbsp;
-                              <OverlayTrigger placement="top" overlay={(cotnentSingle.status == 0) ? activate_user : inactivate_user}>
-                              <Button simple bsStyle="warning" bsSize="xs"  fill
-                        onClick={() => this.onOpenModal()}>
-                                  {(cotnentSingle.status == 0) ? <i className="fa fa-check" /> : <i className="fa fa-ban" />}
-                              </Button>
-                              </OverlayTrigger>
-
-
-                              &nbsp;&nbsp;
-                              <OverlayTrigger placement="top" overlay={(cotnentSingle.wallet_access == 0) ? wallet_allow_access : wallet_not_allow_access}>
-                              <Button simple bsStyle={(cotnentSingle.status == 0) ? "danger" : "success"} bsSize="xs"  fill
-                        onClick={() => this.onOpenModal()}>
-                                  <i className="fa fa-wallet" />
-                              </Button>
-                              </OverlayTrigger>
-
-                          { /*
-                              &nbsp;&nbsp;
-                              <OverlayTrigger placement="top" overlay={(cotnentSingle.status == 0) ? block_user : unblock_user}>
-                              <Button simple bsStyle="warning" bsSize="xs"  fill
-                        onClick={() => this.onOpenModal()}>
-                                  {(cotnentSingle.status == 0) ? <i className="fa fa-check" /> : <i className="fa fa-ban" />}
-                              </Button>
-                              </OverlayTrigger>
-                          */ }
-                            
-
-                            
-                        </td>
-                        </td>
+                        <td>{cotnentSingle.amount}</td>
+                        <td> {cotnentSingle.used_by}</td>
+                        <td>{cotnentSingle.updated_at}</td>
+                        <td>{cotnentSingle.expiry_date}</td>
                       </tr>
                     )) }
                     </tbody>
@@ -357,4 +312,4 @@ class MemberList extends Component {
   }
 }
 
-export default MemberList;
+export default UserActivityLog;
