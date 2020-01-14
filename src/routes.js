@@ -87,6 +87,9 @@ import TicketCategories from "views/SupportSystem/TicketCategories";
 import OpenTickets from "views/SupportSystem/OpenTickets";
 import ClosedTickets from "views/SupportSystem/ClosedTickets";
 import Blogs from "views/Blogs/Blogs";
+import EcommerceStore from "views/Ecommerce/EcommerceStore";
+import Bulksms from "views/SMS/Bulksms";
+import Bulkemail from "views/Email/Bulkemail";
 // import RegisterPage from "views/Pages/RegisterPage.jsx";
 // import LockScreenPage from "views/Pages/LockScreenPage.jsx";
 
@@ -279,11 +282,11 @@ var routes = [
     ]
   },
   {
-    path: "http://google.com",
+    path: "/ecommerce-store",
     layout: "/admin",
     name: "eCommerce Store",
     icon: "pe-7s-cart",
-    component: Charts
+    component: EcommerceStore
   },
   {
     path: "/orders",
@@ -502,13 +505,13 @@ var routes = [
         mini: "TP",
         component: ChangeMTrsansactionPassword
       },
-      {
+   /*   {
         path: "/kyc-details",
         layout: "/admin",
         name: "KYC Details",
         mini: "KYC",
         component: Icons
-      }
+      } */
     ]
   },
  /* {
@@ -554,14 +557,14 @@ var routes = [
     name: "Bulk SMS",
     icon: "pe-7s-mail-open",
     layout: "/admin",
-    component: Buttons
+    component: Bulksms
   },
   {
     path: "/bulk-email",
     name: "Bulk Email",
     icon: "pe-7s-mail-open-file",
     layout: "/admin",
-    component: Buttons
+    component: Bulkemail
   },
   {
     collapse: true,
@@ -651,13 +654,13 @@ var routes = [
         mini: "BL",
         component: Blogs
       },
-      {
+    /*  {
         path: "/pending-approval",
         layout: "/admin",
         name: "Pending for Approval",
         mini: "PA",
         component: GridSystem
-      }
+      } */
     ]
   },
   {
