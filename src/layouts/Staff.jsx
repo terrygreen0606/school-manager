@@ -29,12 +29,93 @@ import Footer from "components/Footer/Footer.jsx";
 import image from "assets/img/full-screen-image-3.jpg";
 
 // dinamically create dashboard routes
-import routes from "staffroutes.js";
+// import routes from "staffroutes.js";
+import axios from 'axios';
+import Dashboard from "views/Dashboard.jsx";
+import BasicSettings from "views/Setup/BasicSettings.jsx";
+import CommissionLimit from "views/Setup/CommissionLimit.jsx";
+import LevelCommissionSetup from "views/Setup/LevelCommissionSetup.jsx";
+import RepurchaseCommissionSetup from "views/Setup/RepurchaseCommission.jsx";
+import RewardSetup from "views/Setup/RewardSetup.jsx";
+import SmsSetup from "views/Setup/SmsSetup.jsx";
+import EmailSetup from "views/Setup/EmailSetup.jsx";
+import ReferralCommissionSetup from "views/Setup/ReferralCommissionSetup.jsx";
+import PaypalSetup from "views/Setup/PaypalSetup.jsx";
+import LanguageSettings from "views/Setup/LanguageSetup.jsx";
+import WithdrawalSetup from "views/Setup/WithdrawalSetup.jsx";
+import Profile from "views/Profile/Profile.jsx";
+import Orders from "views/Orders/Orders.jsx";
+import Buttons from "views/Components/Buttons.jsx";
+import GridSystem from "views/Components/GridSystem.jsx";
+import Panels from "views/Components/Panels.jsx";
+import SweetAlert from "views/Components/SweetAlertPage.jsx";
+import Notifications from "views/Components/Notifications.jsx";
+import Icons from "views/Components/Icons.jsx";
+import Typography from "views/Components/Typography.jsx";
+import RegularForms from "views/Forms/RegularForms.jsx";
+import ExtendedForms from "views/Forms/ExtendedForms.jsx";
+import ValidationForms from "views/Forms/ValidationForms.jsx";
+import Wizard from "views/Forms/Wizard/Wizard.jsx";
+// import RegularTables from "views/Tables/RegularTables.jsx";
+// import ExtendedTables from "views/Tables/ExtendedTables.jsx";
+// import ReactTables from "views/Tables/ReactTables.jsx";
+// import GoogleMaps from "views/Maps/GoogleMaps.jsx";
+// import FullScreenMap from "views/Maps/FullScreenMap.jsx";
+// import VectorMap from "views/Maps/VectorMap.jsx";
+import Charts from "views/Charts.jsx";
+// import Calendar from "views/Calendar.jsx";
+// import UserPage from "views/Pages/UserPage.jsx";
+import LoginPage from "views/Pages/LoginPage.jsx";
+import Ewallet from "views/Ewallet/Ewallet";
+import Transaction from "views/Ewallet/Transaction";
+import WithdrawalOnWardTransaction from "views/Ewallet/WithdrawalOnwardTrans";
+import CreditDebit from "views/Ewallet/CreditDebit";
+import FundTransfer from "views/Ewallet/FundTransfer";
+import TransferHistory from "views/Ewallet/TransferHistory";
+import UserEarnings from "views/Ewallet/UserEarnings";
+import WithdrawalStaus from "views/Ewallet/WithdrawalStatus";
+import GlobalNotices from "views/Notice/GlobalNotices";
+// import NotificationSystem from "views/Notification/Notifications";
+import UserOverview from "views/User/UserOverview";
+import BusinessSummary from "views/Business/BusinessSummary";
+import BusinessTransactions from "views/Business/BusinessTransaction";
+import Epins from "views/Epin/Epins";
+import EpinRequests from "views/Epin/EpinRequests";
+import EpinAllocation from "views/Epin/EpinAllocation";
+import ViewEpin from "views/Epin/ViewEpin";
+import EpinTransfer from "views/Epin/EpinTransfer";
+import About from "views/CMS/About";
+import Contact from "views/CMS/Contact";
+import Mission from "views/CMS/Mission";
+import Vission from "views/CMS/Vision";
+import FAQ from "views/CMS/Faq";
+import Genealogy from "views/Downlines/Genealogy";
+import Tabular from "views/Downlines/Tabular";
+import EpinPackages from "views/Epin/EpinPackages";
+import MemberList from "views/MemberManagement/MemberList";
+import ChangeMPassword from "views/MemberManagement/ChangeMPassword";
+import ChangeMTrsansactionPassword from "views/MemberManagement/ChangeMTransactionPassword";
+import PayoutList from "views/Payout/Payoutlist";
+import StaffList from "views/Staff/StaffList";
+import BandList from "views/Staff/BandList";
+import TeamList from "views/Staff/TeamList";
+import TicketList from "views/SupportSystem/TicketList";
+import TicketCategories from "views/SupportSystem/TicketCategories";
+import OpenTickets from "views/SupportSystem/OpenTickets";
+import ClosedTickets from "views/SupportSystem/ClosedTickets";
+import Blogs from "views/Blogs/Blogs";
+import EcommerceStore from "views/Ecommerce/EcommerceStore";
+import Bulksms from "views/SMS/Bulksms";
+import Bulkemail from "views/Email/Bulkemail";
+import EditStaff from "views/Staff/EditStaff";
+import AddUpdatePrivileges from "views/Staff/AddUpdatePrivileges";
 
 // style for notifications
 import { style } from "variables/Variables.jsx";
 
 var ps;
+var globalVariables = require('../services/globalVariables.jsx');
+//const routes = [];
 
 class StaffDashboard extends Component {
   constructor(props) {
@@ -46,7 +127,8 @@ class StaffDashboard extends Component {
       hasImage: true,
       navbar: false,
       mini: false,
-      fixedClasses: "dropdown show-dropdown open"
+      fixedClasses: "dropdown show-dropdown open",
+      routes: []
     };
   }
   componentDidMount() {
@@ -54,6 +136,16 @@ class StaffDashboard extends Component {
     if (navigator.platform.indexOf("Win") > -1) {
       ps = new PerfectScrollbar(this.refs.mainPanel);
     }
+
+    let band_id = sessionStorage.getItem('band_id');
+    let login_token = sessionStorage.getItem('login_token');
+    axios.post(globalVariables.admin_api_path+'/band/single-band-data/'+band_id,  {band_id: band_id}, {
+      headers: { Authorization: "Bearer " + login_token }
+    })
+      .then(res => res.data).then((data) => {
+        this.setState({routes: data.response});
+      });
+
   }
   componentWillUnmount() {
     if (navigator.platform.indexOf("Win") > -1) {
@@ -144,23 +236,802 @@ class StaffDashboard extends Component {
     }
   };
   getRoutes = routes => {
+    console.log(routes);
     return routes.map((prop, key) => {
       if (prop.collapse) {
         return this.getRoutes(prop.views);
       }
       if (prop.layout === "/staff") {
-        return (
-          <Route
-            path={prop.layout + prop.path}
-            key={key}
-            render={routeProps => (
-              <prop.component
-                {...routeProps}
-                handleClick={this.handleNotificationClick}
+        let propcomp = (prop.component).trim();
+        console.log(propcomp);
+        switch(propcomp)
+        {
+          case 'Dashboard':
+            return (
+              <Route
+                path={prop.layout + prop.path}
+                key={key}
+                render={routeProps => (
+                  <Dashboard
+                    {...routeProps}
+                    handleClick={this.handleNotificationClick}
+                  />
+                )}
               />
-            )}
-          />
-        );
+            );
+            break;
+            case 'BasicSettings':
+              return (
+                <Route
+                  path={prop.layout + prop.path}
+                  key={key}
+                  render={routeProps => (
+                    <BasicSettings
+                      {...routeProps}
+                      handleClick={this.handleNotificationClick}
+                    />
+                  )}
+                />
+              );
+              break;
+              case 'CommissionLimit':
+                return (
+                  <Route
+                    path={prop.layout + prop.path}
+                    key={key}
+                    render={routeProps => (
+                      <CommissionLimit
+                        {...routeProps}
+                        handleClick={this.handleNotificationClick}
+                      />
+                    )}
+                  />
+                );
+                break;
+                case 'LevelCommissionSetup':
+                  return (
+                    <Route
+                      path={prop.layout + prop.path}
+                      key={key}
+                      render={routeProps => (
+                        <LevelCommissionSetup
+                          {...routeProps}
+                          handleClick={this.handleNotificationClick}
+                        />
+                      )}
+                    />
+                  );
+                  break;
+                  case 'RepurchaseCommissionSetup':
+                    return (
+                      <Route
+                        path={prop.layout + prop.path}
+                        key={key}
+                        render={routeProps => (
+                          <RepurchaseCommissionSetup
+                            {...routeProps}
+                            handleClick={this.handleNotificationClick}
+                          />
+                        )}
+                      />
+                    );
+                    break;
+                    case 'Dashboard':
+                      return (
+                        <SmsSetup
+                          path={prop.layout + prop.path}
+                          key={key}
+                          render={routeProps => (
+                            <SmsSetup
+                              {...routeProps}
+                              handleClick={this.handleNotificationClick}
+                            />
+                          )}
+                        />
+                      );
+                      break;
+                      case 'EmailSetup':
+                        return (
+                          <Route
+                            path={prop.layout + prop.path}
+                            key={key}
+                            render={routeProps => (
+                              <EmailSetup
+                                {...routeProps}
+                                handleClick={this.handleNotificationClick}
+                              />
+                            )}
+                          />
+                        );
+                        break;
+                        case 'ReferralCommissionSetup':
+                          return (
+                            <Route
+                              path={prop.layout + prop.path}
+                              key={key}
+                              render={routeProps => (
+                                <ReferralCommissionSetup
+                                  {...routeProps}
+                                  handleClick={this.handleNotificationClick}
+                                />
+                              )}
+                            />
+                          );
+                          break;
+                          case 'PaypalSetup':
+                          return (
+                            <Route
+                              path={prop.layout + prop.path}
+                              key={key}
+                              render={routeProps => (
+                                <PaypalSetup
+                                  {...routeProps}
+                                  handleClick={this.handleNotificationClick}
+                                />
+                              )}
+                            />
+                          );
+                          break;
+                          case 'LanguageSettings':
+                          return (
+                            <Route
+                              path={prop.layout + prop.path}
+                              key={key}
+                              render={routeProps => (
+                                <LanguageSettings
+                                  {...routeProps}
+                                  handleClick={this.handleNotificationClick}
+                                />
+                              )}
+                            />
+                          );
+                          break;
+                          case 'WithdrawalSetup':
+                            return (
+                              <Route
+                                path={prop.layout + prop.path}
+                                key={key}
+                                render={routeProps => (
+                                  <WithdrawalSetup
+                                    {...routeProps}
+                                    handleClick={this.handleNotificationClick}
+                                  />
+                                )}
+                              />
+                            );
+                            break;                            
+                            case 'Profile':
+                            return (
+                              <Route
+                                path={prop.layout + prop.path}
+                                key={key}
+                                render={routeProps => (
+                                  <Profile
+                                    {...routeProps}
+                                    handleClick={this.handleNotificationClick}
+                                  />
+                                )}
+                              />
+                            );
+                            break;
+                            case 'Orders':
+                            return (
+                              <Route
+                                path={prop.layout + prop.path}
+                                key={key}
+                                render={routeProps => (
+                                  <Orders
+                                    {...routeProps}
+                                    handleClick={this.handleNotificationClick}
+                                  />
+                                )}
+                              />
+                            );
+                            break;
+                            case 'Ewallet':
+                            return (
+                              <Route
+                                path={prop.layout + prop.path}
+                                key={key}
+                                render={routeProps => (
+                                  <Ewallet
+                                    {...routeProps}
+                                    handleClick={this.handleNotificationClick}
+                                  />
+                                )}
+                              />
+                            );
+                            break;
+                            case 'Transaction':
+                            return (
+                              <Route
+                                path={prop.layout + prop.path}
+                                key={key}
+                                render={routeProps => (
+                                  <Transaction
+                                    {...routeProps}
+                                    handleClick={this.handleNotificationClick}
+                                  />
+                                )}
+                              />
+                            );
+                            break;
+                            case 'WithdrawalOnWardTransaction':
+                            return (
+                              <Route
+                                path={prop.layout + prop.path}
+                                key={key}
+                                render={routeProps => (
+                                  <WithdrawalOnWardTransaction
+                                    {...routeProps}
+                                    handleClick={this.handleNotificationClick}
+                                  />
+                                )}
+                              />
+                            );
+                            break;
+                            case 'CreditDebit':
+                            return (
+                              <Route
+                                path={prop.layout + prop.path}
+                                key={key}
+                                render={routeProps => (
+                                  <CreditDebit
+                                    {...routeProps}
+                                    handleClick={this.handleNotificationClick}
+                                  />
+                                )}
+                              />
+                            );
+                            break;
+                            case 'FundTransfer':
+                            return (
+                              <Route
+                                path={prop.layout + prop.path}
+                                key={key}
+                                render={routeProps => (
+                                  <FundTransfer
+                                    {...routeProps}
+                                    handleClick={this.handleNotificationClick}
+                                  />
+                                )}
+                              />
+                            );
+                            break;
+                            case 'TransferHistory':
+                            return (
+                              <Route
+                                path={prop.layout + prop.path}
+                                key={key}
+                                render={routeProps => (
+                                  <TransferHistory
+                                    {...routeProps}
+                                    handleClick={this.handleNotificationClick}
+                                  />
+                                )}
+                              />
+                            );
+                            break;
+                            case 'UserEarnings':
+                            return (
+                              <Route
+                                path={prop.layout + prop.path}
+                                key={key}
+                                render={routeProps => (
+                                  <UserEarnings
+                                    {...routeProps}
+                                    handleClick={this.handleNotificationClick}
+                                  />
+                                )}
+                              />
+                            );
+                            break;
+                            case 'WithdrawalStaus':
+                            return (
+                              <Route
+                                path={prop.layout + prop.path}
+                                key={key}
+                                render={routeProps => (
+                                  <WithdrawalStaus
+                                    {...routeProps}
+                                    handleClick={this.handleNotificationClick}
+                                  />
+                                )}
+                              />
+                            );
+                            break;
+                            case 'GlobalNotices':
+                            return (
+                              <Route
+                                path={prop.layout + prop.path}
+                                key={key}
+                                render={routeProps => (
+                                  <GlobalNotices
+                                    {...routeProps}
+                                    handleClick={this.handleNotificationClick}
+                                  />
+                                )}
+                              />
+                            );
+                            break;
+                            case 'UserOverview':
+                            return (
+                              <Route
+                                path={prop.layout + prop.path}
+                                key={key}
+                                render={routeProps => (
+                                  <UserOverview
+                                    {...routeProps}
+                                    handleClick={this.handleNotificationClick}
+                                  />
+                                )}
+                              />
+                            );
+                            break;
+                            case 'BusinessSummary':
+                            return (
+                              <Route
+                                path={prop.layout + prop.path}
+                                key={key}
+                                render={routeProps => (
+                                  <BusinessSummary
+                                    {...routeProps}
+                                    handleClick={this.handleNotificationClick}
+                                  />
+                                )}
+                              />
+                            );
+                            break;
+                            case 'BusinessTransactions':
+                            return (
+                              <Route
+                                path={prop.layout + prop.path}
+                                key={key}
+                                render={routeProps => (
+                                  <BusinessTransactions
+                                    {...routeProps}
+                                    handleClick={this.handleNotificationClick}
+                                  />
+                                )}
+                              />
+                            );
+                            break;
+                            case 'EpinAllocation':
+                            return (
+                              <Route
+                                path={prop.layout + prop.path}
+                                key={key}
+                                render={routeProps => (
+                                  <EpinAllocation
+                                    {...routeProps}
+                                    handleClick={this.handleNotificationClick}
+                                  />
+                                )}
+                              />
+                            );
+                            break;
+                            case 'Epins':
+                            return (
+                              <Route
+                                path={prop.layout + prop.path}
+                                key={key}
+                                render={routeProps => (
+                                  <Epins
+                                    {...routeProps}
+                                    handleClick={this.handleNotificationClick}
+                                  />
+                                )}
+                              />
+                            );
+                            break;
+                            case 'EpinRequests':
+                            return (
+                              <Route
+                                path={prop.layout + prop.path}
+                                key={key}
+                                render={routeProps => (
+                                  <EpinRequests
+                                    {...routeProps}
+                                    handleClick={this.handleNotificationClick}
+                                  />
+                                )}
+                              />
+                            );
+                            break;
+                            case 'ViewEpin':
+                            return (
+                              <Route
+                                path={prop.layout + prop.path}
+                                key={key}
+                                render={routeProps => (
+                                  <ViewEpin
+                                    {...routeProps}
+                                    handleClick={this.handleNotificationClick}
+                                  />
+                                )}
+                              />
+                            );
+                            break;
+                            case 'EpinTransfer':
+                            return (
+                              <Route
+                                path={prop.layout + prop.path}
+                                key={key}
+                                render={routeProps => (
+                                  <EpinTransfer
+                                    {...routeProps}
+                                    handleClick={this.handleNotificationClick}
+                                  />
+                                )}
+                              />
+                            );
+                            break;
+                            case 'About':
+                            return (
+                              <Route
+                                path={prop.layout + prop.path}
+                                key={key}
+                                render={routeProps => (
+                                  <About
+                                    {...routeProps}
+                                    handleClick={this.handleNotificationClick}
+                                  />
+                                )}
+                              />
+                            );
+                            break;
+                            case 'Contact':
+                            return (
+                              <Route
+                                path={prop.layout + prop.path}
+                                key={key}
+                                render={routeProps => (
+                                  <Contact
+                                    {...routeProps}
+                                    handleClick={this.handleNotificationClick}
+                                  />
+                                )}
+                              />
+                            );
+                            break;
+                            case 'Mission':
+                            return (
+                              <Route
+                                path={prop.layout + prop.path}
+                                key={key}
+                                render={routeProps => (
+                                  <Mission
+                                    {...routeProps}
+                                    handleClick={this.handleNotificationClick}
+                                  />
+                                )}
+                              />
+                            );
+                            break;
+                            case 'Vission':
+                            return (
+                              <Route
+                                path={prop.layout + prop.path}
+                                key={key}
+                                render={routeProps => (
+                                  <Vission
+                                    {...routeProps}
+                                    handleClick={this.handleNotificationClick}
+                                  />
+                                )}
+                              />
+                            );
+                            break;
+                            case 'FAQ':
+                            return (
+                              <Route
+                                path={prop.layout + prop.path}
+                                key={key}
+                                render={routeProps => (
+                                  <FAQ
+                                    {...routeProps}
+                                    handleClick={this.handleNotificationClick}
+                                  />
+                                )}
+                              />
+                            );
+                            break;
+                            case 'Genealogy':
+                            return (
+                              <Route
+                                path={prop.layout + prop.path}
+                                key={key}
+                                render={routeProps => (
+                                  <Genealogy
+                                    {...routeProps}
+                                    handleClick={this.handleNotificationClick}
+                                  />
+                                )}
+                              />
+                            );
+                            break;
+                            case 'Tabular':
+                            return (
+                              <Route
+                                path={prop.layout + prop.path}
+                                key={key}
+                                render={routeProps => (
+                                  <Tabular
+                                    {...routeProps}
+                                    handleClick={this.handleNotificationClick}
+                                  />
+                                )}
+                              />
+                            );
+                            break;
+                            case 'EpinPackages':
+                            return (
+                              <Route
+                                path={prop.layout + prop.path}
+                                key={key}
+                                render={routeProps => (
+                                  <EpinPackages
+                                    {...routeProps}
+                                    handleClick={this.handleNotificationClick}
+                                  />
+                                )}
+                              />
+                            );
+                            break;
+                            case 'MemberList':
+                            return (
+                              <Route
+                                path={prop.layout + prop.path}
+                                key={key}
+                                render={routeProps => (
+                                  <MemberList
+                                    {...routeProps}
+                                    handleClick={this.handleNotificationClick}
+                                  />
+                                )}
+                              />
+                            );
+                            break;
+                            case 'ChangeMPassword':
+                            return (
+                              <Route
+                                path={prop.layout + prop.path}
+                                key={key}
+                                render={routeProps => (
+                                  <ChangeMPassword
+                                    {...routeProps}
+                                    handleClick={this.handleNotificationClick}
+                                  />
+                                )}
+                              />
+                            );
+                            break;
+                            case 'ChangeMTrsansactionPassword':
+                            return (
+                              <Route
+                                path={prop.layout + prop.path}
+                                key={key}
+                                render={routeProps => (
+                                  <ChangeMTrsansactionPassword
+                                    {...routeProps}
+                                    handleClick={this.handleNotificationClick}
+                                  />
+                                )}
+                              />
+                            );
+                            break;
+                            case 'PayoutList':
+                            return (
+                              <Route
+                                path={prop.layout + prop.path}
+                                key={key}
+                                render={routeProps => (
+                                  <PayoutList
+                                    {...routeProps}
+                                    handleClick={this.handleNotificationClick}
+                                  />
+                                )}
+                              />
+                            );
+                            break;
+                            case 'StaffList':
+                            return (
+                              <Route
+                                path={prop.layout + prop.path}
+                                key={key}
+                                render={routeProps => (
+                                  <StaffList
+                                    {...routeProps}
+                                    handleClick={this.handleNotificationClick}
+                                  />
+                                )}
+                              />
+                            );
+                            break;
+                            case 'BandList':
+                            return (
+                              <Route
+                                path={prop.layout + prop.path}
+                                key={key}
+                                render={routeProps => (
+                                  <BandList
+                                    {...routeProps}
+                                    handleClick={this.handleNotificationClick}
+                                  />
+                                )}
+                              />
+                            );
+                            break;
+                            case 'TeamList':
+                            return (
+                              <Route
+                                path={prop.layout + prop.path}
+                                key={key}
+                                render={routeProps => (
+                                  <TeamList
+                                    {...routeProps}
+                                    handleClick={this.handleNotificationClick}
+                                  />
+                                )}
+                              />
+                            );
+                            break;
+                            case 'TicketList':
+                            return (
+                              <Route
+                                path={prop.layout + prop.path}
+                                key={key}
+                                render={routeProps => (
+                                  <TicketList
+                                    {...routeProps}
+                                    handleClick={this.handleNotificationClick}
+                                  />
+                                )}
+                              />
+                            );
+                            break;
+                            case 'TicketCategories':
+                            return (
+                              <Route
+                                path={prop.layout + prop.path}
+                                key={key}
+                                render={routeProps => (
+                                  <TicketCategories
+                                    {...routeProps}
+                                    handleClick={this.handleNotificationClick}
+                                  />
+                                )}
+                              />
+                            );
+                            break;
+                            case 'OpenTickets':
+                            return (
+                              <Route
+                                path={prop.layout + prop.path}
+                                key={key}
+                                render={routeProps => (
+                                  <OpenTickets
+                                    {...routeProps}
+                                    handleClick={this.handleNotificationClick}
+                                  />
+                                )}
+                              />
+                            );
+                            break;
+                            case 'ClosedTickets':
+                            return (
+                              <Route
+                                path={prop.layout + prop.path}
+                                key={key}
+                                render={routeProps => (
+                                  <ClosedTickets
+                                    {...routeProps}
+                                    handleClick={this.handleNotificationClick}
+                                  />
+                                )}
+                              />
+                            );
+                            break;
+                            case 'Blogs':
+                            return (
+                              <Route
+                                path={prop.layout + prop.path}
+                                key={key}
+                                render={routeProps => (
+                                  <Blogs
+                                    {...routeProps}
+                                    handleClick={this.handleNotificationClick}
+                                  />
+                                )}
+                              />
+                            );
+                            break;
+                            case 'EcommerceStore':
+                            return (
+                              <Route
+                                path={prop.layout + prop.path}
+                                key={key}
+                                render={routeProps => (
+                                  <EcommerceStore
+                                    {...routeProps}
+                                    handleClick={this.handleNotificationClick}
+                                  />
+                                )}
+                              />
+                            );
+                            break;
+                            case 'Bulksms':
+                            return (
+                              <Route
+                                path={prop.layout + prop.path}
+                                key={key}
+                                render={routeProps => (
+                                  <Bulksms
+                                    {...routeProps}
+                                    handleClick={this.handleNotificationClick}
+                                  />
+                                )}
+                              />
+                            );
+                            break;
+                            case 'Bulkemail':
+                            return (
+                              <Route
+                                path={prop.layout + prop.path}
+                                key={key}
+                                render={routeProps => (
+                                  <Bulkemail
+                                    {...routeProps}
+                                    handleClick={this.handleNotificationClick}
+                                  />
+                                )}
+                              />
+                            );
+                            break;
+                            case 'EditStaff':
+                            return (
+                              <Route
+                                path={prop.layout + prop.path}
+                                key={key}
+                                render={routeProps => (
+                                  <EditStaff
+                                    {...routeProps}
+                                    handleClick={this.handleNotificationClick}
+                                  />
+                                )}
+                              />
+                            );
+                            break;
+                            case 'AddUpdatePrivileges':
+                            return (
+                              <Route
+                                path={prop.layout + prop.path}
+                                key={key}
+                                render={routeProps => (
+                                  <AddUpdatePrivileges
+                                    {...routeProps}
+                                    handleClick={this.handleNotificationClick}
+                                  />
+                                )}
+                              />
+                            );
+                            break;
+                          
+                          default :
+                            return (
+                              <Route
+                                path={prop.layout + prop.path}
+                                key={key}
+                                render={routeProps => (
+                                  <propcomp
+                                    {...routeProps}
+                                    handleClick={this.handleNotificationClick}
+                                  />
+                                )}
+                              />
+                            );
+                            break;
+        }
       } else {
         return null;
       }
@@ -191,7 +1062,7 @@ class StaffDashboard extends Component {
             handleMiniClick={this.handleMiniClick}
             navbar={this.state.navbar}
           />
-          <Switch>{this.getRoutes(routes)}</Switch>
+          <Switch>{this.getRoutes(this.state.routes)}</Switch>
           <Footer fluid />
         </div>
       </div>

@@ -113,19 +113,19 @@ var globalVariables = require("services/globalVariables.jsx");
 
 var ps;
 var globalVariables = require('../../services/globalVariables.jsx');
-const routes = [{
-  path: "/dashboard",
-  layout: "/staff",
-  name: "Dashboard",
-  icon: "pe-7s-graph",
-  component: Dashboard
-}];
+// const routes = [{
+//   path: "/dashboard",
+//   layout: "/staff",
+//   name: "Dashboard",
+//   icon: "pe-7s-graph",
+//   component: Dashboard
+// }];
 
 class Sidebar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      ...this.getCollapseStates(routes),
+     // ...this.getCollapseStates(routes),
       openAvatar: false,
       isWindows: navigator.platform.indexOf("Win") > -1 ? true : false,
       width: window.innerWidth,
@@ -253,53 +253,11 @@ class Sidebar extends Component {
 
 let band_id = sessionStorage.getItem('band_id');
 let login_token = sessionStorage.getItem('login_token');
-axios.post(globalVariables.admin_api_path+'/band/band-privileges-allow',  {band_id: band_id}, {
+axios.post(globalVariables.admin_api_path+'/band/single-band-data/'+band_id,  {band_id: band_id}, {
   headers: { Authorization: "Bearer " + login_token }
 })
   .then(res => res.data).then((data) => {
-    let Band_Access = data.response;
-    console.log(Band_Access);
-    Band_Access.forEach(function(item){
-      console.log(item);
-      if(item.parent_id === 0 && item.children !== 0)
-      {
-        let p_rout_view = [];
-        console.log(item.id);
-          axios.post(globalVariables.admin_api_path+'/band/band-privileges-child-allow',  {band_id: band_id, parent_privilege: item.id}, {
-            headers: { Authorization: "Bearer " + login_token }
-          }).then(res => res.data).then((child_data) => {
-             child_data = child_data.response;
-            child_data.forEach(function(child_item){
-              p_rout_view.push({
-                path: child_item.path,
-                name: child_item.title,
-                layout: child_item.layout,
-                mini: child_item.mini,
-                component: child_item.component
-              })
-            });
-            routes.push({
-              collapse:true,
-              path: item.path,
-              state: item.state,
-              name: item.title,
-              icon: item.icon,
-              views: p_rout_view
-            });
-          });
-      }
-      else
-      {
-        routes.push({
-          path: item.path,
-          layout: item.layout,
-          name: item.title,
-          icon: item.icon,
-          component: item.component
-        });
-      }
-    });
-    this.setState({routes: routes});
+    this.setState({routes: data.response});
   });
   }
   componentWillUnmount() {

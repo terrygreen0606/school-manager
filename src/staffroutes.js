@@ -96,20 +96,15 @@ import AddUpdatePrivileges from "views/Staff/AddUpdatePrivileges";
 // import LockScreenPage from "views/Pages/LockScreenPage.jsx";
 import axios from 'axios';
 var globalVariables = require("services/globalVariables.jsx");
-var routes = [{
-      path: "/dashboard",
-      layout: "/staff",
-      name: "Dashboard",
-      icon: "pe-7s-graph",
-      component: Dashboard
-    }];
+var routes = [];
 
 let band_id = sessionStorage.getItem('band_id');
 let login_token = sessionStorage.getItem('login_token');
-axios.post(globalVariables.admin_api_path+'/band/single-band-data'+band_id,  {}, {
+axios.post(globalVariables.admin_api_path+'/band/single-band-data/'+band_id,  {}, {
   headers: { Authorization: "Bearer " + login_token }
 })
   .then(res => res.data).then((data) => {
+    console.log(data);
     let Band_Access = data.response;
     console.log(Band_Access);
     routes = Band_Access;
