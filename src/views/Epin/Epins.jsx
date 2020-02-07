@@ -9,8 +9,6 @@ import {
   Row,
   Col,
   Table,
-  OverlayTrigger,
-  Tooltip,
   FormGroup,
   ControlLabel,
   FormControl,
@@ -132,7 +130,6 @@ class Epins extends Component {
         handleSubmit = event => {
           event.preventDefault();
           let login_token = sessionStorage.getItem('login_token');
-          let AllSetupItems = this.state.SetupItems;
           axios.post(globalVariables.admin_api_path+'/epin/generate', {no_of_epin: this.state.no_of_epin, amount: this.state.amount, expiry_date: this.state.expiry_date},{
             headers: { Authorization: "Bearer " + login_token }
           })
@@ -167,7 +164,6 @@ class Epins extends Component {
 
      
   render() {
-    const edit = <Tooltip id="edit">View User Details</Tooltip>;
     const pageNumbers = [];
     console.log(this.state.TotalRecords);
     let activePage = this.state.ActivePage;
@@ -198,7 +194,7 @@ class Epins extends Component {
 
     const renderPageNumbers = pageNumbers.map(number => {
       
-        if(number == this.state.ActivePage)
+        if(number === this.state.ActivePage)
         {
           return (<Pagination.Item key={number} 
           id={number}

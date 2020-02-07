@@ -14,12 +14,9 @@ import {
 // react component that creates a switch button that changes from on to off mode
 // import Switch from "react-bootstrap-switch";
 import axios from 'axios';
-import Select from "react-select";
 
 import Card from "components/Card/Card.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
-import Radio from "components/CustomRadio/CustomRadio.jsx";
-import {TransactionTypes} from "../../services/admin/TransactionType.jsx";
 var globalVariables = require('../../services/globalVariables.jsx');
 class ChangeMTrsansactionPassword extends Component {
     constructor(props) {

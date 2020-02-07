@@ -44,6 +44,7 @@ class LoginPage extends Component {
       passwordErrorLogin: null,
       loginErrorMsg: "",
       redirect: false,
+      roles_key: '',
       // Type
       type_text: "",
       type_textError: null,
@@ -158,9 +159,11 @@ class LoginPage extends Component {
           });
           if(responseJSON.response.token)
           {
+            console.log(responseJSON.response);
             sessionStorage.setItem('login_token', responseJSON.response.token);
             this.setState({
-              redirect: true
+              redirect: true,
+              roles_key: responseJSON.response.roles_key
             });
             Profile().then((profiledata) => {
               let ProfileJSON = profiledata;
@@ -168,7 +171,7 @@ class LoginPage extends Component {
               if(ProfileJSON.success)
               {
                 // console.log(ProfileJSON);
-                console.log(ProfileJSON.response);
+              //  console.log(ProfileJSON.response);
                // UserProfile.setName(ProfileJSON.response.first_name);
                 sessionStorage.setItem('first_name', ProfileJSON.response.first_name);
                 sessionStorage.setItem('last_name', ProfileJSON.response.last_name);
@@ -176,7 +179,12 @@ class LoginPage extends Component {
                 sessionStorage.setItem('user_username', ProfileJSON.response.username);
                 sessionStorage.setItem('user_email', ProfileJSON.response.email);
                 sessionStorage.setItem('profile_pic', ProfileJSON.response.profile_pic);
-                this.props.history.push('/');
+                sessionStorage.setItem('roles_key', ProfileJSON.response.roles_key);
+                sessionStorage.setItem('band_id', ProfileJSON.response.band_id);
+               // this.props.history.push('/');
+                // this.setState({
+                //   roles_key: ProfileJSON.response.roles_key
+                // });
               }
             });
           }
@@ -257,16 +265,64 @@ class LoginPage extends Component {
   render() {
     if(this.state.redirect)
     {
-      return (
-        <Redirect to={'/'} />
-      );
+      switch(this.state.roles_key)
+      {
+        case "STAFF":
+          return (
+            <Redirect to={'/staff/dashboard'} />
+          );
+          break;
+        case "MEMBER":
+          return (
+            <Redirect to={'/member/dashboard'} />
+          );
+          break;
+        case "ADMIN":
+          return (
+            <Redirect to={'/admin/dashboard'} />
+          );
+          break;
+        default:
+          return (
+            <Redirect to={'/'} />
+          );
+          break;
+
+      }
+      // return (
+      //   <Redirect to={'/'} />
+      // );
     }
 
     if(sessionStorage.getItem('login_token'))
     {
-      return (
-        <Redirect to={'/'} />
-      );
+      switch(sessionStorage.getItem('roles_key'))
+      {
+        case "STAFF":
+          return (
+            <Redirect to={'/staff/dashboard'} />
+          );
+          break;
+        case "MEMBER":
+          return (
+            <Redirect to={'/member/dashboard'} />
+          );
+          break;
+        case "ADMIN":
+          return (
+            <Redirect to={'/admin/dashboard'} />
+          );
+          break;
+        default:
+          return (
+            <Redirect to={'/'} />
+          );
+          break;
+
+      } 
+      // return (
+      //   <Redirect to={'/'} />
+      // );
     }
     return (
       <Grid>

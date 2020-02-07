@@ -135,7 +135,7 @@ class Contact extends Component {
                                 name="description"
                                 /> 
 
-                    <img height="150px" src = {this.state.FImage ? this.state.FImage : avatar}/>
+                    <img alt="Contact us" height="150px" src = {this.state.FImage ? this.state.FImage : avatar}/>
                     <FormInputs  ncols={["col-md-6"]}
                       proprieties={[
                         {

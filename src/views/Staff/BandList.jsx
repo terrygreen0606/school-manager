@@ -17,8 +17,8 @@ import {
 } from "react-bootstrap";
 // react component that creates a switch button that changes from on to off mode
 // import Switch from "react-bootstrap-switch";
-import Datetime from "react-datetime";
 import axios from 'axios';
+import {Link} from "react-router-dom";
 
 import Card from "components/Card/Card.jsx";
 
@@ -144,6 +144,7 @@ class BandList extends Component {
         
   render() {
     const edit = <Tooltip id="edit">Edit</Tooltip>;
+    const view_profile = <Tooltip id="view_profile">Add/Update Privileges to Band</Tooltip>;
     
     return (
       <div className="main-content">
@@ -188,6 +189,14 @@ class BandList extends Component {
                                 <i className="fa fa-edit" />
                             </Button>
                             </OverlayTrigger>
+                            &nbsp;&nbsp;
+                            <Link to={{pathname: `/admin/add-update-privileges/${SetupItem.id}`}}>
+                            <OverlayTrigger placement="top" overlay={view_profile}>
+                            <Button simple bsStyle="info" bsSize="xs"  fill>
+                                <i className="fa fa-user-plus" />
+                            </Button>
+                            </OverlayTrigger>
+                            </Link>
                         </td>
                       </tr>
                     )) }

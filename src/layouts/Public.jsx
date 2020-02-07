@@ -30,16 +30,13 @@ import image from "assets/img/full-screen-image-3.jpg";
 
 // dinamically create dashboard routes
 import routes from "routes.js";
-import staffroutes from "staffroutes.js";
-import axios from 'axios';
 
 // style for notifications
 import { style } from "variables/Variables.jsx";
-var globalVariables = require('../services/globalVariables.jsx');
 
 var ps;
 
-class Dashboard extends Component {
+class StaffDashboard extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -49,8 +46,7 @@ class Dashboard extends Component {
       hasImage: true,
       navbar: false,
       mini: false,
-      fixedClasses: "dropdown show-dropdown open",
-      Band_Access: []
+      fixedClasses: "dropdown show-dropdown open"
     };
   }
   componentDidMount() {
@@ -62,19 +58,6 @@ class Dashboard extends Component {
   componentWillUnmount() {
     if (navigator.platform.indexOf("Win") > -1) {
       ps.destroy();
-    }
-    let roles_key = sessionStorage.getItem('roles_key');
-    console.log(roles_key);
-    if(roles_key == 'STAFF')
-    {
-      let band_id = sessionStorage.getItem('roles_key');
-      let login_token = sessionStorage.getItem('login_token');
-      axios.post(globalVariables.admin_api_path+'/band/band-privileges-allow',  {band_id: band_id}, {
-        headers: { Authorization: "Bearer " + login_token }
-      })
-        .then(res => res.data).then((data) => {
-          this.setState({Band_Access: data.response});
-        });
     }
   }
   componentDidUpdate(e) {
@@ -160,73 +143,30 @@ class Dashboard extends Component {
       this.setState({ fixedClasses: "dropdown" });
     }
   };
-  handleCheck = val => {
-    let Band_Access = this.state.Band_Access;
-    let is_allow = 0;
-    Band_Access.forEach(function(item){
-      if(item.path == val.path)
-      {
-        is_allow = 1;
+  getRoutes = routes => {
+    return routes.map((prop, key) => {
+      if (prop.collapse) {
+        return this.getRoutes(prop.views);
+      }
+      if (prop.layout === "/admin") {
+        return (
+          <Route
+            path={prop.layout + prop.path}
+            key={key}
+            render={routeProps => (
+              <prop.component
+                {...routeProps}
+                handleClick={this.handleNotificationClick}
+              />
+            )}
+          />
+        );
+      } else {
+        return null;
       }
     });
-    return is_allow;
-}
-  getRoutes = routes => {
-    let roles_key = sessionStorage.getItem('roles_key');
-    if(roles_key == 'STAFF')
-    {
-      return routes.map((prop, key) => {
-        if(this.handleCheck(prop) == 1)
-        {
-          if (prop.collapse) {
-            return this.getRoutes(prop.views);
-          }
-          if (prop.layout === "/admin") {
-            return (
-              <Route
-                path={prop.layout + prop.path}
-                key={key}
-                render={routeProps => (
-                  <prop.component
-                    {...routeProps}
-                    handleClick={this.handleNotificationClick}
-                  />
-                )}
-              />
-            );
-          } else {
-            return null;
-          }
-        }
-      });
-    }
-    else
-    {
-      return routes.map((prop, key) => {
-        if (prop.collapse) {
-          return this.getRoutes(prop.views);
-        }
-        if (prop.layout === "/admin") {
-          return (
-            <Route
-              path={prop.layout + prop.path}
-              key={key}
-              render={routeProps => (
-                <prop.component
-                  {...routeProps}
-                  handleClick={this.handleNotificationClick}
-                />
-              )}
-            />
-          );
-        } else {
-          return null;
-        }
-      });
-    }
   };
   render() {
-    let roles_key = sessionStorage.getItem('roles_key');
     return (
       <div className="wrapper">
         <NotificationSystem ref="notificationSystem" style={style} />
@@ -251,7 +191,7 @@ class Dashboard extends Component {
             handleMiniClick={this.handleMiniClick}
             navbar={this.state.navbar}
           />
-          <Switch>{(roles_key == 'STAFF') ? (this.getRoutes(staffroutes)) : ((roles_key === 'MEMBER') ? (this.getRoutes(routes)) : (this.getRoutes(routes)))}</Switch>
+          <Switch>{this.getRoutes(routes)}</Switch>
           <Footer fluid />
         </div>
       </div>
@@ -259,4 +199,4 @@ class Dashboard extends Component {
   }
 }
 
-export default Dashboard;
+export default StaffDashboard;

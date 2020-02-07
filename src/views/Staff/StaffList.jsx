@@ -23,6 +23,7 @@ import Datetime from "react-datetime";
 import axios from 'axios';
 import Select from "react-select";
 import Card from "components/Card/Card.jsx";
+import {Link} from "react-router-dom";
 
 import Button from "components/CustomButton/CustomButton.jsx";
 var globalVariables = require('../../services/globalVariables.jsx');
@@ -55,10 +56,8 @@ class StaffList extends Component {
             headers: { Authorization: "Bearer " + login_token }
           })
             .then(res => res.data).then((data) => {
-              console.log(data);
               this.setState({TotalRecords: parseInt(data.total)});
               this.setState({contentList: data.response});
-              console.log(this.state.contentList);
             });
         }
       
@@ -68,10 +67,8 @@ class StaffList extends Component {
             headers: { Authorization: "Bearer " + login_token }
           })
             .then(res => res.data).then((data) => {
-              console.log(data);
               this.setState({TotalRecords: parseInt(data.total)});
               this.setState({contentList: data.response});
-              console.log(this.state.contentList);
             });
 
         }
@@ -116,7 +113,6 @@ class StaffList extends Component {
         handleSubmit = event => {
           event.preventDefault();
           let login_token = sessionStorage.getItem('login_token');
-          let AllSetupItems = this.state.SetupItems;
           axios.post(globalVariables.admin_api_path+'/epin/generate', {no_of_epin: this.state.no_of_epin, amount: this.state.amount, expiry_date: this.state.expiry_date},{
             headers: { Authorization: "Bearer " + login_token }
           })
@@ -155,10 +151,6 @@ class StaffList extends Component {
     const view_profile = <Tooltip id="view_profile">View User Profile</Tooltip>;
     const activate_user = <Tooltip id="active_inactive">Activate User</Tooltip>;
     const inactivate_user = <Tooltip id="inactivate_user">Inactivate User</Tooltip>;
-    const wallet_allow_access = <Tooltip id="active_inactive">Allow Wallet Access</Tooltip>;
-    const wallet_not_allow_access = <Tooltip id="inactivate_user">Disable Wallet Access</Tooltip>;
-    const block_user = <Tooltip id="active_inactive">Block User</Tooltip>;
-    const unblock_user = <Tooltip id="inactivate_user">Unblock User</Tooltip>;
     const pageNumbers = [];
     console.log(this.state.TotalRecords);
     let activePage = this.state.ActivePage;
@@ -223,7 +215,16 @@ class StaffList extends Component {
         <Grid fluid>
           <Row>
             <Col md={12}>
-              <Card title={<span>List of Staff Members </span>}
+              <Card title={<span>List of Staff Members 
+                <Link
+                   to={{pathname: '/admin/add-staff'}}
+                > <Button simple bsStyle='primary' bsSize='small'  fill>
+                  <span className="btn-label">
+                     <i className="fa fa-plus" />
+                  </span>
+                          Add New Staff
+                      </Button></Link>
+              </span>}
                 tableFullWidth
                 content={
                   <div>
@@ -249,26 +250,24 @@ class StaffList extends Component {
                             {(() => {
                                 switch(cotnentSingle.status)
                                 {
-                                    case 1:
+                                    case '1':
                                         return  <Button simple bsStyle="success" bsSize="xs"  fill> Active </Button>;
-                                    case 0:
-                                        return  <Button simple bsStyle="danger" bsSize="xs"  fill> Expired </Button>;
-                                    case 2:
-                                        return  <Button simple bsStyle="primary" bsSize="xs"  fill> Used </Button>;
+                                    case '0':
+                                        return  <Button simple bsStyle="danger" bsSize="xs"  fill> Not Active </Button>;
                                 }
                             })()}
                         </td>
                           }
                         <td> {cotnentSingle.phone_number}</td>
                         <td>{cotnentSingle.email}</td>
-                        <td>
                         <td className="td-actions text-right">
+                        <Link to={{pathname: `/admin/edit-staff/${cotnentSingle.id}`}}>
                             <OverlayTrigger placement="top" overlay={edit}>
-                            <Button simple bsStyle="primary" bsSize="xs"  fill
-                      onClick={() => this.onOpenModal()}>
+                            <Button simple bsStyle="primary" bsSize="xs"  fill>
                                 <i className="fa fa-edit" />
                             </Button>
                             </OverlayTrigger>
+                            </Link>
                             &nbsp;&nbsp;
                             <OverlayTrigger placement="top" overlay={view_profile}>
                             <Button simple bsStyle="success" bsSize="xs"  fill
@@ -296,7 +295,6 @@ class StaffList extends Component {
                             
 
                             
-                        </td>
                         </td>
                       </tr>
                     )) }

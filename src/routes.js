@@ -90,6 +90,8 @@ import Blogs from "views/Blogs/Blogs";
 import EcommerceStore from "views/Ecommerce/EcommerceStore";
 import Bulksms from "views/SMS/Bulksms";
 import Bulkemail from "views/Email/Bulkemail";
+import EditStaff from "views/Staff/EditStaff";
+import AddUpdatePrivileges from "views/Staff/AddUpdatePrivileges";
 // import RegisterPage from "views/Pages/RegisterPage.jsx";
 // import LockScreenPage from "views/Pages/LockScreenPage.jsx";
 
@@ -768,6 +770,27 @@ var routes = [
     component: Profile,
     invisible: true
   },
+  {
+    path: "/edit-staff/:userId",
+    layout: "/admin",
+    name: "Update Staff",
+    component: EditStaff,
+    invisible: true
+  },
+  {
+    path: "/add-staff/",
+    layout: "/admin",
+    name: "Add Staff",
+    component: EditStaff,
+    invisible: true
+  },
+  {
+    path: "/add-update-privileges/:userId",
+    layout: "/admin",
+    name: "Privileges for Stafff Member",
+    component: AddUpdatePrivileges,
+    invisible: true
+  }
  /* {
     collapse: true,
     path: "/forms",

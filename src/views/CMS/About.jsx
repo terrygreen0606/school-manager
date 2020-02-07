@@ -135,7 +135,7 @@ class About extends Component {
                                 name="description"
                                 /> 
 
-                    <img height="150px" src = {this.state.FImage ? this.state.FImage : avatar}/>
+                    <img alt="About Us" height="150px" src = {this.state.FImage ? this.state.FImage : avatar}/>
                     <FormInputs  ncols={["col-md-6"]}
                       proprieties={[
                         {
