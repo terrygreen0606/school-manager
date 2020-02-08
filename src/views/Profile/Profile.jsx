@@ -25,18 +25,23 @@ class Profile extends Component {
         super(props);
         this.state = {
             ProfileData: '',
-            TempProfileData: {}
+            TempProfileData: {},
+            full_url: ''
         };
         }
 
     componentDidMount()
     {
         let login_token = sessionStorage.getItem('login_token');
-            axios.get(globalVariables.admin_api_path+'/profile-api', {
+            axios.get(globalVariables.profile_api_path, {
             headers: { Authorization: "Bearer " + login_token }
             })
             .then(res => res.data).then((data) => {
                 this.setState({ProfileData: data.response});
+                if((data.response.profile_pic !== null && data.response.profile_pic !== 'null' && data.response.profile_pic !== '' ))
+                {
+                  this.setState({full_url: globalVariables.img_upload_path+data.response.profile_pic});
+                }
               //  this.setState({TempProfileData: data.response});
             })
     }
@@ -44,21 +49,33 @@ class Profile extends Component {
     handleSubmit = event => {
         event.preventDefault();
         let login_token = sessionStorage.getItem('login_token');
-        let TempProfileData = this.state.TempProfileData;
-
-        axios.post(globalVariables.admin_api_path+'/update-profile', TempProfileData,{
+        const TempProfileData = this.state.TempProfileData;
+        TempProfileData['id'] = this.state.ProfileData.id;
+        TempProfileData['username'] = this.state.ProfileData.username;
+        TempProfileData['email'] = this.state.ProfileData.email;
+        let update_url = globalVariables.admin_api_path+'/update-profile';
+        switch(sessionStorage.getItem('roles_key'))
+        {
+          case "MEMBER":
+            update_url = globalVariables.user_api_path+'/update-profile';
+          break;
+          default:
+            update_url = globalVariables.admin_api_path+'/update-profile';
+          break;
+        }
+        axios.post(update_url, TempProfileData,{
           headers: { Authorization: "Bearer " + login_token }
         })
           .then(res => {
             this.setState({ProfileData: res.data.response});
             this.setState({TempProfileData: res.data.response});
-            sessionStorage.setItem('user_profile',res.data.response.profile_pic);
+            sessionStorage.setItem('profile_pic',res.data.response.profile_pic);
             sessionStorage.setItem('first_name', res.data.response.first_name);
             sessionStorage.setItem('last_name', res.data.response.last_name);
             sessionStorage.setItem('user_id', res.data.response.id);
             sessionStorage.setItem('user_username', res.data.response.username);
             sessionStorage.setItem('user_email', res.data.response.email);
-            this.props.handleClick("tr", 1, "Settings Updated Successfully");
+            this.props.handleClick("tr", 1, "Profile Updated Successfully");
           }).catch(error => {
             this.props.handleClick("tr", 3, error.response.data.msg);
           });
@@ -68,6 +85,7 @@ class Profile extends Component {
         const TempProfileData = this.state.TempProfileData;
         TempProfileData['username'] = this.state.ProfileData.username
         TempProfileData['email'] = this.state.ProfileData.email;
+        TempProfileData['id'] = this.state.ProfileData.id;
         console.log(this.state.ProfileData);
         console.log(this.state.TempProfileData);
         TempProfileData[event.target.name] = event.target.value;
@@ -90,8 +108,8 @@ class Profile extends Component {
             TempProfileData['email'] = this.state.ProfileData.email;
             TempProfileData['profile_pic'] = res.data.response;
             this.setState({ TempProfileData : TempProfileData });
-             // this.setState({full_url: res.data.full_url});
-             // this.setState({flag: res.data.response});
+            this.setState({full_url: res.data.full_url});
+              this.setState({flag: res.data.response});
           }).catch((error) => {
               this.props.handleClick("tr", 3, "Image not uploaded");
       });
@@ -198,7 +216,7 @@ class Profile extends Component {
             <Col md={4}>
               <UserCard
                 bgImage="https://ununsplash.imgix.net/photo-1431578500526-4d9613015464?fit=crop&fm=jpg&h=300&q=75&w=400"
-                avatar={(this.state.ProfileData.profile_pic) ? globalVariables.img_upload_path+this.state.ProfileData.profile_pic : avatar}
+                avatar={(this.state.full_url) ? this.state.full_url : avatar}
                 name={this.state.ProfileData.first_name+ ' '+this.state.ProfileData.last_name}
                 userName={this.state.ProfileData.username}
                 description={

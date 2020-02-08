@@ -176,6 +176,7 @@ class LoginPage extends Component {
                 sessionStorage.setItem('first_name', ProfileJSON.response.first_name);
                 sessionStorage.setItem('last_name', ProfileJSON.response.last_name);
                 sessionStorage.setItem('user_id', ProfileJSON.response.id);
+                sessionStorage.setItem('id', ProfileJSON.response.id);
                 sessionStorage.setItem('user_username', ProfileJSON.response.username);
                 sessionStorage.setItem('user_email', ProfileJSON.response.email);
                 sessionStorage.setItem('profile_pic', ProfileJSON.response.profile_pic);

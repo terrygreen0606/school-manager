@@ -38,7 +38,7 @@ class HeaderLinks extends Component {
   }
   componentDidMount()
   {
-    if(!sessionStorage.getItem('login_token') && (sessionStorage.getItem('roles_key') !== 'ADMIN'))
+    if(!sessionStorage.getItem('login_token') && (sessionStorage.getItem('roles_key') !== 'MEMBER'))
     {
       this.setState({'redirect': true});
     }

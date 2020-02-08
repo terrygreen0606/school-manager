@@ -27,12 +27,14 @@ import AuthLayout from "layouts/Auth.jsx";
 import AdminLayout from "layouts/Admin.jsx";
 import StaffLayout from "layouts/Staff.jsx";
 import PublicLayout from "layouts/Public.jsx";
+import MemberLayout from "layouts/Member.jsx";
 
 ReactDOM.render(
   <HashRouter>
     <Switch>
       <Route path="/auth" render={props => <AuthLayout {...props} />} />
       <Route path="/admin" render={props => <AdminLayout {...props} />} />
+      <Route path="/member" render={props => <MemberLayout {...props} />} />
       <Route path="/staff" render={props => <StaffLayout {...props} />} />
       <Route path="/home" render={props => <PublicLayout {...props} />} />
       <Redirect from="/" to="/home/index" />

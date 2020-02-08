@@ -22,14 +22,14 @@ import "perfect-scrollbar/css/perfect-scrollbar.css";
 // react component that creates notifications (like some alerts with messages)
 import NotificationSystem from "react-notification-system";
 
-import Sidebar from "components/Sidebar/Sidebar.jsx";
-import AdminNavbar from "components/Navbars/AdminNavbar.jsx";
+import MemberSidebar from "components/Sidebar/MemberSidebar.jsx";
+import MemberNavbar from "components/Navbars/MemberNavbar.jsx";
 import Footer from "components/Footer/Footer.jsx";
 
 import image from "assets/img/full-screen-image-3.jpg";
 
 // dinamically create dashboard routes
-import routes from "routes.js";
+import routes from "memberroutes.js";
 
 // style for notifications
 import { style } from "variables/Variables.jsx";
@@ -144,12 +144,23 @@ class Dashboard extends Component {
       this.setState({ fixedClasses: "dropdown" });
     }
   };
+  handleCheck = val => {
+    let Band_Access = this.state.Band_Access;
+    let is_allow = 0;
+    Band_Access.forEach(function(item){
+      if(item.path == val.path)
+      {
+        is_allow = 1;
+      }
+    });
+    return is_allow;
+}
   getRoutes = routes => {
       return routes.map((prop, key) => {
         if (prop.collapse) {
           return this.getRoutes(prop.views);
         }
-        if (prop.layout === "/admin") {
+        if (prop.layout === "/member") {
           return (
             <Route
               path={prop.layout + prop.path}
@@ -171,7 +182,7 @@ class Dashboard extends Component {
     return (
       <div className="wrapper">
         <NotificationSystem ref="notificationSystem" style={style} />
-        <Sidebar
+        <MemberSidebar
           {...this.props}
           image={this.state.image}
           color={this.state.color}
@@ -187,7 +198,7 @@ class Dashboard extends Component {
           }
           ref="mainPanel"
         >
-          <AdminNavbar
+          <MemberNavbar
             {...this.props}
             handleMiniClick={this.handleMiniClick}
             navbar={this.state.navbar}
