@@ -63,7 +63,7 @@ class PagesHeader extends Component {
         <Navbar.Collapse>
           <ul className="nav navbar-nav navbar-right">
             <li>
-              <NavLink to={"/dashboard"} className="nav-link">
+              <NavLink to={"/"} className="nav-link">
                 <i className="fa fa-th-list" />
                 <p>Home</p>
               </NavLink>

@@ -16,7 +16,6 @@ import axios from 'axios';
 
 import Card from "components/Card/Card.jsx";
 
-import Button from "components/CustomButton/CustomButton.jsx";
 var globalVariables = require('../../services/globalVariables.jsx');
 class WithdrawalOnWardTransaction extends Component {
     constructor(props) {

@@ -47,6 +47,7 @@ import EcommerceStore from "views/Ecommerce/EcommerceStore";
 import Bulksms from "views/SMS/Bulksms";
 import Bulkemail from "views/Email/Bulkemail";
 import LoginPage from "views/Pages/LoginPage.jsx";
+import Messages from "views/Messages/Messages.jsx";
 
 var routes = [
   {
@@ -258,9 +259,9 @@ var routes = [
     name: "Messages",
     icon: "pe-7s-mail",
     layout: "/member",
-    component: ClosedTickets
+    component: Messages
   },
-  {
+  /* {
     path: "/bulk-sms",
     name: "Bulk SMS",
     icon: "pe-7s-mail-open",
@@ -273,7 +274,7 @@ var routes = [
     icon: "pe-7s-mail-open-file",
     layout: "/member",
     component: Bulkemail
-  },
+  }, */
   {
     collapse: true,
     path: "/support-system",

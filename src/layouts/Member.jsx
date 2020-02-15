@@ -26,7 +26,7 @@ import MemberSidebar from "components/Sidebar/MemberSidebar.jsx";
 import MemberNavbar from "components/Navbars/MemberNavbar.jsx";
 import Footer from "components/Footer/Footer.jsx";
 
-import image from "assets/img/full-screen-image-3.jpg";
+import image from "assets/img/hope-bg.jpeg";
 
 // dinamically create dashboard routes
 import routes from "memberroutes.js";
