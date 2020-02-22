@@ -26,7 +26,7 @@ import Sidebar from "components/Sidebar/Sidebar.jsx";
 import AdminNavbar from "components/Navbars/AdminNavbar.jsx";
 import Footer from "components/Footer/Footer.jsx";
 
-import image from "assets/img/hope-bg.jpeg";
+import image from "assets/img/sidebar-img.jpg";
 
 // dinamically create dashboard routes
 import routes from "routes.js";

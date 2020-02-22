@@ -14,40 +14,34 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import Dashboard from "views/Dashboard.jsx";
+import Dashboard from "views/MemberPanel/Dashboard.jsx";
 // import WithdrawalSetup from "views/Setup/WithdrawalSetup.jsx";
-import Profile from "views/Profile/Profile.jsx";
-import Orders from "views/Orders/Orders.jsx";
-import Notifications from "views/Components/Notifications.jsx";
-import Ewallet from "views/Ewallet/Ewallet";
-import Transaction from "views/Ewallet/Transaction";
-import WithdrawalOnWardTransaction from "views/Ewallet/WithdrawalOnwardTrans";
-import CreditDebit from "views/Ewallet/CreditDebit";
-import FundTransfer from "views/Ewallet/FundTransfer";
-import TransferHistory from "views/Ewallet/TransferHistory";
-import UserEarnings from "views/Ewallet/UserEarnings";
-import WithdrawalStaus from "views/Ewallet/WithdrawalStatus";
-import GlobalNotices from "views/Notice/GlobalNotices";
+import Profile from "views/MemberPanel/Profile/Profile.jsx";
+import Orders from "views/MemberPanel/Orders/Orders.jsx";
+import Notifications from "views/MemberPanel/Components/Notifications.jsx";
+import Ewallet from "views/MemberPanel/Ewallet/Ewallet";
+import Transaction from "views/MemberPanel/Ewallet/Transaction";
+import WithdrawalOnWardTransaction from "views/MemberPanel/Ewallet/WithdrawalOnwardTrans";
+import FundTransfer from "views/MemberPanel/Ewallet/FundTransfer";
+import TransferHistory from "views/MemberPanel/Ewallet/TransferHistory";
+import UserEarnings from "views/MemberPanel/Ewallet/UserEarnings";
+import WithdrawalStaus from "views/MemberPanel/Ewallet/WithdrawalStatus";
 
-import BusinessSummary from "views/Business/BusinessSummary";
-import BusinessTransactions from "views/Business/BusinessTransaction";
-import Epins from "views/Epin/Epins";
-import EpinRequests from "views/Epin/EpinRequests";
-import EpinAllocation from "views/Epin/EpinAllocation";
-import ViewEpin from "views/Epin/ViewEpin";
-import EpinTransfer from "views/Epin/EpinTransfer";
+import BusinessSummary from "views/MemberPanel/Business/BusinessSummary";
+import BusinessTransactions from "views/MemberPanel/Business/BusinessTransaction";
+import Epins from "views/MemberPanel/Epin/Epins";
+import ViewEpin from "views/MemberPanel/Epin/ViewEpin";
+import EpinTransfer from "views/MemberPanel/Epin/EpinTransfer";
 
-import Genealogy from "views/Downlines/Genealogy";
-import Tabular from "views/Downlines/Tabular";
-import PayoutList from "views/Payout/Payoutlist";
-import TicketList from "views/SupportSystem/TicketList";
-import OpenTickets from "views/SupportSystem/OpenTickets";
-import ClosedTickets from "views/SupportSystem/ClosedTickets";
-import EcommerceStore from "views/Ecommerce/EcommerceStore";
-import Bulksms from "views/SMS/Bulksms";
-import Bulkemail from "views/Email/Bulkemail";
-import LoginPage from "views/Pages/LoginPage.jsx";
-import Messages from "views/Messages/Messages.jsx";
+import Genealogy from "views/MemberPanel/Downlines/Genealogy";
+import Tabular from "views/MemberPanel/Downlines/Tabular";
+import PayoutList from "views/MemberPanel/Payout/Payoutlist";
+import TicketList from "views/MemberPanel/SupportSystem/TicketList";
+import OpenTickets from "views/MemberPanel/SupportSystem/OpenTickets";
+import ClosedTickets from "views/MemberPanel/SupportSystem/ClosedTickets";
+import EcommerceStore from "views/MemberPanel/Ecommerce/EcommerceStore";
+import LoginPage from "views/MemberPanel/Pages/LoginPage.jsx";
+import Messages from "views/MemberPanel/Messages/Messages.jsx";
 
 var routes = [
   {
@@ -142,13 +136,6 @@ var routes = [
         component: WithdrawalStaus
       },
       {
-        path: "/credit-debit",
-        layout: "/member",
-        name: "Credit/Debit",
-        mini: "CD",
-        component: CreditDebit
-      },
-      {
         path: "/fund-transfer",
         layout: "/member",
         name: "Fund Transfer",
@@ -170,13 +157,6 @@ var routes = [
         component: UserEarnings
       }
     ]
-  },
-  {
-    path: "/g-notices",
-    name: "Global Notices",
-    icon: "pe-7s-volume",
-    layout: "/member",
-    component: GlobalNotices
   },
   {
     collapse: true,
@@ -215,20 +195,20 @@ var routes = [
         mini: "GE",
         component: Epins
       },
-      {
+     /* {
         path: "/epin-requests",
         layout: "/member",
         name: "Epin Requests",
         mini: "ER",
         component: EpinRequests
-      },
+      }, 
       {
         path: "/epin-allocation",
         layout: "/member",
         name: "PIN Allocation",
         mini: "PA",
         component: EpinAllocation
-      },
+      }, */
       {
         path: "/view-epin",
         layout: "/member",

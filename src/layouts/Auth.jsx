@@ -23,7 +23,7 @@ import AuthNavbar from "components/Navbars/AuthNavbar.jsx";
 // dinamically create pages routes
 import routes from "routes.js";
 
-import bgImage from "assets/img/hope-bg.jpeg";
+import bgImage from "assets/img/hope-bg.jpg";
 
 class Pages extends Component {
   componentWillMount() {
