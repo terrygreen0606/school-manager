@@ -149,13 +149,13 @@ var routes = [
         mini: "TH",
         component: TransferHistory
       },
-      {
-        path: "/user-earnings",
-        layout: "/member",
-        name: "User Earnings",
-        mini: "UE",
-        component: UserEarnings
-      }
+      // {
+      //   path: "/user-earnings",
+      //   layout: "/member",
+      //   name: "User Earnings",
+      //   mini: "UE",
+      //   component: UserEarnings
+      // }
     ]
   },
   {
@@ -208,14 +208,14 @@ var routes = [
         name: "PIN Allocation",
         mini: "PA",
         component: EpinAllocation
-      }, */
+      }, 
       {
         path: "/view-epin",
         layout: "/member",
         name: "View Epin",
         mini: "VE",
         component: ViewEpin
-      },
+      }, */
       {
         path: "/epin-transfer",
         layout: "/member",

@@ -36,26 +36,16 @@ class FundTransfer extends Component {
             amount: null,
             transaction_note: '',
             transaction_type: null,
-            transaction: null,
+            transaction: 'debit',
             transfer_to_usernameError: null,
             valid_receiver_usename: false,
-            transfer_to_username:null
+            transfer_to_username:null,
+            wallet_amount: 0
         };
         }
 
       handleSubmit = event => {
-        event.preventDefault();
-        if(this.state.username === null || this.state.valid_usename === false)
-        {
-            this.setState({
-                usernameError: (
-                  <small className="text-danger">
-                    Please enter a valid username.
-                  </small>
-                )
-              });
-        }
-        else if(this.state.transfer_to_username === null || this.state.valid_receiver_usename === false)
+        if(this.state.transfer_to_username === null || this.state.valid_receiver_usename === false)
         {
             this.setState({
                 transfer_to_usernameError: (
@@ -98,23 +88,40 @@ class FundTransfer extends Component {
         else
         {
             let login_token = sessionStorage.getItem('login_token');
-            axios.post(globalVariables.admin_api_path+'/ewallet/transfer-fund', {username: this.state.username,transfer_to_username: this.state.transfer_to_username, amount: this.state.amount, transaction_note:this.state.transaction_note, transaction_type: this.state.transaction_type.value, transaction: this.state.transaction},{
+            axios.post(globalVariables.user_api_path+'/ewallet/transfer-fund', {username: this.state.username,transfer_to_username: this.state.transfer_to_username, amount: this.state.amount, transaction_note:this.state.transaction_note, transaction_type: this.state.transaction_type.value, transaction: this.state.transaction},{
             headers: { Authorization: "Bearer " + login_token }
             }).then(res => {
                 this.props.handleClick("tr", 1, "Transaction Successfully Completed");
                 document.getElementById('creditdebitform').reset();
                }).catch(error => {
-            if(error.length)
-            {
                 this.props.handleClick("tr", 3, error.response.data.msg);
-            }
-            else
-            {
-                this.props.handleClick("tr", 3, "Technical Error! Please try again");
-            }
-            
+            // if(error.length)
+            // {
+            //     this.props.handleClick("tr", 3, error.response.data.msg);
+            // }
+            // else
+            // {
+            //     this.props.handleClick("tr", 3, "Technical Error! Please try again");
+            // }
             });
         }
+      }
+
+      componentDidMount() {
+      let login_token = sessionStorage.getItem('login_token');
+      let user_id = sessionStorage.getItem('user_id');
+
+        axios.get(globalVariables.profile_api_path, {
+          headers: { Authorization: "Bearer " + login_token }
+        })
+          .then(res => res.data).then((data) => {
+            if(data.response.wallet_amount !== null)
+            {
+              this.setState({wallet_amount: data.response.wallet_amount});
+            }
+            this.setState({username: data.response.username});
+            console.log(data.response.username);
+          });
       }
 
       handleChange = event => {
@@ -135,7 +142,7 @@ class FundTransfer extends Component {
           const target = event.target;
           console.log(target.name);
           let login_token = sessionStorage.getItem('login_token');
-          axios.post(globalVariables.admin_api_path+'/check-user-validity', {'username' : target.value}, {
+          axios.post(globalVariables.user_api_path+'/check-user-validity', {'username' : target.value}, {
             headers: { Authorization: "Bearer " + login_token }
           })
             .then(res => res.data).then((data) => {
@@ -159,7 +166,7 @@ class FundTransfer extends Component {
                 }
               }
               else{
-                if(data.response === true)
+                if(data.response === false)
                 {
                   this.setState({
                       transfer_to_usernameError: (
@@ -190,28 +197,24 @@ class FundTransfer extends Component {
               <Card
                 title=""
                 content={
-                  <form  onSubmit={this.handleSubmit} id="creditdebitform">
-                    <FormGroup>
-                      <ControlLabel>Username</ControlLabel>
-                      <FormControl  onChange={this.handleUsername} name="username" type="text" />
-                      {this.state.usernameError}
-                    </FormGroup>
-
-                    <FormGroup>
-                      <ControlLabel>Transfer To (Username)</ControlLabel>
-                      <FormControl  onChange={this.handleUsername} name="transfer_to_username" type="text" />
+                  <form id="creditdebitform">
+                    <Col md={6}>
+                      <FormGroup>
+                        <ControlLabel>Transfer To (Username)</ControlLabel>
+                        <FormControl  onChange={this.handleUsername} name="transfer_to_username" type="text" />
+                      </FormGroup>
                       {this.state.transfer_to_usernameError}
-                    </FormGroup>
-
+                    </Col>
+                    <Col md={6}>
                     <FormGroup>
-                      <ControlLabel>Amount</ControlLabel>
+                      <ControlLabel>Amount (Available Balance:  {this.state.wallet_amount})</ControlLabel>
                       <FormControl  onChange={this.handleChange} type="number" name="amount"/>
                       {this.state.amountError}
                     </FormGroup>
-                    <FormGroup>
-                      <ControlLabel>Transaction Note</ControlLabel>
-                      <FormControl  onChange={this.handleChange} type="text" name="transaction_note"/>
-                    </FormGroup>
+                    </Col>
+                    <div className="clearfix"></div>
+
+                    <Col md={6}>
                     <FormGroup>
                       <ControlLabel>Transaction Type</ControlLabel>
                       <Select
@@ -220,29 +223,23 @@ class FundTransfer extends Component {
                         />
                         {this.state.transactionTypeError}
                     </FormGroup>
+                    </Col>
+
+                    <Col md={6}>
                     <FormGroup>
-                      <ControlLabel>Transaction</ControlLabel>
-                      <Radio
-                            number="5"
-                            option="debit"
-                            name="transaction"
-                            onChange={this.handleRadio}
-                            checked={this.state.transaction === "debit"}
-                            label="Debit"
-                          />
-                          <Radio
-                            number="6"
-                            option="credit"
-                            name="transaction"
-                            onChange={this.handleRadio}
-                            checked={this.state.transaction === "credit"}
-                            label="Credit"
-                          />
-                          {this.state.transactionError}
+                      <ControlLabel>Transaction Note</ControlLabel>
+                      <FormControl  onChange={this.handleChange} type="text" name="transaction_note"/>
                     </FormGroup>
-                    <Button bsStyle="info" fill type="submit">
-                      Submit
-                    </Button>
+                    </Col>
+                    <div className="clearfix"></div>
+
+                    <Col md={6}>
+                      <Button bsStyle="info" fill onClick={this.handleSubmit}>
+                        Submit
+                      </Button>
+                    </Col>
+
+                    <div className="clearfix"></div>
                   </form>
                 }
               />

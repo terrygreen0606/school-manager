@@ -29,8 +29,7 @@ import {
   FormGroup,
   ControlLabel
 } from "react-bootstrap";
-import Select from "react-select";
-import Radio from "components/CustomRadio/CustomRadio.jsx";
+
 import Card from "components/Card/Card.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
 import axios from 'axios';

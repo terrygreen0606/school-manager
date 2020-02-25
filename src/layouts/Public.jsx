@@ -170,13 +170,13 @@ class StaffDashboard extends Component {
     return (
       <div className="wrapper">
         <NotificationSystem ref="notificationSystem" style={style} />
-        <Sidebar
+        {/* <Sidebar
           {...this.props}
           image={this.state.image}
           color={this.state.color}
           hasImage={this.state.hasImage}
           mini={this.state.mini}
-        />
+        /> */}
         <div
           className={
             "main-panel" +
@@ -186,11 +186,11 @@ class StaffDashboard extends Component {
           }
           ref="mainPanel"
         >
-          <AdminNavbar
+          {/* <AdminNavbar
             {...this.props}
             handleMiniClick={this.handleMiniClick}
             navbar={this.state.navbar}
-          />
+          /> */}
           <Switch>{this.getRoutes(routes)}</Switch>
           <Footer fluid />
         </div>

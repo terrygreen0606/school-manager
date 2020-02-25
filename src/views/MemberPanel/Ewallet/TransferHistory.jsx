@@ -32,7 +32,8 @@ class TransferHistory extends Component {
       
         componentDidMount() {
           let login_token = sessionStorage.getItem('login_token');
-          axios.post(globalVariables.admin_api_path+'/ewallet/transfer-history', {model_call: 'Transfer_history', search_f:'transaction_id'}, {
+          let user_id = sessionStorage.getItem('user_id');
+          axios.post(globalVariables.user_api_path+'/ewallet/transfer-history', {model_call: 'Transfer_history', search_f:'transaction_id', user_id: user_id}, {
             headers: { Authorization: "Bearer " + login_token }
           })
             .then(res => res.data).then((data) => {
@@ -62,7 +63,7 @@ class TransferHistory extends Component {
                         <th>From User</th>
                         <th>To User</th>
                         <th>Amount</th>
-                        <th>Status</th>
+                        {/* <th>Status</th> */}
                         <th>Remark</th>
                       </tr>
                     </thead>
@@ -70,10 +71,10 @@ class TransferHistory extends Component {
                     { this.state.contentList.map((cotnentSingle, index_key) => (
                       <tr key={index_key}>
                         <td>{cotnentSingle.created_at}</td>
-                        <td>{cotnentSingle.from_user_first_name+' '+cotnentSingle.from_user_last_name} {'('+cotnentSingle.from_user_name+')'} </td>
-                        <td>{cotnentSingle.to_user_first_name+' '+cotnentSingle.to_user_last_name} {'('+cotnentSingle.to_user_name+')'} </td>
+                        <td>{cotnentSingle.from_user_name} </td>
+                        <td>{cotnentSingle.to_user_name} </td>
                         <td>{cotnentSingle.amount}</td>
-                        <td>
+                        {/* <td>
                             {(() => {
                                 switch(cotnentSingle.status)
                                 {
@@ -83,7 +84,7 @@ class TransferHistory extends Component {
                                         return  <Button simple bsStyle="danger" bsSize="xs"  fill> Cancelled </Button>;
                                 }
                             })()}
-                        </td>
+                        </td> */}
                         <td>{cotnentSingle.remark}</td>
                       </tr>
                     )) }

@@ -28,6 +28,7 @@ import AdminLayout from "layouts/Admin.jsx";
 import StaffLayout from "layouts/Staff.jsx";
 import PublicLayout from "layouts/Public.jsx";
 import MemberLayout from "layouts/Member.jsx";
+import RedirectLayout from "layouts/Redirect.jsx";
 
 ReactDOM.render(
   <HashRouter>
@@ -37,7 +38,8 @@ ReactDOM.render(
       <Route path="/member" render={props => <MemberLayout {...props} />} />
       <Route path="/staff" render={props => <StaffLayout {...props} />} />
       <Route path="/home" render={props => <PublicLayout {...props} />} />
-      <Redirect from="/" to="/home/index" />
+      <Route path="/redirect" render={props => <RedirectLayout {...props} />} />
+      <Redirect from="/" to="/redirect/index" />
     </Switch>
   </HashRouter>,
   document.getElementById("root")

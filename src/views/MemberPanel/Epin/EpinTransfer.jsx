@@ -18,14 +18,13 @@ import Select from "react-select";
 
 import Card from "components/Card/Card.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
-import Radio from "components/CustomRadio/CustomRadio.jsx";
-import {TransactionTypes} from "../../../services/admin/TransactionType.jsx";
 var globalVariables = require('../../../services/globalVariables.jsx');
 class EpinTransfer extends Component {
     constructor(props) {
         super(props);
         this.state = {
             // Errors
+            epin_id: '',
             transactionError: null,
             usernameError: null,
             amountError: null,
@@ -36,7 +35,8 @@ class EpinTransfer extends Component {
             amount: null,
             transaction_note: '',
             transaction_type: null,
-            transaction: null
+            transaction: null,
+            EpinList: []
         };
         }
 
@@ -52,44 +52,34 @@ class EpinTransfer extends Component {
                 )
               });
         }
-        else if(this.state.amount === null)
-        {
-            this.setState({
-                amountError: (
-                  <small className="text-danger">
-                    Please enter a valid amount.
-                  </small>
-                )
-              });
-        }
-        else if(this.state.transaction_type === null)
-        {
-            this.setState({
-                transactionTypeError: (
-                  <small className="text-danger">
-                    Please select valid transaction type.
-                  </small>
-                )
-              });
-        }
-        else if(this.state.transaction === null)
-        {
-            this.setState({
-                transactionError: (
-                  <small className="text-danger">
-                    Please select transaction (Debit/Credit)
-                  </small>
-                )
-              });
-        }
         else
         {
             let login_token = sessionStorage.getItem('login_token');
-            axios.post(globalVariables.admin_api_path+'/ewallet/credit-debit', {username: this.state.username, amount: this.state.amount, transaction_note:this.state.transaction_note, transaction_type: this.state.transaction_type.value, transaction: this.state.transaction},{
+            let username = sessionStorage.getItem('user_username');
+            let user_id = sessionStorage.getItem('user_id');
+            axios.post(globalVariables.user_api_path+'/epin/transfer', {username: username, transfer_to_username: this.state.username, epin_id: this.state.epin_id, transaction_note:this.state.transaction_note},{
             headers: { Authorization: "Bearer " + login_token }
             }).then(res => {
-                this.props.handleClick("tr", 1, "Transaction Successfully Completed");
+              axios.post(globalVariables.user_api_path+'/epin/search', {model_call: 'Epin', search_f:'epin_id', user_id: user_id, status: 1}, {
+                headers: { Authorization: "Bearer " + login_token }
+              })
+                .then(res => res.data).then((data) => {
+                  let EpinList = [];
+                  let response = data.response;
+                  console.log(EpinList);
+                  //console.log(response);
+                  for(let i=0; i< response.length; i++)
+                  {
+                    EpinList.push({'label' : response[i].epin_id, 'value': response[i].id});
+                  }
+                  //const packageList = data.map(mappingFunction);
+                 // console.log(EpinList);
+                  this.setState({EpinList: EpinList});
+                //  console.log(this.state.EpinList);
+                });
+                this.props.handleClick("tr", 1, "Epin transfer Successfully");
                 document.getElementById('creditdebitform').reset();
+               // window.location.reload(false);
                }).catch(error => {
             if(error.length)
             {
@@ -100,7 +90,7 @@ class EpinTransfer extends Component {
                 this.props.handleClick("tr", 3, "Technical Error! Please try again");
             }
             
-            });
+          });
         }
       }
 
@@ -121,11 +111,11 @@ class EpinTransfer extends Component {
       handleUsername = event => {
           const target = event.target;
           let login_token = sessionStorage.getItem('login_token');
-          axios.post(globalVariables.admin_api_path+'/check-user-validity', {'username' : target.value}, {
+          axios.post(globalVariables.user_api_path+'/check-user-validity', {'username' : target.value}, {
             headers: { Authorization: "Bearer " + login_token }
           })
             .then(res => res.data).then((data) => {
-              if(data.response === true)
+              if(data.response === false)
               {
                 this.setState({
                     usernameError: (
@@ -144,6 +134,28 @@ class EpinTransfer extends Component {
               }
             })
       }
+
+      componentDidMount() {
+        let login_token = sessionStorage.getItem('login_token');
+        let user_id = sessionStorage.getItem('user_id');
+        axios.post(globalVariables.user_api_path+'/epin/search', {model_call: 'Epin', search_f:'epin_id', user_id: user_id, status: 1}, {
+          headers: { Authorization: "Bearer " + login_token }
+        })
+          .then(res => res.data).then((data) => {
+            let EpinList = [];
+            let response = data.response;
+            console.log(EpinList);
+            //console.log(response);
+            for(let i=0; i< response.length; i++)
+            {
+              EpinList.push({'label' : response[i].epin_id, 'value': response[i].id});
+            }
+            //const packageList = data.map(mappingFunction);
+           // console.log(EpinList);
+            this.setState({EpinList: EpinList});
+          //  console.log(this.state.EpinList);
+          });
+      }
         
   render() {
     
@@ -156,48 +168,32 @@ class EpinTransfer extends Component {
                 title=""
                 content={
                   <form  onSubmit={this.handleSubmit} id="creditdebitform">
-                    <FormGroup>
-                      <ControlLabel>Username</ControlLabel>
-                      <FormControl  onChange={this.handleUsername} name="username" type="text" />
-                      {this.state.usernameError}
-                    </FormGroup>
-                    <FormGroup>
-                      <ControlLabel>Amount</ControlLabel>
-                      <FormControl  onChange={this.handleChange} type="number" name="amount"/>
-                      {this.state.amountError}
-                    </FormGroup>
-                    <FormGroup>
-                      <ControlLabel>Transaction Note</ControlLabel>
-                      <FormControl  onChange={this.handleChange} type="text" name="transaction_note"/>
-                    </FormGroup>
-                    <FormGroup>
-                      <ControlLabel>Transaction Type</ControlLabel>
-                      <Select
-                            name="transaction_type"  onChange={value => this.setState({ transaction_type: value, transactionTypeError: null })}
-                            options={TransactionTypes} 
-                        />
-                        {this.state.transactionTypeError}
-                    </FormGroup>
-                    <FormGroup>
-                      <ControlLabel>Transaction</ControlLabel>
-                      <Radio
-                            number="5"
-                            option="debit"
-                            name="transaction"
-                            onChange={this.handleRadio}
-                            checked={this.state.transaction === "debit"}
-                            label="Debit"
+                    <Col md={6}>
+                      <FormGroup>
+                        <ControlLabel>Username</ControlLabel>
+                        <FormControl  onChange={this.handleUsername} name="username" type="text" />
+                        {this.state.usernameError}
+                      </FormGroup>
+                      </Col>
+                      <Col md={6}>
+                      <FormGroup>
+                        <ControlLabel>Epin</ControlLabel>
+                        <Select id="epin_id_select"
+                              name="epin_id"  onChange={value => this.setState({ epin_id: value, transactionTypeError: null })}
+                              options={this.state.EpinList} 
                           />
-                          <Radio
-                            number="6"
-                            option="credit"
-                            name="transaction"
-                            onChange={this.handleRadio}
-                            checked={this.state.transaction === "credit"}
-                            label="Credit"
-                          />
-                          {this.state.transactionError}
-                    </FormGroup>
+                          {this.state.transactionTypeError}
+                      </FormGroup>
+                    </Col>
+                    <div className="clearfix"></div>
+                    <Col md={6}>
+                      <FormGroup>
+                        <ControlLabel>Transaction Note</ControlLabel>
+                        <FormControl  onChange={this.handleChange} type="text" name="transaction_note"/>
+                      </FormGroup>
+                    </Col>
+                    <div className="clearfix"></div>
+                   
                     <Button bsStyle="info" fill type="submit">
                       Submit
                     </Button>
