@@ -51,7 +51,7 @@ class PayoutList extends Component {
           });
 
           let login_token = sessionStorage.getItem('login_token');
-          axios.post(globalVariables.admin_api_path+'/member/list', {offset: this.state.ActivePage}, {
+          axios.post(globalVariables.user_api_path+'/member/list', {offset: this.state.ActivePage}, {
             headers: { Authorization: "Bearer " + login_token }
           })
             .then(res => res.data).then((data) => {
@@ -64,7 +64,8 @@ class PayoutList extends Component {
       
         componentDidMount() {
           let login_token = sessionStorage.getItem('login_token');
-          axios.post(globalVariables.admin_api_path+'/payout/list',  {model_call: 'Payout', search_f:'id'}, {
+          let user_id = sessionStorage.getItem('user_id');
+          axios.post(globalVariables.user_api_path+'/payout/list',  {model_call: 'Payout_data', search_f:'id', user_id: user_id}, {
             headers: { Authorization: "Bearer " + login_token }
           })
             .then(res => res.data).then((data) => {
@@ -228,7 +229,8 @@ class PayoutList extends Component {
                         <th>Generate Date/Time</th>
                         <th>Status</th>
                         <th>Payout Date</th>
-                        <th>Action</th>
+                        <th>Amount</th>
+                        {/* <th>Action</th> */}
                       </tr>
                     </thead>
                     <tbody>
@@ -250,8 +252,8 @@ class PayoutList extends Component {
                         </td>
                           }
                         <td>{cotnentSingle.payout_date}</td>
-                        <td>
-                        <td className="td-actions">
+                        <td>{cotnentSingle.amount}</td>
+                        {/* <td className="td-actions">
                             <OverlayTrigger placement="top" overlay={view_payout}>
                             <Button simple bsStyle="primary" bsSize="xs"  fill
                       onClick={() => this.onOpenModal()}>
@@ -267,12 +269,11 @@ class PayoutList extends Component {
                                   {(cotnentSingle.status == 0) ? <i className="fa fa-check" /> : <i className="fa fa-ban" />}
                               </Button>
                               </OverlayTrigger>
-                          */ }
+  
                             
 
                             
-                        </td>
-                        </td>
+                        </td> */ }
                       </tr>
                     )) }
                     </tbody>

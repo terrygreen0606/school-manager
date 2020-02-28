@@ -24,6 +24,7 @@ import Card from "components/Card/Card.jsx";
 
 import Button from "components/CustomButton/CustomButton.jsx";
 import Radio from "components/CustomRadio/CustomRadio.jsx";
+import {Link} from "react-router-dom";
 var globalVariables = require('../../../services/globalVariables.jsx');
 class OpenTickets extends Component {
     constructor(props) {
@@ -47,14 +48,15 @@ class OpenTickets extends Component {
       
         componentDidMount() {
           let login_token = sessionStorage.getItem('login_token');
-          axios.post(globalVariables.admin_api_path+'/support-system/ticket-search',  {model_call: 'Ticket', search_f: 'status', search_text: '0'},{
+          let user_id = sessionStorage.getItem('user_id');
+          axios.post(globalVariables.user_api_path+'/support-system/ticket-search',  {model_call: 'Ticket', search_f: 'status', search_text: '0', user_id: user_id},{
             headers: { Authorization: "Bearer " + login_token }
           })
             .then(res => res.data).then((data) => {
               this.setState({SetupItems: data.response})
             });
 
-            axios.post(globalVariables.admin_api_path+'/member/list',  {status: 1},{
+            axios.post(globalVariables.user_api_path+'/member/list',  {status: 1},{
               headers: { Authorization: "Bearer " + login_token }
             })
               .then(res => res.data).then((data) => {
@@ -69,7 +71,7 @@ class OpenTickets extends Component {
                 console.log(memmbers);
               });
 
-              axios.post(globalVariables.admin_api_path+'/staff/list',  {roles_key: 'STAFF', status: 1},{
+              axios.post(globalVariables.user_api_path+'/staff/list',  {roles_key: 'STAFF', status: 1},{
                 headers: { Authorization: "Bearer " + login_token }
               })
                 .then(res => res.data).then((data) => { 
@@ -83,7 +85,7 @@ class OpenTickets extends Component {
                 this.setState({Staff: staff});
                 });
 
-                axios.post(globalVariables.admin_api_path+'/team/search',  {model_call: 'Team', search_f: 'status', 'search_text' : '1'},{
+                axios.post(globalVariables.user_api_path+'/team/search',  {model_call: 'Team', search_f: 'status', 'search_text' : '1'},{
                   headers: { Authorization: "Bearer " + login_token }
                 }).then(res => res.data).then((data) => { 
                     let Team = [];
@@ -178,12 +180,12 @@ class OpenTickets extends Component {
         let login_token = sessionStorage.getItem('login_token');
         let AllSetupItems = this.state.SetupItems;
         console.log(this.state.description);
-        axios.post(globalVariables.admin_api_path+'/support-system/add-ticket', {model_call: 'Ticket', fillable_value:'id', fieldset:'id,ticket,description,status,assign_team,assign_user_id,assign_staff_id,', required_fields:'ticket,assign_team,assign_user_id,assign_staff_id,status', id: this.state.setup_key, ticket: this.state.ticket, description:this.state.description,assign_team:this.state.assign_team, assign_user_id:this.state.assign_user_id, assign_staff_id: this.state.assign_staff_id, status: this.state.status},{
+        axios.post(globalVariables.user_api_path+'/support-system/add-ticket', {model_call: 'Ticket', fillable_value:'id', fieldset:'id,ticket,description,status,assign_team,assign_user_id,assign_staff_id,', required_fields:'ticket,assign_team,assign_user_id,assign_staff_id,status', id: this.state.setup_key, ticket: this.state.ticket, description:this.state.description,assign_team:this.state.assign_team, assign_user_id:this.state.assign_user_id, assign_staff_id: this.state.assign_staff_id, status: this.state.status},{
           headers: { Authorization: "Bearer " + login_token }
         })
           .then(res => {
             this.props.handleClick("tr", 1, "Ticket Updated Successfully");
-            axios.post(globalVariables.admin_api_path+'/support-system/ticket-search',  {model_call: 'Ticket', search_f: 'status', search_text: '0'},{
+            axios.post(globalVariables.user_api_path+'/support-system/ticket-search',  {model_call: 'Ticket', search_f: 'status', search_text: '0'},{
               headers: { Authorization: "Bearer " + login_token }
             })
               .then(res => res.data).then((data) => {
@@ -278,12 +280,13 @@ class OpenTickets extends Component {
                 <td>{SetupItem.assign_user_id_value}</td>
                 <td>{SetupItem.assign_staff_id_value}</td>
                         <td className="td-actions">
+                        <Link to={{pathname: `/member/ticket-reply/${SetupItem.id}`}}>
                             <OverlayTrigger placement="top" overlay={edit}>
-                            <Button simple bsStyle="primary" bsSize="xs"  fill
-                      onClick={() => this.onOpenModal(index_key, SetupItem.id)}>
-                                <i className="fa fa-edit" />
+                            <Button simple bsStyle="primary" bsSize="xs"  fill>
+                                <i className="fa fa-eye" />
                             </Button>
                             </OverlayTrigger>
+                            </Link>
                         </td>
                       </tr>
                     )) }

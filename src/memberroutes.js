@@ -42,6 +42,7 @@ import ClosedTickets from "views/MemberPanel/SupportSystem/ClosedTickets";
 import EcommerceStore from "views/MemberPanel/Ecommerce/EcommerceStore";
 import LoginPage from "views/MemberPanel/Pages/LoginPage.jsx";
 import Messages from "views/MemberPanel/Messages/Messages.jsx";
+import TicketReply from "views/MemberPanel/SupportSystem/TicketReply";
 
 var routes = [
   {
@@ -282,6 +283,13 @@ var routes = [
         name: "Closed/Resolved Tickets",
         mini: "CT",
         component: ClosedTickets
+      },
+      {
+        path: "/ticket-reply/:ticketID",
+        layout: "/member",
+        name: "Reply",
+        component: TicketReply,
+        invisible: true
       }
     ]
   },
