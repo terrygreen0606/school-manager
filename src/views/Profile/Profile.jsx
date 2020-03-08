@@ -26,7 +26,8 @@ class Profile extends Component {
         this.state = {
             ProfileData: '',
             TempProfileData: {},
-            full_url: ''
+            full_url: '',
+            about_me: ''
         };
         }
 
@@ -205,6 +206,21 @@ class Profile extends Component {
                           }
                       ]}/>
                     
+                    <div className="row">
+                      <div className="col-md-12">
+                        <FormGroup controlId="formControlsTextarea">
+                          <ControlLabel>About Me</ControlLabel>
+                          <FormControl
+                            rows="5" name="about_me"   onChange= {this.handleChange}
+                            componentClass="textarea"
+                            bsClass="form-control"
+                            placeholder="Here can be your description"
+                            defaultValue={this.state.ProfileData.about_me}
+                          />
+                        </FormGroup>
+                      </div>
+                    </div>
+
                     <Button bsStyle="info" pullRight fill type="submit">
                       Update Profile
                     </Button> 
@@ -219,15 +235,7 @@ class Profile extends Component {
                 avatar={(this.state.full_url) ? this.state.full_url : avatar}
                 name={this.state.ProfileData.first_name+ ' '+this.state.ProfileData.last_name}
                 userName={this.state.ProfileData.username}
-                description={
-                  <span>
-                    "Lamborghini Mercy
-                    <br />
-                    Your chick she so thirsty
-                    <br />
-                    I'm in that two seat Lambo"
-                  </span>
-                }
+                description={this.state.ProfileData.about_me}
                 socials={
                   <div>
                       {(this.state.ProfileData.facebook_url) ?

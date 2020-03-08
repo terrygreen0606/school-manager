@@ -376,16 +376,16 @@ constructor(props) {
                   <Table responsive>
                     <tbody>
                       <tr  className={(this.state.MessageLabel === 'Inbox') ? 'info' : ''}>
-                        <td className="text-left"><strong><a href="#/member/messages" onClick={(e) => this.handleListChange('Inbox', e)}>Inbox ({this.state.InboxCount})</a></strong></td>
+                        <td className="text-left"><strong><a href="#/admin/messages" onClick={(e) => this.handleListChange('Inbox', e)}>Inbox ({this.state.InboxCount})</a></strong></td>
                       </tr>
                       <tr  className={(this.state.MessageLabel === 'Draft') ? 'info' : ''}>
-                        <td className="text-left"><strong><a href="#/member/messages" onClick={(e) => this.handleListChange('Draft', e) }>Draft ({this.state.DraftCount})</a></strong></td>
+                        <td className="text-left"><strong><a href="#/admin/messages" onClick={(e) => this.handleListChange('Draft', e) }>Draft ({this.state.DraftCount})</a></strong></td>
                       </tr>
                       <tr  className={(this.state.MessageLabel === 'Sent') ? 'info' : ''}>
-                        <td className="text-left"><strong><a href="#/member/messages"  onClick={(e) => this.handleListChange('Sent', e) }>Sent ({this.state.SentCount})</a></strong></td>
+                        <td className="text-left"><strong><a href="#/admin/messages"  onClick={(e) => this.handleListChange('Sent', e) }>Sent ({this.state.SentCount})</a></strong></td>
                       </tr>
                       <tr  className={(this.state.MessageLabel === 'Trash') ? 'info' : ''}>
-                        <td className="text-left"><strong><a href="#/member/messages"  onClick={(e) => this.handleListChange('Trash', e)}>Trash ({this.state.TrashCount})</a></strong></td>
+                        <td className="text-left"><strong><a href="#/admin/messages"  onClick={(e) => this.handleListChange('Trash', e)}>Trash ({this.state.TrashCount})</a></strong></td>
                       </tr>
                     </tbody>
                   </Table>

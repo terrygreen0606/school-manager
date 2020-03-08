@@ -62,7 +62,7 @@ class TransferHistory extends Component {
                         <th>From User</th>
                         <th>To User</th>
                         <th>Amount</th>
-                        <th>Status</th>
+                        {/* <th>Status</th> */}
                         <th>Remark</th>
                       </tr>
                     </thead>
@@ -70,10 +70,10 @@ class TransferHistory extends Component {
                     { this.state.contentList.map((cotnentSingle, index_key) => (
                       <tr key={index_key}>
                         <td>{cotnentSingle.created_at}</td>
-                        <td>{cotnentSingle.from_user_first_name+' '+cotnentSingle.from_user_last_name} {'('+cotnentSingle.from_user_name+')'} </td>
-                        <td>{cotnentSingle.to_user_first_name+' '+cotnentSingle.to_user_last_name} {'('+cotnentSingle.to_user_name+')'} </td>
+                        <td>{cotnentSingle.from_user_name} </td>
+                        <td>{cotnentSingle.to_user_name} </td>
                         <td>{cotnentSingle.amount}</td>
-                        <td>
+                        {/* <td>
                             {(() => {
                                 switch(cotnentSingle.status)
                                 {
@@ -83,7 +83,7 @@ class TransferHistory extends Component {
                                         return  <Button simple bsStyle="danger" bsSize="xs"  fill> Cancelled </Button>;
                                 }
                             })()}
-                        </td>
+                        </td> */}
                         <td>{cotnentSingle.remark}</td>
                       </tr>
                     )) }

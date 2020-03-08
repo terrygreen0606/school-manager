@@ -75,7 +75,7 @@ class WithdrawalStaus extends Component {
   change_status = (i, id, status) => {
     const SetupItem = this.state.contentList['active_requests'][i];
     let login_token = sessionStorage.getItem('login_token');
-    axios.post(globalVariables.admin_api_path+'/ewallet/update-withdrawal-status', {id: id, status: 1, payment_status: status}, {
+    axios.post(globalVariables.admin_api_path+'/ewallet/update-withdrawal-status', {id: id, status: 1, payment_status: status, fieldset: 'status,payment_status' }, {
       headers: { Authorization: "Bearer " + login_token }
     }).then(res => {
       this.props.handleClick("tr", 1, "Status updated Successfully");
@@ -139,13 +139,13 @@ class WithdrawalStaus extends Component {
                                  <i className="fa fa-check" />
                             </Button>
                             </OverlayTrigger>
-
+                            &nbsp;
                             <OverlayTrigger placement="top" overlay={approved_paid}>
                             <Button simple bsStyle="success" bsSize="xs"  fill  onClick={() => this.change_status(index_key, cotnentSingle.id, 1)}>
-                                 <i className="fa fa-check" />
+                                 <i className="fa fa-money" />
                             </Button>
                             </OverlayTrigger>
-
+                            &nbsp;
                             <OverlayTrigger placement="top" overlay={reject}>
                             <Button simple bsStyle="danger" bsSize="xs"  fill   onClick={() => this.change_status(index_key, cotnentSingle.id, 3)}>
                                  <i className="fa fa-times" />

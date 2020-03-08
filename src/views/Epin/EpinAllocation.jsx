@@ -40,20 +40,21 @@ class EpinAllocation extends Component {
             expiry_date: '',
             packageList: [],
             TotalRecords: 0,
-            ActivePage: 1
+            ActivePage: 1,
+            username: ''
         };
         this.handleClick = this.handleClick.bind(this);
         this.handleChange = this.handleChange.bind(this);
         }
 
-        handleAllChecked = (event) => {
-          let contentList = this.state.contentList
-          console.log(event.target.checked);
-          contentList.forEach(CheckedItem => CheckedItem['isChecked'] = event.target.checked); 
-          contentList.forEach(CheckedItem => CheckedItem['requested_count'] = CheckedItem.remain_count);
-          this.setState({contentList: contentList});
-          console.log(contentList);
-        }
+        // handleAllChecked = (event) => {
+        //   let contentList = this.state.contentList
+        //   console.log(event.target.checked);
+        //   contentList.forEach(CheckedItem => CheckedItem['isChecked'] = event.target.checked); 
+        //   contentList.forEach(CheckedItem => CheckedItem['requested_count'] = CheckedItem.remain_count);
+        //   this.setState({contentList: contentList});
+        //   console.log(contentList);
+        // }
       
         handleCheckChieldElement = (event) => {
           let contentList = this.state.contentList
@@ -138,22 +139,12 @@ class EpinAllocation extends Component {
           event.preventDefault();
           let login_token = sessionStorage.getItem('login_token');
           let AllSetupItems = this.state.SetupItems;
-          axios.post(globalVariables.admin_api_path+'/epin/allocate', {request_data: this.state.contentList},{
+          axios.post(globalVariables.admin_api_path+'/epin/allocate-epin-direct', {amount: this.state.amount, no_of_epin: this.state.no_of_epin, expiry_date:this.state.expiry_date, username: this.state.username},{
             headers: { Authorization: "Bearer " + login_token }
           })
             .then(res => {
               this.props.handleClick("tr", 1, "Epin Allocated Successfully");
-              axios.post(globalVariables.admin_api_path+'/epin/requests', {model_call: 'Epin_request', search_f:'amount'},{
-                  headers: { Authorization: "Bearer " + login_token }
-                })
-                  .then(res => res.data).then((data) => {
-                    data.response.forEach(CheckedItem => CheckedItem['requested_count'] = CheckedItem.remain_count);
-                    this.setState({contentList: data.response});
-                    console.log(this.state.contentList);
-                    this.setState({TotalRecords: parseInt(data.total)});
-                  })
-              this.setState({ showModal: false });
-             
+              document.getElementById('epin_allocation').reset();
             }).catch(error => {
               this.props.handleClick("tr", 3, error.response.data.msg);
             });
@@ -184,12 +175,13 @@ class EpinAllocation extends Component {
         }
   
         handleChange = event => {
-          console.log(event.target);
-          const contentList = this.state.contentList;
-          console.log(contentList[event.target.name]);
-          contentList[event.target.name]['requested_count'] = event.target.value;
-          this.setState({ contentList: contentList });
-          console.log(contentList);
+          this.setState({ [event.target.name]: event.target.value });
+        //  console.log(event.target);
+        //  const contentList = this.state.contentList;
+         // console.log(contentList[event.target.name]);
+        //  contentList[event.target.name]['requested_count'] = event.target.value;
+         // this.setState({ contentList: contentList });
+         // console.log(contentList);
         }
   
       onOpenModal = (i, key) => {
@@ -288,10 +280,10 @@ class EpinAllocation extends Component {
                 
                 content={
                   <div>
-                    <form onSubmit={this.handleSubmit}>
+                    <form onSubmit={this.AllocatePin} id="epin_allocation">
                     <FormGroup>
                       <ControlLabel>Username</ControlLabel>
-                      <FormControl name="user_id"  type="text" defaultValue={this.state.user_id} />
+                      <FormControl name="username"  type="text" defaultValue={this.state.username}  onChange={this.handleChange} />
                       {this.state.usernameError}
                     </FormGroup>
                   <FormGroup>
@@ -301,7 +293,7 @@ class EpinAllocation extends Component {
                     <FormGroup>
                       <ControlLabel>Amount</ControlLabel>
                       <Select
-                            name="amount"  onChange={value => this.setState({ amount: value, transactionTypeError: null })}
+                            name="amount"  onChange={value => this.setState({ amount: value.value, transactionTypeError: null })}
                             options={this.state.packageList} 
                         />
                         {this.state.transactionTypeError}

@@ -16,12 +16,64 @@
 */
 import React, { Component } from "react";
 import { ButtonGroup, Pagination, Grid, Row, Col } from "react-bootstrap";
-import ReactTooltip from 'react-tooltip'
+import ReactTooltip from 'react-tooltip';
+import axios from 'axios';
 import '../../assets/css/geneology/tree/main.css';
 import '../../assets/css/geneology/tree/custom.css';
 import 'tooltipster/dist/css/tooltipster.bundle.css';
+var globalVariables = require('../../services/globalVariables.jsx');
 
 class Genealogy extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            horizontal_limit: 0,
+            vertical_limit: 0,
+            TreeData: [] ,
+            AvailableEPins: 0,
+            UsedEpins: 0,
+            ExpiredEpins: 0,
+            LastMemberRegisterDate: '',
+            LastTransactionDate: '',
+            WeeklyUserRegistrationSeries: '',
+            WeeklyUserRegistrationLevel: '',
+            YearlyUserRegistrationSeries: '',
+            YearlyUserTransactions: [],
+            Teams: []
+        };
+    }
+
+    componentDidMount() {
+        let login_token = sessionStorage.getItem('login_token');
+        let id = this.props.match.params.userId;
+        axios.post(globalVariables.admin_api_path+'/setup/commission-limit', { setup_type:'commission_limit' }, {
+            headers: { Authorization: "Bearer " + login_token }
+          })
+            .then(res => res.data).then((data) => {
+                let horizontal_limit = data.response[0].value;
+                let TreeData = [];
+                for (let i = 1; i < horizontal_limit; i++) {
+                    TreeData[i] = [];
+                    TreeData[i]['joining_date'] = "....";
+                    TreeData[i]['username'] = "....";
+                    TreeData[i]['user_id'] = id;
+                    TreeData[i]['full_name'] = "....";
+                    TreeData[i]['profile_image_url'] = "https://pbs.twimg.com/profile_images/762654833455366144/QqQhkuK5.jpg";
+                    for (let j = 1; j < horizontal_limit; j++) {
+                        TreeData[i][j] = [];
+                        TreeData[i][j]['joining_date'] = "....";
+                        TreeData[i][j]['username'] = "....";
+                        TreeData[i][j]['user_id'] = id;
+                        TreeData[i][j]['full_name'] = "....";
+                        TreeData[i][j]['profile_image_url'] = "https://pbs.twimg.com/profile_images/762654833455366144/QqQhkuK5.jpg";
+                      }
+                  }
+              this.setState({horizontal_limit:data.response[0].value});
+              this.setState({vertical_limit:data.response[1].value});
+              this.setState({TreeData:TreeData});
+            });
+
+    }   
   render() {
     return (
       <div className="main-content buttons-with-margin">
@@ -91,7 +143,7 @@ class Genealogy extends Component {
                                     </div>
 
                                     <div className="hv-item-children">
-
+                                        {}
                                         <div className="hv-item-child">
                                             <div className="hv-item">
 

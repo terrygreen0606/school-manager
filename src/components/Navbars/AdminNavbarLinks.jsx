@@ -25,7 +25,7 @@ import {
  // FormControl,
  // InputGroup
 } from "react-bootstrap";
-import { Redirect } from 'react-router-dom';
+import { Redirect,Link } from 'react-router-dom';
 
 class HeaderLinks extends Component {
   constructor(props)
@@ -134,7 +134,9 @@ class HeaderLinks extends Component {
             bsClass="dropdown-with-icons dropdown"
           >
             <MenuItem eventKey={4.1}>
+            <Link to={'messages'}>
               <i className="pe-7s-mail" /> Messages
+            </Link>
             </MenuItem>
             {/*
             <MenuItem eventKey={4.2}>
@@ -142,7 +144,9 @@ class HeaderLinks extends Component {
             </MenuItem>
             */}
             <MenuItem eventKey={4.3}>
+            <Link to={'profile'}>
               <i className="pe-7s-tools" /> Settings
+            </Link>
             </MenuItem>
             {/*
             <MenuItem divider />

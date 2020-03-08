@@ -85,7 +85,7 @@ class StaffDashboard extends Component {
     }
   }
   // function that shows/hides notifications - it was put here, because the wrapper div has to be outside the main-panel class div
-  handleNotificationClick = (position, level= 1, message = "Hello World") => {
+  handleNotificationClick = (position, level= 1, message = "Technical Error") => {
     var color = level;
     var icon = 'pe-7s-gift';
     switch (color) {

@@ -30,76 +30,33 @@ class ChangeMPassword extends Component {
             valid_usename: false,
             // Form Data
             username: null,
-            amount: null,
-            transaction_note: '',
-            transaction_type: null,
-            transaction: null
+            new_password: '',
+            confirm_password: ''
+
         };
         }
 
       handleSubmit = event => {
-        event.preventDefault();
-        if(this.state.username === null || this.state.valid_usename === false)
-        {
-            this.setState({
-                usernameError: (
-                  <small className="text-danger">
-                    Please enter a valid username.
-                  </small>
-                )
-              });
-        }
-        else if(this.state.amount === null)
-        {
-            this.setState({
-                amountError: (
-                  <small className="text-danger">
-                    Please enter a valid amount.
-                  </small>
-                )
-              });
-        }
-        else if(this.state.transaction_type === null)
-        {
-            this.setState({
-                transactionTypeError: (
-                  <small className="text-danger">
-                    Please select valid transaction type.
-                  </small>
-                )
-              });
-        }
-        else if(this.state.transaction === null)
-        {
-            this.setState({
-                transactionError: (
-                  <small className="text-danger">
-                    Please select transaction (Debit/Credit)
-                  </small>
-                )
-              });
-        }
-        else
-        {
+          event.preventDefault();
             let login_token = sessionStorage.getItem('login_token');
-            axios.post(globalVariables.admin_api_path+'/ewallet/credit-debit', {username: this.state.username, amount: this.state.amount, transaction_note:this.state.transaction_note, transaction_type: this.state.transaction_type.value, transaction: this.state.transaction},{
+            axios.post(globalVariables.admin_api_path+'/change-m-password', {username: this.state.username, password: this.state.new_password, password_confirmation:this.state.confirm_password},{
             headers: { Authorization: "Bearer " + login_token }
             }).then(res => {
-                this.props.handleClick("tr", 1, "Transaction Successfully Completed");
+                this.props.handleClick("tr", 1, "Password Updated Successfully");
                 document.getElementById('creditdebitform').reset();
                }).catch(error => {
-            if(error.length)
-            {
                 this.props.handleClick("tr", 3, error.response.data.msg);
-            }
-            else
-            {
-                this.props.handleClick("tr", 3, "Technical Error! Please try again");
-            }
+            // if(error.length)
+            // {
+            //     this.props.handleClick("tr", 3, error.response.data.msg);
+            // }
+            // else
+            // {
+            //     this.props.handleClick("tr", 3, "Technical Error! Please try again");
+            // }
             
             });
         }
-      }
 
       handleChange = event => {
         this.setState({ [event.target.name]: event.target.value });
@@ -160,12 +117,12 @@ class ChangeMPassword extends Component {
                     </FormGroup>
                     <FormGroup>
                       <ControlLabel>New Password</ControlLabel>
-                      <FormControl  onChange={this.handleChange} type="text" name="new_password"/>
+                      <FormControl  onChange={this.handleChange} type="password" name="new_password"/>
                       {this.state.amountError}
                     </FormGroup>
                     <FormGroup>
                       <ControlLabel>Confirm Password</ControlLabel>
-                      <FormControl  onChange={this.handleChange} type="text" name="confirm_password"/>
+                      <FormControl  onChange={this.handleChange} type="password" name="confirm_password"/>
                     </FormGroup>
                    
                     <Button bsStyle="info" fill type="submit">

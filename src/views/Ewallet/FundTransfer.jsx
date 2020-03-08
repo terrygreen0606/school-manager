@@ -39,7 +39,8 @@ class FundTransfer extends Component {
             transaction: null,
             transfer_to_usernameError: null,
             valid_receiver_usename: false,
-            transfer_to_username:null
+            transfer_to_username:null,
+            transaction: 'Debit'
         };
         }
 
@@ -104,14 +105,14 @@ class FundTransfer extends Component {
                 this.props.handleClick("tr", 1, "Transaction Successfully Completed");
                 document.getElementById('creditdebitform').reset();
                }).catch(error => {
-            if(error.length)
-            {
+            // if(error.length)
+            // {
                 this.props.handleClick("tr", 3, error.response.data.msg);
-            }
-            else
-            {
-                this.props.handleClick("tr", 3, "Technical Error! Please try again");
-            }
+            // }
+            // else
+            // {
+            //     this.props.handleClick("tr", 3, "Technical Error! Please try again");
+            // }
             
             });
         }
@@ -220,7 +221,7 @@ class FundTransfer extends Component {
                         />
                         {this.state.transactionTypeError}
                     </FormGroup>
-                    <FormGroup>
+                    {/* <FormGroup>
                       <ControlLabel>Transaction</ControlLabel>
                       <Radio
                             number="5"
@@ -239,7 +240,7 @@ class FundTransfer extends Component {
                             label="Credit"
                           />
                           {this.state.transactionError}
-                    </FormGroup>
+                    </FormGroup> */}
                     <Button bsStyle="info" fill type="submit">
                       Submit
                     </Button>

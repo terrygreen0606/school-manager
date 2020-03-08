@@ -93,6 +93,8 @@ import Bulkemail from "views/Email/Bulkemail";
 import EditStaff from "views/Staff/EditStaff";
 import AddUpdatePrivileges from "views/Staff/AddUpdatePrivileges";
 import RegisterPage from "views/Pages/RegisterPage.jsx";
+import PayoutData from "views/Payout/PayoutData";
+import Messages from "views/Messages/Messages";
 // import LockScreenPage from "views/Pages/LockScreenPage.jsx";
 
 var routes = [
@@ -266,7 +268,7 @@ var routes = [
     icon: "pe-7s-network",
     views: [
       {
-        path: "/genealogy",
+        path: "/genealogy/:userId",
         name: "Genealogy",
         mini: "GE",
         layout: "/admin",
@@ -448,13 +450,13 @@ var routes = [
         mini: "VE",
         component: ViewEpin
       },
-      {
-        path: "/epin-transfer",
-        layout: "/admin",
-        name: "E-PIN Transfer",
-        mini: "ET",
-        component: EpinTransfer
-      }
+      // {
+      //   path: "/epin-transfer",
+      //   layout: "/admin",
+      //   name: "E-PIN Transfer",
+      //   mini: "ET",
+      //   component: EpinTransfer
+      // }
     ]
   },
   {
@@ -500,13 +502,13 @@ var routes = [
         component: Notifications
       },
       */
-      {
-        path: "/change-transaction-password",
-        name: "Change Transaction Password",
-        layout: "/admin",
-        mini: "TP",
-        component: ChangeMTrsansactionPassword
-      },
+      // {
+      //   path: "/change-transaction-password",
+      //   name: "Change Transaction Password",
+      //   layout: "/admin",
+      //   mini: "TP",
+      //   component: ChangeMTrsansactionPassword
+      // },
    /*   {
         path: "/kyc-details",
         layout: "/admin",
@@ -547,12 +549,19 @@ var routes = [
   layout: "/admin",
   component: PayoutList
 },
+{
+  path: "/payouts/:payoutID",
+  layout: "/admin",
+  name: "Payout Data",
+  component: PayoutData,
+  invisible: true
+},
   {
     path: "/messages",
     name: "Messages",
     icon: "pe-7s-mail",
     layout: "/admin",
-    component: Buttons
+    component: Messages
   },
   {
     path: "/bulk-sms",

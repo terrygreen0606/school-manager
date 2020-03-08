@@ -32,7 +32,7 @@ class UserEarnings extends Component {
       
         componentDidMount() {
           let login_token = sessionStorage.getItem('login_token');
-          axios.post(globalVariables.admin_api_path+'/ewallet/user-earnings', {model_call: 'Transaction', search_f:'transaction_id'}, {
+          axios.post(globalVariables.admin_api_path+'/ewallet/user-earnings',{}, {
             headers: { Authorization: "Bearer " + login_token }
           })
             .then(res => res.data).then((data) => {
@@ -58,19 +58,15 @@ class UserEarnings extends Component {
                   <Table responsive>
                     <thead>
                       <tr>
-                        <th>From</th>
-                        <th>Level</th>
-                        <th>Transaction Type</th>
-                        <th>Amount</th>
+                        <th>User</th>
+                        <th>Earning</th>
                       </tr>
                     </thead>
                     <tbody>
                     { this.state.contentList.map((cotnentSingle, index_key) => (
                       <tr key={index_key}>
-                        <td>{cotnentSingle.username} </td>
-                        <td>{cotnentSingle.level}</td>
-                        <td>{cotnentSingle.transaction_type}</td>
-                        <td>{cotnentSingle.amount}</td>
+                        <td>{cotnentSingle.first_name}{' '}{cotnentSingle.last_name}{' - ('}{cotnentSingle.username}{') '} </td>
+                        <td>{cotnentSingle.credit}</td>
                       </tr>
                     )) }
                     </tbody>

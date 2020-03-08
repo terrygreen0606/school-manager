@@ -55,66 +55,23 @@ class Bulkemail extends Component {
 
       handleSubmit = event => {
         event.preventDefault();
-        if(this.state.username === null || this.state.valid_usename === false)
-        {
-            this.setState({
-                usernameError: (
-                  <small className="text-danger">
-                    Please enter a valid username.
-                  </small>
-                )
-              });
-        }
-        else if(this.state.amount === null)
-        {
-            this.setState({
-                amountError: (
-                  <small className="text-danger">
-                    Please enter a valid amount.
-                  </small>
-                )
-              });
-        }
-        else if(this.state.transaction_type === null)
-        {
-            this.setState({
-                transactionTypeError: (
-                  <small className="text-danger">
-                    Please select valid transaction type.
-                  </small>
-                )
-              });
-        }
-        else if(this.state.transaction === null)
-        {
-            this.setState({
-                transactionError: (
-                  <small className="text-danger">
-                    Please select transaction (Debit/Credit)
-                  </small>
-                )
-              });
-        }
-        else
-        {
             let login_token = sessionStorage.getItem('login_token');
-            axios.post(globalVariables.admin_api_path+'/ewallet/credit-debit', {username: this.state.username, amount: this.state.amount, transaction_note:this.state.transaction_note, transaction_type: this.state.transaction_type.value, transaction: this.state.transaction},{
+            axios.post(globalVariables.admin_api_path+'/send-bulk-email', {email_subject: this.state.email_subject, email_body: this.state.email_body, users:this.state.multipleSelect},{
             headers: { Authorization: "Bearer " + login_token }
             }).then(res => {
-                this.props.handleClick("tr", 1, "Transaction Successfully Completed");
+                this.props.handleClick("tr", 1, "Emails are added in que and will send by one by one");
                 document.getElementById('creditdebitform').reset();
                }).catch(error => {
-            if(error.length)
-            {
+            // if(error.length)
+            // {
                 this.props.handleClick("tr", 3, error.response.data.msg);
-            }
-            else
-            {
-                this.props.handleClick("tr", 3, "Technical Error! Please try again");
-            }
+            // }
+            // else
+            // {
+            //     this.props.handleClick("tr", 3, "Technical Error! Please try again");
+            // }
             
             });
-        }
       }
 
       handleChange = event => {
