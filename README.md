@@ -216,7 +216,7 @@ If you have questions or need help integrating the product please [contact us](h
 
 - [Affiliate Program](https://www.creative-tim.com/affiliates/new) (earn money)
 
-##### Social Media
+#### Social Media
 
 Twitter: <https://twitter.com/CreativeTim>
 
