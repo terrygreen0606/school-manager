@@ -55,6 +55,7 @@ p.simple-card {
 
 .management-hierarchy .person>img {
     height: 74px;
+    width: 74px;
     border: 2px solid #ddd;
     border-radius: 50%;
     overflow: hidden;
