@@ -145,7 +145,7 @@ class HeaderLinks extends Component {
             */}
             <MenuItem eventKey={4.3}>
             <Link to={'profile'}>
-              <i className="pe-7s-tools" /> Settings
+              <i className="pe-7s-tools" /> Profile
             </Link>
             </MenuItem>
             {/*
