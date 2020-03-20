@@ -17,6 +17,7 @@
 import React, { Component } from "react";
 import { ButtonGroup, Pagination, Grid, Row, Col } from "react-bootstrap";
 import ReactTooltip from 'react-tooltip';
+import { Redirect,Link } from 'react-router-dom';
 import axios from 'axios';
 import '../../assets/css/geneology/tree/main.css';
 import '../../assets/css/geneology/tree/custom.css';
@@ -31,6 +32,7 @@ class Genealogy extends Component {
             horizontal_limit: 0,
             vertical_limit: 0,
             TreeData: [] ,
+            TopUserData: [],
             AvailableEPins: 0,
             UsedEpins: 0,
             ExpiredEpins: 0,
@@ -47,6 +49,7 @@ class Genealogy extends Component {
     componentDidMount() {
         let login_token = sessionStorage.getItem('login_token');
         let id = this.props.match.params.userId;
+        console.log("user id "+id);
         axios.post(globalVariables.admin_api_path+'/setup/commission-limit', { setup_type:'commission_limit' }, {
             headers: { Authorization: "Bearer " + login_token }
           })
@@ -76,108 +79,255 @@ class Genealogy extends Component {
               this.setState({TreeData:TreeData});
             });
            // let id = this.props.match.params.userId;
-            axios.post(globalVariables.admin_api_path+'/member/get-tree-data/'+id, {}, {
-                headers: { Authorization: "Bearer " + login_token }
-              })
-                .then(res => res.data).then((data) => {
-                   //  console.log(data.response);
-                    let RealTreeData = data.response;
-                    let RealTreeValue = Object.values(RealTreeData);
-                    let RealTreeKeys = Object.keys(RealTreeData);
-                   // RealTreeData = Object.values(RealTreeData);
-                 //  console.log(RealTreeKeys);
-                   let TreeD = this.state.TreeData;
-                   let horizontal_limit = this.state.horizontal_limit;
-                    for (let i = 0; i < RealTreeKeys.length; i++) {
-                        if(RealTreeValue[i])
+            // axios.post(globalVariables.admin_api_path+'/member/get-tree-data/'+id, {}, {
+            //     headers: { Authorization: "Bearer " + login_token }
+            //   })
+            //     .then(res => res.data).then((data) => {
+            //        //  console.log(data.response);
+            //         let RealTreeData = data.response;
+            //         let RealTreeValue = Object.values(RealTreeData);
+            //         let RealTreeKeys = Object.keys(RealTreeData);
+            //        // RealTreeData = Object.values(RealTreeData);
+            //        console.log(RealTreeValue);
+            //        let TreeD = this.state.TreeData;
+            //        let horizontal_limit = this.state.horizontal_limit;
+            //         for (let i = 0; i < RealTreeKeys.length; i++) {
+            //             if(RealTreeValue[i])
+            //             {
+            //                 TreeD[RealTreeKeys[i]].joining_date = RealTreeValue[i].joining_date;
+            //                 TreeD[RealTreeKeys[i]].profile_image_url = RealTreeValue[i].profile_image_url;
+            //                 TreeD[RealTreeKeys[i]].username = RealTreeValue[i].username;
+            //                 TreeD[RealTreeKeys[i]].user_id = RealTreeValue[i].user_id;
+            //                 TreeD[RealTreeKeys[i]].full_name = RealTreeValue[i].full_name;
+            //                // console.log(RealTreeValue[i].sub_user);
+            //                console.log(TreeD);
+            //                 if(RealTreeValue[i].sub_user)
+            //                 {
+            //                    console.log('Hello');
+            //                     for (let j = 1; j <= horizontal_limit; j++) {
+            //                         console.log(RealTreeValue[i].sub_user[1].joining_date);
+            //                         if (typeof RealTreeValue[i].sub_user[j] !== "undefined") 
+            //                         {
+            //                             TreeD[RealTreeKeys[i]].sub_user[j]['joining_date'] = RealTreeValue[i].sub_user[j].joining_date;
+            //                             TreeD[RealTreeKeys[i]].sub_user[j]['username'] = RealTreeValue[i].sub_user[j].username;
+            //                             TreeD[RealTreeKeys[i]].sub_user[j]['user_id'] = RealTreeValue[i].sub_user[j].id;
+            //                             TreeD[RealTreeKeys[i]].sub_user[j]['full_name'] = RealTreeValue[i].sub_user[j].full_name;
+            //                             TreeD[RealTreeKeys[i]].sub_user[j]['profile_image_url'] = RealTreeValue[i].sub_user[j].profile_image_url; 
+            //                         }
+            //                 //         // console.log(RealTreeValue[i]);
+            //                 //         // TreeD[RealTreeKeys[i]].sub_user = ;
+            //                 //        // TreeData[RealTreeKeys[i]]['sub_user'][j] = [];
+            //                 //     //    console.log(TreeD[i].sub_user);
+            //                 //        if( RealTreeValue[i].sub_user[j])
+            //                 //        {
+            //                 //         TreeD[i].sub_user[j]['joining_date'] = RealTreeValue[i].sub_user[j].joining_date;
+            //                 //         TreeD[i].sub_user[j]['username'] = RealTreeValue[i].sub_user[j].username;
+            //                 //         TreeD[i].sub_user[j]['user_id'] = RealTreeValue[i].sub_user[j].id;
+            //                 //         TreeD[i].sub_user[j]['full_name'] = RealTreeValue[i].sub_user[j].full_name;
+            //                 //         TreeD[i].sub_user[j]['profile_image_url'] = RealTreeValue[i].sub_user[j].profile_image_url;
+            //                 //        }
+            //                     }
+            //                 }
+            //             } 
+            //         }
+            //        // console.log(TreeD);
+            //        // let horizontal_limit = this.state.horizontal_limit;
+            //       //  let TreeData = this.state.TreeData;
+            //        // console.log(data.response.length);
+            //     //    for (let i = 1; i <= RealTreeData.length; i++) {
+            //     //     if(RealTreeValue[i])
+            //     //     {
+            //     //         TreeData[RealTreeKeys[i]] = RealTreeValue[i];
+            //     //     } 
+            //           // TreeD[RealTreeKeys[i]] = RealTreeValue[i];
+            //        // TreeData[i]['joining_date'] = RealTreeData[i]['joining_date'];
+            //        // TreeData[i]['username'] = RealTreeData[i]['username'];
+            //        // TreeData[i]['user_id'] = RealTreeData[i]['id'];
+            //        // TreeData[i]['full_name'] = RealTreeData[i]['first_name']+' '+RealTreeData[i]['last_name'];
+            //        // TreeData[i]['profile_image_url'] = RealTreeData[i]['profile_pic'];
+            //         // for (let j = 1; j <= horizontal_limit; j++) {
+            //         //     if( TreeData[i][j])
+            //         //     {
+            //         //         TreeData[i][j]['joining_date'] = RealTreeData[i][j]['joining_date'];
+            //         //         TreeData[i][j]['username'] = RealTreeData[i][j]['username'];
+            //         //         TreeData[i][j]['user_id'] = RealTreeData[i][j]['id'];
+            //         //         TreeData[i][j]['full_name'] = RealTreeData[i][j]['first_name']+' '+RealTreeData[i][j]['last_name'];
+            //         //         TreeData[i][j]['profile_image_url'] = RealTreeData[i][j]['profile_pic'];
+            //         //     }
+            //         //   }
+            //     //   }
+            //        /* let i =1;
+            //         for (var RealTreeD in RealTreeData) {
+            //             console.log(RealTreeD);
+            //             TreeData[i]['joining_date'] = RealTreeD.joining_date;
+            //             TreeData[i]['username'] = RealTreeD.username;
+            //             TreeData[i]['user_id'] = RealTreeD.id;
+            //             TreeData[i]['full_name'] = RealTreeD.first_name+' '+RealTreeD.last_name;
+            //             TreeData[i]['profile_image_url'] = RealTreeD.profile_pic;
+            //             let j = 1;
+            //             if(RealTreeD.hasOwnProperty(j)){
+            //               for (var SubTreeData in RealTreeD[j])
+            //               {
+            //                 TreeData[i][j]['joining_date'] = SubTreeData.joining_date;
+            //                 TreeData[i][j]['username'] = SubTreeData.username;
+            //                 TreeData[i][j]['user_id'] = SubTreeData.id;
+            //                 TreeData[i][j]['full_name'] = SubTreeData.full_name;
+            //                 TreeData[i][j]['profile_image_url'] = SubTreeData.profile_pic; 
+            //                 j++;
+            //               }
+            //             }
+            //             i++;
+            //           } */
+            //       this.setState({TreeData:TreeD});
+            //     });
+            //   //  console.log(this.state.TreeData);
+            this.handleUserClick(id);
+    }  
+    
+     handleUserClick(user_id) {
+        // let id = this.props.match.params.userId;
+         console.log(user_id);
+         let login_token = sessionStorage.getItem('login_token');
+        let id = user_id;
+        axios.get(globalVariables.admin_api_path+'/member/profile/'+id, {headers: {Authorization: "Bearer "+login_token}
+    }).then(res => res.data).then((data) => {
+        let horizontal_limit = this.state.horizontal_limit;
+        let TreeData = [];
+        for (let i = 1; i <= horizontal_limit; i++) {
+            TreeData[i] = [];
+            TreeData[i]['joining_date'] = "....";
+            TreeData[i]['username'] = "....";
+            TreeData[i]['user_id'] = id;
+            TreeData[i]['full_name'] = "....";
+            TreeData[i]['profile_image_url'] = "";
+            TreeData[i]['sub_user'] = [];
+            for (let j = 1; j <= horizontal_limit; j++) {
+                TreeData[i]['sub_user'][j] = [];
+                TreeData[i]['sub_user'][j]['joining_date'] = "....";
+                TreeData[i]['sub_user'][j]['username'] = "....";
+                TreeData[i]['sub_user'][j]['user_id'] = id;
+                TreeData[i]['sub_user'][j]['full_name'] = "....";
+                TreeData[i]['sub_user'][j]['profile_image_url'] = "";
+              }
+          }
+     // console.log(TreeData);
+        this.setState({TreeData:TreeData});
+        console.log(data.response);
+        const TopUserData = [];
+        TopUserData.joining_date = '';
+        TopUserData.username = data.response.username;
+        TopUserData.user_id = id;
+        TopUserData.full_name = data.response.first_name+' '+data.response.last_name;
+        TopUserData.profile_image_url = data.response.profile_pic;
+        this.setState({TopUserData: TopUserData});
+
+        // let id = this.props.match.params.userId;
+        console.log('User id is ' + id);
+        axios.post(globalVariables.admin_api_path+'/member/get-tree-data/'+id, {}, {
+            headers: { Authorization: "Bearer " + login_token }
+          })
+            .then(res => res.data).then((data) => {
+               //  console.log(data.response);
+                let RealTreeData = data.response;
+                let RealTreeValue = Object.values(RealTreeData);
+                let RealTreeKeys = Object.keys(RealTreeData);
+               // RealTreeData = Object.values(RealTreeData);
+               console.log(RealTreeValue);
+               let TreeD = this.state.TreeData;
+               let horizontal_limit = this.state.horizontal_limit;
+                for (let i = 0; i < RealTreeKeys.length; i++) {
+                    if(RealTreeValue[i])
+                    {
+                        TreeD[RealTreeKeys[i]].joining_date = RealTreeValue[i].joining_date;
+                        TreeD[RealTreeKeys[i]].profile_image_url = RealTreeValue[i].profile_image_url;
+                        TreeD[RealTreeKeys[i]].username = RealTreeValue[i].username;
+                        TreeD[RealTreeKeys[i]].user_id = RealTreeValue[i].user_id;
+                        TreeD[RealTreeKeys[i]].full_name = RealTreeValue[i].full_name;
+                       // console.log(RealTreeValue[i].sub_user);
+                       console.log(TreeD);
+                        if(RealTreeValue[i].sub_user)
                         {
-                            TreeD[RealTreeKeys[i]].joining_date = RealTreeValue[i].joining_date;
-                            TreeD[RealTreeKeys[i]].profile_image_url = RealTreeValue[i].profile_image_url;
-                            TreeD[RealTreeKeys[i]].username = RealTreeValue[i].username;
-                            TreeD[RealTreeKeys[i]].full_name = RealTreeValue[i].full_name;
-                           // console.log(RealTreeValue[i].sub_user);
-                           console.log(TreeD);
-                            if(RealTreeValue[i].sub_user)
-                            {
-                               console.log('Hello');
-                                for (let j = 1; j <= horizontal_limit; j++) {
-                                    console.log(RealTreeValue[i].sub_user[1].joining_date);
-                                    if (typeof RealTreeValue[i].sub_user[j] !== "undefined") 
-                                    {
-                                        TreeD[RealTreeKeys[i]].sub_user[j]['joining_date'] = RealTreeValue[i].sub_user[j].joining_date;
-                                        TreeD[RealTreeKeys[i]].sub_user[j]['username'] = RealTreeValue[i].sub_user[j].username;
-                                        TreeD[RealTreeKeys[i]].sub_user[j]['user_id'] = RealTreeValue[i].sub_user[j].id;
-                                        TreeD[RealTreeKeys[i]].sub_user[j]['full_name'] = RealTreeValue[i].sub_user[j].full_name;
-                                        TreeD[RealTreeKeys[i]].sub_user[j]['profile_image_url'] = RealTreeValue[i].sub_user[j].profile_image_url; 
-                                    }
-                            //         // console.log(RealTreeValue[i]);
-                            //         // TreeD[RealTreeKeys[i]].sub_user = ;
-                            //        // TreeData[RealTreeKeys[i]]['sub_user'][j] = [];
-                            //     //    console.log(TreeD[i].sub_user);
-                            //        if( RealTreeValue[i].sub_user[j])
-                            //        {
-                            //         TreeD[i].sub_user[j]['joining_date'] = RealTreeValue[i].sub_user[j].joining_date;
-                            //         TreeD[i].sub_user[j]['username'] = RealTreeValue[i].sub_user[j].username;
-                            //         TreeD[i].sub_user[j]['user_id'] = RealTreeValue[i].sub_user[j].id;
-                            //         TreeD[i].sub_user[j]['full_name'] = RealTreeValue[i].sub_user[j].full_name;
-                            //         TreeD[i].sub_user[j]['profile_image_url'] = RealTreeValue[i].sub_user[j].profile_image_url;
-                            //        }
+                           console.log('Hello');
+                            for (let j = 1; j <= horizontal_limit; j++) {
+                                console.log(RealTreeValue[i].sub_user[1].joining_date);
+                                if (typeof RealTreeValue[i].sub_user[j] !== "undefined") 
+                                {
+                                    TreeD[RealTreeKeys[i]].sub_user[j]['joining_date'] = RealTreeValue[i].sub_user[j].joining_date;
+                                    TreeD[RealTreeKeys[i]].sub_user[j]['username'] = RealTreeValue[i].sub_user[j].username;
+                                    TreeD[RealTreeKeys[i]].sub_user[j]['user_id'] = RealTreeValue[i].sub_user[j].id;
+                                    TreeD[RealTreeKeys[i]].sub_user[j]['full_name'] = RealTreeValue[i].sub_user[j].full_name;
+                                    TreeD[RealTreeKeys[i]].sub_user[j]['profile_image_url'] = RealTreeValue[i].sub_user[j].profile_image_url; 
                                 }
+                        //         // console.log(RealTreeValue[i]);
+                        //         // TreeD[RealTreeKeys[i]].sub_user = ;
+                        //        // TreeData[RealTreeKeys[i]]['sub_user'][j] = [];
+                        //     //    console.log(TreeD[i].sub_user);
+                        //        if( RealTreeValue[i].sub_user[j])
+                        //        {
+                        //         TreeD[i].sub_user[j]['joining_date'] = RealTreeValue[i].sub_user[j].joining_date;
+                        //         TreeD[i].sub_user[j]['username'] = RealTreeValue[i].sub_user[j].username;
+                        //         TreeD[i].sub_user[j]['user_id'] = RealTreeValue[i].sub_user[j].id;
+                        //         TreeD[i].sub_user[j]['full_name'] = RealTreeValue[i].sub_user[j].full_name;
+                        //         TreeD[i].sub_user[j]['profile_image_url'] = RealTreeValue[i].sub_user[j].profile_image_url;
+                        //        }
                             }
-                        } 
-                    }
-                   // console.log(TreeD);
-                   // let horizontal_limit = this.state.horizontal_limit;
-                  //  let TreeData = this.state.TreeData;
-                   // console.log(data.response.length);
-                //    for (let i = 1; i <= RealTreeData.length; i++) {
-                //     if(RealTreeValue[i])
-                //     {
-                //         TreeData[RealTreeKeys[i]] = RealTreeValue[i];
-                //     } 
-                      // TreeD[RealTreeKeys[i]] = RealTreeValue[i];
-                   // TreeData[i]['joining_date'] = RealTreeData[i]['joining_date'];
-                   // TreeData[i]['username'] = RealTreeData[i]['username'];
-                   // TreeData[i]['user_id'] = RealTreeData[i]['id'];
-                   // TreeData[i]['full_name'] = RealTreeData[i]['first_name']+' '+RealTreeData[i]['last_name'];
-                   // TreeData[i]['profile_image_url'] = RealTreeData[i]['profile_pic'];
-                    // for (let j = 1; j <= horizontal_limit; j++) {
-                    //     if( TreeData[i][j])
-                    //     {
-                    //         TreeData[i][j]['joining_date'] = RealTreeData[i][j]['joining_date'];
-                    //         TreeData[i][j]['username'] = RealTreeData[i][j]['username'];
-                    //         TreeData[i][j]['user_id'] = RealTreeData[i][j]['id'];
-                    //         TreeData[i][j]['full_name'] = RealTreeData[i][j]['first_name']+' '+RealTreeData[i][j]['last_name'];
-                    //         TreeData[i][j]['profile_image_url'] = RealTreeData[i][j]['profile_pic'];
-                    //     }
-                    //   }
-                //   }
-                   /* let i =1;
-                    for (var RealTreeD in RealTreeData) {
-                        console.log(RealTreeD);
-                        TreeData[i]['joining_date'] = RealTreeD.joining_date;
-                        TreeData[i]['username'] = RealTreeD.username;
-                        TreeData[i]['user_id'] = RealTreeD.id;
-                        TreeData[i]['full_name'] = RealTreeD.first_name+' '+RealTreeD.last_name;
-                        TreeData[i]['profile_image_url'] = RealTreeD.profile_pic;
-                        let j = 1;
-                        if(RealTreeD.hasOwnProperty(j)){
-                          for (var SubTreeData in RealTreeD[j])
-                          {
-                            TreeData[i][j]['joining_date'] = SubTreeData.joining_date;
-                            TreeData[i][j]['username'] = SubTreeData.username;
-                            TreeData[i][j]['user_id'] = SubTreeData.id;
-                            TreeData[i][j]['full_name'] = SubTreeData.full_name;
-                            TreeData[i][j]['profile_image_url'] = SubTreeData.profile_pic; 
-                            j++;
-                          }
                         }
-                        i++;
-                      } */
-                  this.setState({TreeData:TreeD});
-                });
+                    } 
+                }
+               // console.log(TreeD);
+               // let horizontal_limit = this.state.horizontal_limit;
+              //  let TreeData = this.state.TreeData;
+               // console.log(data.response.length);
+            //    for (let i = 1; i <= RealTreeData.length; i++) {
+            //     if(RealTreeValue[i])
+            //     {
+            //         TreeData[RealTreeKeys[i]] = RealTreeValue[i];
+            //     } 
+                  // TreeD[RealTreeKeys[i]] = RealTreeValue[i];
+               // TreeData[i]['joining_date'] = RealTreeData[i]['joining_date'];
+               // TreeData[i]['username'] = RealTreeData[i]['username'];
+               // TreeData[i]['user_id'] = RealTreeData[i]['id'];
+               // TreeData[i]['full_name'] = RealTreeData[i]['first_name']+' '+RealTreeData[i]['last_name'];
+               // TreeData[i]['profile_image_url'] = RealTreeData[i]['profile_pic'];
+                // for (let j = 1; j <= horizontal_limit; j++) {
+                //     if( TreeData[i][j])
+                //     {
+                //         TreeData[i][j]['joining_date'] = RealTreeData[i][j]['joining_date'];
+                //         TreeData[i][j]['username'] = RealTreeData[i][j]['username'];
+                //         TreeData[i][j]['user_id'] = RealTreeData[i][j]['id'];
+                //         TreeData[i][j]['full_name'] = RealTreeData[i][j]['first_name']+' '+RealTreeData[i][j]['last_name'];
+                //         TreeData[i][j]['profile_image_url'] = RealTreeData[i][j]['profile_pic'];
+                //     }
+                //   }
+            //   }
+               /* let i =1;
+                for (var RealTreeD in RealTreeData) {
+                    console.log(RealTreeD);
+                    TreeData[i]['joining_date'] = RealTreeD.joining_date;
+                    TreeData[i]['username'] = RealTreeD.username;
+                    TreeData[i]['user_id'] = RealTreeD.id;
+                    TreeData[i]['full_name'] = RealTreeD.first_name+' '+RealTreeD.last_name;
+                    TreeData[i]['profile_image_url'] = RealTreeD.profile_pic;
+                    let j = 1;
+                    if(RealTreeD.hasOwnProperty(j)){
+                      for (var SubTreeData in RealTreeD[j])
+                      {
+                        TreeData[i][j]['joining_date'] = SubTreeData.joining_date;
+                        TreeData[i][j]['username'] = SubTreeData.username;
+                        TreeData[i][j]['user_id'] = SubTreeData.id;
+                        TreeData[i][j]['full_name'] = SubTreeData.full_name;
+                        TreeData[i][j]['profile_image_url'] = SubTreeData.profile_pic; 
+                        j++;
+                      }
+                    }
+                    i++;
+                  } */
+              this.setState({TreeData:TreeD});
+            });
+    })
+        console.log("user id "+id);
               //  console.log(this.state.TreeData);
-    }   
+    } 
   render() {
     return (
       <div className="main-content buttons-with-margin">
@@ -237,11 +387,11 @@ class Genealogy extends Component {
                             <div className="hv-wrapper">
                                 <div className="hv-item">
                                     <div className="hv-item-parent">
-                                        <div className="person"  data-tip="React-tooltip">
-                                            <img src="https://pbs.twimg.com/profile_images/762654833455366144/QqQhkuK5.jpg"
+                                        <div className="person">
+                                            <img src={(this.state.TopUserData.profile_image_url) ? globalVariables.img_upload_path+this.state.TopUserData.profile_image_url : treedefault}
                                                 className="person" alt=""/>
                                             <p className="name">
-                                                Ziko Sichi <b>/ CEO</b>
+                                                {(this.state.TopUserData.full_name) ? this.state.TopUserData.full_name : '...'} <b>/ {(this.state.TopUserData.username) ? this.state.TopUserData.username : '...'}</b>
                                             </p>
                                         </div>
                                     </div>
@@ -251,24 +401,28 @@ class Genealogy extends Component {
                                         <div className="hv-item-child">
                                             <div className="hv-item">
 
-                                                <div className="hv-item-parent"  data-tip="React-tooltip">
+                                                <div className="hv-item-parent"  key={index_key1} onClick={() => this.handleUserClick(TreeData1.user_id)}>
+                                                <Link to={`/admin/genealogy/${TreeData1.user_id}`}>
                                                     <div className="person">
                                                         <img src={(TreeData1.profile_image_url) ? globalVariables.img_upload_path+TreeData1.profile_image_url : treedefault} alt=""/>
                                                         <p className="name">
                                     {TreeData1.full_name} <b>/ {TreeData1.username}</b>
                                                         </p>
                                                     </div>
+                                                    </Link>
                                                 </div>
 
                                                 <div className="hv-item-children">
                                                     {this.state.TreeData[index_key1]['sub_user'].map((TreeData2, index_key2) => (
-                                                        <div className="hv-item-child">
-                                                            <div className="person">
+                                                        <div className="hv-item-child" key={index_key2}>
+                                                            <Link to={`/admin/genealogy/${TreeData2.user_id}`}>
+                                                            <div className="person"   onClick={() => this.handleUserClick(TreeData2.user_id)}>
                                                                 <img src={(TreeData2.profile_image_url) ? globalVariables.img_upload_path+TreeData2.profile_image_url : treedefault} alt=""/>
                                                                 <p className="name">
                                                                 {TreeData2.full_name} <b>/ {TreeData2.username}</b>
                                                                 </p>
                                                             </div>
+                                                            </Link>
                                                         </div>
                                                      )) }
 

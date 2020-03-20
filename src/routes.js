@@ -95,6 +95,7 @@ import AddUpdatePrivileges from "views/Staff/AddUpdatePrivileges";
 import RegisterPage from "views/Pages/RegisterPage.jsx";
 import PayoutData from "views/Payout/PayoutData";
 import Messages from "views/Messages/Messages";
+import GeneologySearch from "views/Downlines/GeneologySearch";
 // import LockScreenPage from "views/Pages/LockScreenPage.jsx";
 
 var routes = [
@@ -268,11 +269,20 @@ var routes = [
     icon: "pe-7s-network",
     views: [
       {
+        path: "/genealogy-search/",
+        name: "Genealogy",
+        mini: "GE",
+        layout: "/admin",
+        component: GeneologySearch
+
+      },
+      {
         path: "/genealogy/:userId",
         name: "Genealogy",
         mini: "GE",
         layout: "/admin",
-        component: Genealogy
+        component: Genealogy,
+        invisible: true
 
       },
       {
