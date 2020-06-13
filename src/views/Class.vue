@@ -48,9 +48,17 @@
 								sm="4"
 								class="text-center"
 							>
-								<v-avatar size="130" class="elevation-2" @click="nextStep(1)">
-									<v-icon size="64" color="success">mdi-school-outline</v-icon>
-								</v-avatar>
+								<v-hover v-slot:default="{ hover }">
+									<v-avatar
+										size="130"
+										:class="hover ? 'elevation-10' : 'elevation-2'"
+										@click="nextStep(1)"
+									>
+										<v-icon size="64" color="success">
+											mdi-school-outline
+										</v-icon>
+									</v-avatar>
+								</v-hover>
 								<p class="mt-2">Miss B</p>
 							</v-col>
 						</v-row>
@@ -72,9 +80,17 @@
 								sm="4"
 								class="text-center"
 							>
-								<v-avatar size="130" class="elevation-2" @click="nextStep(2)">
-									<v-icon size="64" color="warning">mdi-account-outline</v-icon>
-								</v-avatar>
+								<v-hover v-slot:default="{ hover }">
+									<v-avatar
+										size="130"
+										:class="hover ? 'elevation-10' : 'elevation-2'"
+										@click="nextStep(2)"
+									>
+										<v-icon size="64" color="warning">
+											mdi-account-outline
+										</v-icon>
+									</v-avatar>
+								</v-hover>
 								<p class="mt-2">Student</p>
 							</v-col>
 						</v-row>
@@ -83,9 +99,17 @@
 					<v-stepper-content :step="3">
 						<v-row align="center">
 							<v-col cols="12" md="6" class="text-center">
-								<v-avatar size="130" class="elevation-2">
-									<v-icon size="64" color="warning">mdi-account-outline</v-icon>
-								</v-avatar>
+								<v-hover v-slot:default="{ hover }">
+									<v-avatar
+										size="130"
+										:class="hover ? 'elevation-10' : 'elevation-2'"
+										@click="nextStep(3)"
+									>
+										<v-icon size="64" color="warning">
+											mdi-account-outline
+										</v-icon>
+									</v-avatar>
+								</v-hover>
 								<p class="mt-2 mb-0">Student</p>
 							</v-col>
 							<v-col cols="12" md="6">
