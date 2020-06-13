@@ -23,10 +23,10 @@
 				<v-stepper-items>
 					<v-stepper-content :step="1">
 						<v-row>
-							<v-col cols="10">
+							<v-col cols="9">
 								<v-text-field prepend-icon="mdi-face" label="Name..." />
 							</v-col>
-							<v-col cols="2" class="text-center">
+							<v-col cols="3" class="text-center">
 								<v-btn color="primary">
 									<v-icon left>mdi-check</v-icon>
 									Check In
