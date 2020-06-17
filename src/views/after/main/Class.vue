@@ -2,7 +2,7 @@
 	<v-container class="class-container mt-10">
 		<BaseCard
 			color="primary"
-			icon="mdi-school-outline"
+			icon="mdi-google-classroom"
 			title="Welcome to Montessori School"
 		>
 			<v-stepper v-model="stepper">
@@ -54,7 +54,7 @@
 										:class="hover ? 'elevation-10' : 'elevation-2'"
 										@click="nextStep(1)"
 									>
-										<v-icon size="64" color="success">
+										<v-icon size="64" color="primary">
 											mdi-school-outline
 										</v-icon>
 									</v-avatar>
@@ -86,7 +86,7 @@
 										:class="hover ? 'elevation-10' : 'elevation-2'"
 										@click="nextStep(2)"
 									>
-										<v-icon size="64" color="warning">
+										<v-icon size="64" color="primary">
 											mdi-account-outline
 										</v-icon>
 									</v-avatar>
@@ -105,7 +105,7 @@
 										:class="hover ? 'elevation-10' : 'elevation-2'"
 										@click="nextStep(3)"
 									>
-										<v-icon size="64" color="warning">
+										<v-icon size="64" color="primary">
 											mdi-account-outline
 										</v-icon>
 									</v-avatar>
@@ -141,8 +141,7 @@
 export default {
 	name: 'App',
 	components: {
-		BaseCard: () =>
-			import(/* webpackChunkName: "about" */ '../components/BaseCard'),
+		BaseCard: () => import('../../../baseComponents/BaseCard'),
 	},
 	data() {
 		return {
@@ -162,11 +161,3 @@ export default {
 	},
 }
 </script>
-
-<style lang="sass">
-.class-container
-  .v-avatar
-    border-radius: 50%
-    border: 1px solid #E5E5E5
-    cursor: pointer
-</style>

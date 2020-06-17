@@ -1,5 +1,5 @@
 <template>
-	<v-app class="whole-container">
+	<v-app>
 		<router-view />
 	</v-app>
 </template>
@@ -9,9 +9,3 @@ export default {
 	name: 'App',
 }
 </script>
-
-<style lang="sass">
-.whole-container
-  .v-application--wrap
-    background: #eee
-</style>

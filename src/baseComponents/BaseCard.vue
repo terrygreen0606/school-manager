@@ -1,5 +1,5 @@
 <template>
-	<v-card v-bind="$attrs" :class="classes" class="v-card--material pa-3">
+	<v-card v-bind="$attrs" class="pa-3 mt-10">
 		<div class="d-flex grow flex-wrap">
 			<v-avatar
 				v-if="avatar"
@@ -46,7 +46,7 @@
 			</v-col>
 
 			<div v-else-if="icon && title" class="ml-4">
-				<div class="card-title font-weight-bold" v-text="title" />
+				<div class="font-weight-bold" v-text="title" />
 			</div>
 		</div>
 
@@ -73,7 +73,7 @@ export default {
 		},
 		color: {
 			type: String,
-			default: 'success',
+			default: 'primary',
 		},
 		hoverReveal: {
 			type: Boolean,
@@ -98,21 +98,6 @@ export default {
 		title: {
 			type: String,
 			default: '',
-		},
-	},
-
-	computed: {
-		classes() {
-			return {
-				'v-card--material--has-heading': this.hasHeading,
-				'v-card--material--hover-reveal': this.hoverReveal,
-			}
-		},
-		hasHeading() {
-			return Boolean(this.$slots.heading || this.title || this.icon)
-		},
-		hasAltHeading() {
-			return Boolean(this.$slots.heading || (this.title && this.icon))
 		},
 	},
 }
